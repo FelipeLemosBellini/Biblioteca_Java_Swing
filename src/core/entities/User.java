@@ -15,15 +15,15 @@ public class User {
         this.profile = profile;
     }
 
-    String getLogin() {
+    public String getLogin() {
         return login;
     }
 
-    EProfile getProfile() {
+    public EProfile getProfile() {
         return profile;
     }
 
-    boolean verifyPassword(String passwordToTest) {
+    public boolean verifyPassword(String passwordToTest) {
         return this.password.equals(passwordToTest);
     }
 }

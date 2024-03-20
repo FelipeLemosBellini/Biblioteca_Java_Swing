@@ -17,15 +17,15 @@ public class Book {
         this.ISBN = ISBN;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    String getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    String getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
