@@ -1,4 +1,5 @@
 package core.enums;
 
-public class EProfile {
+public enum EProfile {
+    admin, employee
 }

@@ -3,13 +3,13 @@ package core.entities;
 import core.enums.EProfile;
 
 public class User {
-    private String login;
-    
-    private String password;
+    private final String login;
 
-    private EProfile profile;
+    private final String password;
 
-    User(String login, String password, EProfile profile) {
+    private final EProfile profile;
+
+    public User(String login, String password, EProfile profile) {
         this.login = login;
         this.password = password;
         this.profile = profile;

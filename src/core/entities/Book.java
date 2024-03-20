@@ -3,14 +3,14 @@ package core.entities;
 import core.enums.EBook;
 
 public class Book {
-    private String name;
-    private String author;
+    private final String name;
+    private final String author;
 
-    private EBook category;
+    private final EBook category;
 
-    private String ISBN;
+    private final String ISBN;
 
-    Book(String name, String author, EBook category, String ISBN) {
+    public Book(String name, String author, EBook category, String ISBN) {
         this.name = name;
         this.author = author;
         this.category = category;
