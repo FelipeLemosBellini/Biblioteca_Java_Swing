@@ -26,6 +26,7 @@ public class BookUseCase {
                 book.setAuthor(author);
                 book.setCategory(category);
                 book.setISBN(ISBN);
+                return;
             }
         }
     }
