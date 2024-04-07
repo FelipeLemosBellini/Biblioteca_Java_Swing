@@ -19,18 +19,6 @@ public class BookUseCase {
         this.listBooks.remove(book);
     }
 
-    public void edit(Book oldBook, String name, String author, EBook category, String ISBN) {
-        for (Book book : listBooks) {
-            if (book.getId() == oldBook.getId()) {
-                book.setName(name);
-                book.setAuthor(author);
-                book.setCategory(category);
-                book.setISBN(ISBN);
-                return;
-            }
-        }
-    }
-
     public List<Book> getBooks() {
         return this.listBooks;
     }
