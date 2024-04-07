@@ -1,6 +1,7 @@
 package Presentation.Screens;
 
 import core.entities.Book;
+import core.enums.EBook;
 import core.use_cases.BookUseCase;
 
 import javax.swing.*;
@@ -14,6 +15,11 @@ import java.util.List;
 public class LibraryScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
+    private JTextField categoryField;
+    private JTextField nameField;
+    private JTextField authorField;
+    private JTextField isbnField;
+    private JComboBox<String> comboBoxCategory;
 
     private BookUseCase bookUseCase = new BookUseCase();
 
@@ -53,6 +59,12 @@ public class LibraryScreen extends JFrame {
 
     private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
+
+        categoryField = new JTextField(15);
+        nameField = new JTextField(15);
+        authorField = new JTextField(15);
+        isbnField = new JTextField(15);
+        comboBoxCategory = new JComboBox<String>(new String[]{});
 
         JButton addButton = new JButton("Adicionar");
         JButton searchButton = new JButton("Pesquisar");
