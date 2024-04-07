@@ -1,6 +1,6 @@
 package Presentation.Screens;
 
-import core.entities.Book;
+import core.enums.EBook;
 import core.use_cases.BookUseCase;
 
 import javax.swing.*;
@@ -9,30 +9,34 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class LibraryScreen extends JFrame {
-    private JTable tabela;
+    private JTable table;
     private DefaultTableModel model;
-    private JTextField categoriaField;
-    private JTextField nomeField;
-    private JTextField autorField;
+
+    private JTextField idField;
+    private JTextField categoryField;
+    private JTextField nameField;
+    private JTextField authorField;
     private JTextField isbnField;
     private JComboBox menuBar;
 
+    private BookUseCase bookUseCase = new BookUseCase();
+
     public LibraryScreen() {
-        definirConfiguracoesDeJanela();
+        defineWindowConfiguration();
 
         setVisible(true);
     }
 
-    private void definirConfiguracoesDeJanela() {
-        setTitle("Agenda de Contatos");
+    private void defineWindowConfiguration(){
+        setTitle("Gestão de livros");
         setSize(1200, 780);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        definirConfiguracoesDeTabela();
-        definirConfiguracoesDeMenu();
+        defineTableConfiguration();
+        defineMenuConfiguration();
     }
 
-    private void definirConfiguracoesDeTabela() {
+    private void defineTableConfiguration(){
         model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -46,76 +50,81 @@ public class LibraryScreen extends JFrame {
         model.addColumn("Categoria");
         model.addColumn("ISBN");
 
-        tabela = new JTable(model);
-        JScrollPane scrollPane = new JScrollPane(tabela);
+        table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
+    private void defineMenuConfiguration(){
+        JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
-    private void definirConfiguracoesDeMenu() {
-        JPanel botoesPanel = new JPanel(new GridLayout(6, 2, 5, 5));
-        categoriaField = new JTextField(15);
-        nomeField = new JTextField(15);
-        autorField = new JTextField(15);
+        categoryField = new JTextField(15);
+        nameField = new JTextField(15);
+        authorField = new JTextField(15);
         isbnField = new JTextField(15);
-        menuBar = new JComboBox();
-        JButton adicionarButton = new JButton("Adicionar");
-        JButton excluirButton = new JButton("Excluir");
-        JButton verContatoButton = new JButton("Ver Livro");
 
-        adicionarButton.addActionListener(this::adicionarLinha);
-        excluirButton.addActionListener(this::excluirLinha);
-        verContatoButton.addActionListener(this::verContato);
+        JButton addButton = new JButton("Adicionar");
+        JButton removeButton = new JButton("Excluir");
+        JButton seeButton = new JButton("Ver Livro");
 
-        botoesPanel.add(new JLabel("Nome:"));
-        botoesPanel.add(nomeField);
+        addButton.addActionListener(this::addRow);
+        removeButton.addActionListener(this::removeRow);
+        seeButton.addActionListener(this::seeRow);
 
-        botoesPanel.add(new JLabel("Autor"));
-        botoesPanel.add(autorField);
+        PanelButtons.add(new JLabel("Nome:"));
+        PanelButtons.add(nameField);
 
-        botoesPanel.add(new JLabel("Categoria:"));
-        botoesPanel.add(categoriaField);
+        PanelButtons.add(new JLabel("Autor"));
+        PanelButtons.add(authorField);
 
-        botoesPanel.add(new JLabel("ISBN"));
-        botoesPanel.add(new JMenuItem());
-        botoesPanel.add(isbnField);
-//        botoesPanel.add(JComboBox);
-        botoesPanel.add(adicionarButton);
-        botoesPanel.add(excluirButton);
-        botoesPanel.add(verContatoButton);
+        PanelButtons.add(new JLabel("Categoria:"));
+        PanelButtons.add(categoryField);
 
-        getContentPane().add(botoesPanel, BorderLayout.SOUTH);
+        PanelButtons.add(new JLabel("ISBN"));
+        PanelButtons.add(isbnField);
+
+        PanelButtons.add(addButton);
+        PanelButtons.add(removeButton);
+        PanelButtons.add(seeButton);
+
+        getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
 
-    private void adicionarLinha(ActionEvent e) {
+    private void addRow(ActionEvent e) {
         try {
-            preencherOuAtualizarTabela();
+            String name = nameField.getText();
+//            String category = categoryField.getText();
+            String author = authorField.getText();
+            String isbn = isbnField.getText();
+
+            bookUseCase.create(name, author, EBook.romance, isbn);
+            UpdateTable();
         } catch (NumberFormatException ex) {
 
         }
     }
 
-    private void excluirLinha(ActionEvent e) {
-        int linhaSelecionada = tabela.getSelectedRow();
+    private void removeRow(ActionEvent e) {
+        int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
-            long codigo = (long) model.getValueAt(linhaSelecionada, 0);
+            long id = (long) model.getValueAt(linhaSelecionada, 0);
 
-            preencherOuAtualizarTabela();
+            UpdateTable();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.");
         }
     }
 
-    private void verContato(ActionEvent e) {
-        int linhaSelecionada = tabela.getSelectedRow();
+    private void seeRow(ActionEvent e) {
+        int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
-            long codigo = (long) model.getValueAt(linhaSelecionada, 0);
+            long id = (long) model.getValueAt(linhaSelecionada, 0);
 
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para ver o livro.");
         }
     }
 
-    private void preencherOuAtualizarTabela() {
+    private void UpdateTable(){
         model.setNumRows(0);
 
     }
