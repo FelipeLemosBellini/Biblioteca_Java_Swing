@@ -46,6 +46,29 @@ public class BookUseCase {
 
     public List<Book> searchBook(String name, String author, EBook category, String ISBN) {
         List<Book> search = new ArrayList<>();
+        for (Book book : listBooks) {
+            boolean matches = true;
+
+            if (name != null && !name.isEmpty()) {
+                matches &= book.getName().toLowerCase().contains(name.toLowerCase());
+            }
+
+            if (author != null && !author.isEmpty()) {
+                matches &= book.getAuthor().toLowerCase().contains(author.toLowerCase());
+            }
+
+            if (category != null) {
+                matches &= book.getCategory() == category;
+            }
+
+            if (ISBN != null && !ISBN.isEmpty()) {
+                matches &= book.getISBN().toLowerCase().contains(ISBN.toLowerCase());
+            }
+
+            if (matches) {
+                search.add(book);
+            }
+        }
         return search;
     }
 

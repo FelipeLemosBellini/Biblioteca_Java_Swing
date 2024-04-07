@@ -65,6 +65,10 @@ public class LibraryScreen extends JFrame {
         authorField = new JTextField(15);
         isbnField = new JTextField(15);
         comboBoxCategory = new JComboBox<String>(new String[]{});
+        comboBoxCategory.addItem("");
+        for (EBook ebook : EBook.values()) {
+            comboBoxCategory.addItem(ebook.toString());
+        }
 
         JButton addButton = new JButton("Adicionar");
         JButton searchButton = new JButton("Pesquisar");
@@ -72,6 +76,7 @@ public class LibraryScreen extends JFrame {
         JButton seeButton = new JButton("Ver Livro");
 
         addButton.addActionListener(this::OpenSaveScreen);
+        searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
         seeButton.addActionListener(this::seeRow);
 
@@ -134,12 +139,13 @@ public class LibraryScreen extends JFrame {
         EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
         String author = authorField.getText();
         String isbn = isbnField.getText();
-
         if (!name.isEmpty() || category != null || !author.isEmpty() || !isbn.isEmpty()) {
-            model.setNumRows(0);
-            List<Book> booksList = bookUseCase.searchBook("", "", category, "");
-            for (Book book : booksList) {
-                model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
+            List<Book> booksList = bookUseCase.searchBook(name.isEmpty() ? "" : name, author.isEmpty() ? "" : author, category, isbn.isEmpty() ? "" : isbn);
+            if (!booksList.isEmpty()) {
+                model.setNumRows(0);
+                for (Book book : booksList) {
+                    model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
+                }
             }
         } else {
             UpdateTable();
