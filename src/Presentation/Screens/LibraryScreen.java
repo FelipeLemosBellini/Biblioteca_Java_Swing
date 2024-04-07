@@ -73,7 +73,7 @@ public class LibraryScreen extends JFrame {
 
         addButton.addActionListener(this::OpenSaveScreen);
         removeButton.addActionListener(this::removeRow);
-        seeButton.addActionListener(this::seeRow);
+        seeButton.addActionListener(this::OpenSaveScreen);
 
         PanelButtons.add(new JLabel("Nome:"));
         PanelButtons.add(nameField);
@@ -97,12 +97,19 @@ public class LibraryScreen extends JFrame {
 
     private void OpenSaveScreen(ActionEvent e) {
 
-        BookScreenSave bookScreenSave = new BookScreenSave(bookUseCase);
+        Book book = null;
+
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            int id = (int) model.getValueAt(selectedRow, 0);
+            book = bookUseCase.getBook(id);
+        }
+
+        BookScreenSave bookScreenSave = new BookScreenSave(bookUseCase, book);
 
         bookScreenSave.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                System.out.println("Window closed");
                 UpdateTable();
             }
         });
@@ -117,15 +124,6 @@ public class LibraryScreen extends JFrame {
             UpdateTable();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.");
-        }
-    }
-
-    private void seeRow(ActionEvent e) {
-        int linhaSelecionada = table.getSelectedRow();
-        if (linhaSelecionada != -1) {
-            long id = (long) model.getValueAt(linhaSelecionada, 0);
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma linha para ver o livro.");
         }
     }
 

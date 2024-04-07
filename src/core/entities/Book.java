@@ -2,6 +2,8 @@ package core.entities;
 
 import core.enums.EBook;
 
+import javax.naming.Name;
+
 public class Book {
     protected int id;
     protected String name;
@@ -37,20 +39,10 @@ public class Book {
         return category;
     }
 
-    public void setName(String name) {
+    public void edit(String name, String author, EBook category, String ISBN) {
         this.name = name;
-    }
-
-    public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public void setCategory(EBook category) {
         this.category = category;
-    }
-
-    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
-
 }
