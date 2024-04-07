@@ -1,24 +1,19 @@
 package Presentation.Screens;
 
 import core.entities.Book;
-import core.enums.EBook;
 import core.use_cases.BookUseCase;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class LibraryScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
-
-    private JTextField categoryField;
-    private JTextField nameField;
-    private JTextField authorField;
-    private JTextField isbnField;
-    private JComboBox<String> comboBoxCategory;
 
     private BookUseCase bookUseCase = new BookUseCase();
 
@@ -59,23 +54,12 @@ public class LibraryScreen extends JFrame {
     private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
-        categoryField = new JTextField(15);
-        nameField = new JTextField(15);
-        authorField = new JTextField(15);
-        isbnField = new JTextField(15);
-        comboBoxCategory = new JComboBox<String>(new String[]{});
-        comboBoxCategory.addItem("");
-        for (EBook ebook : EBook.values()) {
-            comboBoxCategory.addItem(ebook.toString());
-        }
-
         JButton addButton = new JButton("Adicionar");
         JButton searchButton = new JButton("Pesquisar");
         JButton removeButton = new JButton("Excluir");
         JButton seeButton = new JButton("Ver Livro");
 
-        addButton.addActionListener(this::addRow);
-        searchButton.addActionListener(this::searchBook);
+        addButton.addActionListener(this::OpenSaveScreen);
         removeButton.addActionListener(this::removeRow);
         seeButton.addActionListener(this::seeRow);
 
@@ -99,22 +83,17 @@ public class LibraryScreen extends JFrame {
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
 
-    private void addRow(ActionEvent e) {
-        try {
-            String name = nameField.getText();
-            EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
-            String author = authorField.getText();
-            String isbn = isbnField.getText();
+    private void OpenSaveScreen(ActionEvent e) {
 
-            if (!name.isEmpty() && category != null && !author.isEmpty() && !isbn.isEmpty()) {
-                bookUseCase.create(name, author, category, isbn);
+        BookScreenSave bookScreenSave = new BookScreenSave(bookUseCase);
+
+        bookScreenSave.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                System.out.println("Window closed");
                 UpdateTable();
-            } else {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos");
             }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao adicionar o livro");
-        }
+        });
     }
 
     private void removeRow(ActionEvent e) {
