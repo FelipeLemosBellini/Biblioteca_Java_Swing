@@ -33,7 +33,7 @@ public class Book {
         return ISBN;
     }
 
-    EBook getCategory() {
+    public EBook getCategory() {
         return category;
     }
 

@@ -35,6 +35,16 @@ public class BookUseCase {
         return this.listBooks;
     }
 
+    public Book getBook(int id) {
+        for (Book book : listBooks) {
+            if (book.getId() == id) {
+                return book;
+            }
+        }
+
+        return null;
+    }
+
     private int getSequenceBooks() {
         return sequence;
     }

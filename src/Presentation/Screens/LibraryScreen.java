@@ -1,5 +1,6 @@
 package Presentation.Screens;
 
+import core.entities.Book;
 import core.enums.EBook;
 import core.use_cases.BookUseCase;
 
@@ -12,7 +13,6 @@ public class LibraryScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
 
-    private JTextField idField;
     private JTextField categoryField;
     private JTextField nameField;
     private JTextField authorField;
@@ -110,7 +110,11 @@ public class LibraryScreen extends JFrame {
     private void removeRow(ActionEvent e) {
         int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
-            long id = (long) model.getValueAt(linhaSelecionada, 0);
+            int id = (int) model.getValueAt(linhaSelecionada, 0);
+
+            var book = bookUseCase.getBook(id);
+
+            bookUseCase.delete(book);
 
             UpdateTable();
         } else {
@@ -130,6 +134,10 @@ public class LibraryScreen extends JFrame {
 
     private void UpdateTable(){
         model.setNumRows(0);
+        var booksList = bookUseCase.getBooks();
 
+        for (Book book : booksList){
+            model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
+        }
     }
 }
