@@ -95,15 +95,21 @@ public class LibraryScreen extends JFrame {
 
     private void addRow(ActionEvent e) {
         try {
-            String name = nameField.getText();
-//            String category = categoryField.getText();
-            String author = authorField.getText();
-            String isbn = isbnField.getText();
 
-            bookUseCase.create(name, author, EBook.romance, isbn);
-            UpdateTable();
+                String name = nameField.getText();
+                EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
+                String author = authorField.getText();
+                String isbn = isbnField.getText();
+
+            if(!name.isEmpty() && category != null && !author.isEmpty() && !isbn.isEmpty()){
+                bookUseCase.create(name, author, category, isbn);
+                UpdateTable();
+            }else{
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+            }
         } catch (NumberFormatException ex) {
 
+            JOptionPane.showMessageDialog(this, "Erro ao adicionar o livro");
         }
     }
 
