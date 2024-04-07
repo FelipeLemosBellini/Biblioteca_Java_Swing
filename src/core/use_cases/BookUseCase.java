@@ -41,8 +41,12 @@ public class BookUseCase {
                 return book;
             }
         }
-
         return null;
+    }
+
+    public List<Book> searchBook(String name, String author, EBook category, String ISBN) {
+        List<Book> search = new ArrayList<>();
+        return search;
     }
 
     private int getSequenceBooks() {

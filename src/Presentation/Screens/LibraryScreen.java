@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class LibraryScreen extends JFrame {
     private JTable table;
@@ -63,15 +64,18 @@ public class LibraryScreen extends JFrame {
         authorField = new JTextField(15);
         isbnField = new JTextField(15);
         comboBoxCategory = new JComboBox<String>(new String[]{});
+        comboBoxCategory.addItem("");
         for (EBook ebook : EBook.values()) {
             comboBoxCategory.addItem(ebook.toString());
         }
 
         JButton addButton = new JButton("Adicionar");
+        JButton searchButton = new JButton("Pesquisar");
         JButton removeButton = new JButton("Excluir");
         JButton seeButton = new JButton("Ver Livro");
 
         addButton.addActionListener(this::addRow);
+        searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
         seeButton.addActionListener(this::seeRow);
 
@@ -88,6 +92,7 @@ public class LibraryScreen extends JFrame {
         PanelButtons.add(isbnField);
 
         PanelButtons.add(addButton);
+        PanelButtons.add(searchButton);
         PanelButtons.add(removeButton);
         PanelButtons.add(seeButton);
 
@@ -116,11 +121,8 @@ public class LibraryScreen extends JFrame {
         int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
             int id = (int) model.getValueAt(linhaSelecionada, 0);
-
             var book = bookUseCase.getBook(id);
-
             bookUseCase.delete(book);
-
             UpdateTable();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.");
@@ -131,16 +133,31 @@ public class LibraryScreen extends JFrame {
         int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
             long id = (long) model.getValueAt(linhaSelecionada, 0);
-
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para ver o livro.");
         }
     }
 
+    private void searchBook(ActionEvent event) {
+        String name = nameField.getText();
+        EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
+        String author = authorField.getText();
+        String isbn = isbnField.getText();
+
+        if (!name.isEmpty() || category != null || !author.isEmpty() || !isbn.isEmpty()) {
+            model.setNumRows(0);
+            List<Book> booksList = bookUseCase.searchBook("", "", category, "");
+            for (Book book : booksList) {
+                model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
+            }
+        } else {
+            UpdateTable();
+        }
+    }
+
     private void UpdateTable() {
         model.setNumRows(0);
-        var booksList = bookUseCase.getBooks();
-
+        List<Book> booksList = bookUseCase.getBooks();
         for (Book book : booksList) {
             model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
         }
