@@ -27,7 +27,7 @@ public class LibraryScreen extends JFrame {
         setVisible(true);
     }
 
-    private void defineWindowConfiguration(){
+    private void defineWindowConfiguration() {
         setTitle("Gestão de livros");
         setSize(1200, 780);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +36,7 @@ public class LibraryScreen extends JFrame {
         defineMenuConfiguration();
     }
 
-    private void defineTableConfiguration(){
+    private void defineTableConfiguration() {
         model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -54,7 +54,8 @@ public class LibraryScreen extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
-    private void defineMenuConfiguration(){
+
+    private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
         categoryField = new JTextField(15);
@@ -95,20 +96,18 @@ public class LibraryScreen extends JFrame {
 
     private void addRow(ActionEvent e) {
         try {
+            String name = nameField.getText();
+            EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
+            String author = authorField.getText();
+            String isbn = isbnField.getText();
 
-                String name = nameField.getText();
-                EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
-                String author = authorField.getText();
-                String isbn = isbnField.getText();
-
-            if(!name.isEmpty() && category != null && !author.isEmpty() && !isbn.isEmpty()){
+            if (!name.isEmpty() && category != null && !author.isEmpty() && !isbn.isEmpty()) {
                 bookUseCase.create(name, author, category, isbn);
                 UpdateTable();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos");
             }
         } catch (NumberFormatException ex) {
-
             JOptionPane.showMessageDialog(this, "Erro ao adicionar o livro");
         }
     }
@@ -138,11 +137,11 @@ public class LibraryScreen extends JFrame {
         }
     }
 
-    private void UpdateTable(){
+    private void UpdateTable() {
         model.setNumRows(0);
         var booksList = bookUseCase.getBooks();
 
-        for (Book book : booksList){
+        for (Book book : booksList) {
             model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
         }
     }
