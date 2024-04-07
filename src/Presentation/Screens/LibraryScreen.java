@@ -15,6 +15,7 @@ public class LibraryScreen extends JFrame {
     private JTextField nomeField;
     private JTextField autorField;
     private JTextField isbnField;
+    private JComboBox menuBar;
 
     public LibraryScreen() {
         definirConfiguracoesDeJanela();
@@ -22,7 +23,7 @@ public class LibraryScreen extends JFrame {
         setVisible(true);
     }
 
-    private void definirConfiguracoesDeJanela(){
+    private void definirConfiguracoesDeJanela() {
         setTitle("Agenda de Contatos");
         setSize(1200, 780);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +32,7 @@ public class LibraryScreen extends JFrame {
         definirConfiguracoesDeMenu();
     }
 
-    private void definirConfiguracoesDeTabela(){
+    private void definirConfiguracoesDeTabela() {
         model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -49,12 +50,14 @@ public class LibraryScreen extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabela);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
-    private void definirConfiguracoesDeMenu(){
+
+    private void definirConfiguracoesDeMenu() {
         JPanel botoesPanel = new JPanel(new GridLayout(6, 2, 5, 5));
         categoriaField = new JTextField(15);
         nomeField = new JTextField(15);
         autorField = new JTextField(15);
         isbnField = new JTextField(15);
+        menuBar = new JComboBox();
         JButton adicionarButton = new JButton("Adicionar");
         JButton excluirButton = new JButton("Excluir");
         JButton verContatoButton = new JButton("Ver Livro");
@@ -73,8 +76,9 @@ public class LibraryScreen extends JFrame {
         botoesPanel.add(categoriaField);
 
         botoesPanel.add(new JLabel("ISBN"));
+        botoesPanel.add(new JMenuItem());
         botoesPanel.add(isbnField);
-
+//        botoesPanel.add(JComboBox);
         botoesPanel.add(adicionarButton);
         botoesPanel.add(excluirButton);
         botoesPanel.add(verContatoButton);
@@ -111,7 +115,7 @@ public class LibraryScreen extends JFrame {
         }
     }
 
-    private void preencherOuAtualizarTabela(){
+    private void preencherOuAtualizarTabela() {
         model.setNumRows(0);
 
     }
