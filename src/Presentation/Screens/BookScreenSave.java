@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class BookScreenSave  extends JFrame {
-    private BookUseCase bookUseCase;
+    private final BookUseCase bookUseCase;
 
     private JTextField nameField;
     private JTextField authorField;
