@@ -17,7 +17,7 @@ public class LibraryScreen extends JFrame {
     private JTextField nameField;
     private JTextField authorField;
     private JTextField isbnField;
-    private JComboBox menuBar;
+    private JComboBox<String> comboBoxCategory;
 
     private BookUseCase bookUseCase = new BookUseCase();
 
@@ -61,6 +61,10 @@ public class LibraryScreen extends JFrame {
         nameField = new JTextField(15);
         authorField = new JTextField(15);
         isbnField = new JTextField(15);
+        comboBoxCategory = new JComboBox<String>(new String[]{});
+        for (EBook ebook : EBook.values()) {
+            comboBoxCategory.addItem(ebook.toString());
+        }
 
         JButton addButton = new JButton("Adicionar");
         JButton removeButton = new JButton("Excluir");
@@ -76,8 +80,8 @@ public class LibraryScreen extends JFrame {
         PanelButtons.add(new JLabel("Autor"));
         PanelButtons.add(authorField);
 
-        PanelButtons.add(new JLabel("Categoria:"));
-        PanelButtons.add(categoryField);
+        PanelButtons.add(new JLabel("Categoria"));
+        PanelButtons.add(comboBoxCategory);
 
         PanelButtons.add(new JLabel("ISBN"));
         PanelButtons.add(isbnField);
