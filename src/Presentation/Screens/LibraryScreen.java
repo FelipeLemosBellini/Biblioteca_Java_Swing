@@ -75,10 +75,10 @@ public class LibraryScreen extends JFrame {
         JButton removeButton = new JButton("Excluir");
         JButton seeButton = new JButton("Ver Livro");
 
-        addButton.addActionListener(this::OpenSaveScreen);
+        addButton.addActionListener(this::openSaveScreen);
         searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
-        seeButton.addActionListener(this::OpenSaveScreen);
+        seeButton.addActionListener(this::openSaveScreen);
 
         PanelButtons.add(new JLabel("Nome:"));
         PanelButtons.add(nameField);
@@ -100,7 +100,7 @@ public class LibraryScreen extends JFrame {
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
 
-    private void OpenSaveScreen(ActionEvent e) {
+    private void openSaveScreen(ActionEvent event) {
 
         Book book = null;
 
@@ -115,18 +115,18 @@ public class LibraryScreen extends JFrame {
         bookScreenSave.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                UpdateTable();
+                updateTable();
             }
         });
     }
 
-    private void removeRow(ActionEvent e) {
+    private void removeRow(ActionEvent event) {
         int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
             int id = (int) model.getValueAt(linhaSelecionada, 0);
             var book = bookUseCase.getBook(id);
             bookUseCase.delete(book);
-            UpdateTable();
+            updateTable();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.");
         }
@@ -146,11 +146,11 @@ public class LibraryScreen extends JFrame {
                 }
             }
         } else {
-            UpdateTable();
+            updateTable();
         }
     }
 
-    private void UpdateTable() {
+    private void updateTable() {
         model.setNumRows(0);
         List<Book> booksList = bookUseCase.getBooks();
         for (Book book : booksList) {

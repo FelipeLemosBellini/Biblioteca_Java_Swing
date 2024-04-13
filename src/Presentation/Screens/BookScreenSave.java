@@ -58,7 +58,7 @@ public class BookScreenSave  extends JFrame {
         JButton addButton = new JButton("Salvar");
         JButton removeButton = new JButton("Cancelar");
 
-        addButton.addActionListener(this::SaveRow);
+        addButton.addActionListener(this::saveRow);
 
         PanelButtons.add(new JLabel("Nome:"));
         PanelButtons.add(nameField);
@@ -78,7 +78,7 @@ public class BookScreenSave  extends JFrame {
         getContentPane().add(PanelButtons);
     }
 
-    private void SaveRow(ActionEvent e) {
+    private void saveRow(ActionEvent event) {
         try {
             String name = nameField.getText();
             EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
