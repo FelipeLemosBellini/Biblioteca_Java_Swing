@@ -34,7 +34,7 @@ public class BookBorrowScreenSave extends JFrame {
     private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
-        var borrowText = currentBook.getBorrowing() ? "Emprestado" : "Em Estante";
+        var borrowText = currentBook.getBorrowing() ? "Emprestado" : "Disponível";
         borrow = new JTextField(borrowText,15);
         var stringDateOfReturn = currentBook.getDateOfReturningToString();
         var stringdateOfBorrow = currentBook.getDateOfBorrowingToString();
