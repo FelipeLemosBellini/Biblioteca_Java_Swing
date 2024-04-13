@@ -1,10 +1,10 @@
 package core.enums;
 
-public enum EBook {
+public enum ECategory {
     action, adventure, fairyTale, fantasy, horror, mystery, romance, scienceFiction, suspense, thriller;
 
-    public EBook getEBook(String value) {
-        for (EBook eBook : EBook.values()) {
+    public ECategory getECategory(String value) {
+        for (ECategory eBook : ECategory.values()) {
             if (eBook.name().equals(value)) {
                 return eBook;
             }

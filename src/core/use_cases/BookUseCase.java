@@ -1,7 +1,7 @@
 package core.use_cases;
 
 import core.entities.Book;
-import core.enums.EBook;
+import core.enums.ECategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ public class BookUseCase {
     private int sequence = 0;
     private List<Book> listBooks = new ArrayList<>();
 
-    public void create(String name, String author, EBook category, String ISBN) {
+    public void create(String name, String author, ECategory category, String ISBN) {
         this.sequence++;
         listBooks.add(new Book(getSequenceBooks(), name, author, category, ISBN));
     }
@@ -32,7 +32,7 @@ public class BookUseCase {
         return null;
     }
 
-    public List<Book> searchBook(String name, String author, EBook category, String ISBN) {
+    public List<Book> searchBook(String name, String author, ECategory category, String ISBN) {
         List<Book> search = new ArrayList<>();
         for (Book book : listBooks) {
             boolean matches = true;

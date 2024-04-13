@@ -1,7 +1,7 @@
 package Presentation.Screens;
 
 import core.entities.Book;
-import core.enums.EBook;
+import core.enums.ECategory;
 import core.use_cases.BookUseCase;
 
 import javax.swing.*;
@@ -38,7 +38,7 @@ public class BookScreenSave  extends JFrame {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
         comboBoxCategory = new JComboBox<String>(new String[]{});
-        for (EBook ebook : EBook.values()) {
+        for (ECategory ebook : ECategory.values()) {
             comboBoxCategory.addItem(ebook.toString());
         }
 
@@ -81,7 +81,7 @@ public class BookScreenSave  extends JFrame {
     private void saveRow(ActionEvent event) {
         try {
             String name = nameField.getText();
-            EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
+            ECategory category = ECategory.action.getECategory((String) comboBoxCategory.getSelectedItem());
             String author = authorField.getText();
             String isbn = isbnField.getText();
 

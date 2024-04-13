@@ -1,7 +1,7 @@
 package Presentation.Screens;
 
 import core.entities.Book;
-import core.enums.EBook;
+import core.enums.ECategory;
 import core.use_cases.BookUseCase;
 
 import javax.swing.*;
@@ -66,7 +66,7 @@ public class LibraryScreen extends JFrame {
         isbnField = new JTextField(15);
         comboBoxCategory = new JComboBox<String>(new String[]{});
         comboBoxCategory.addItem("");
-        for (EBook ebook : EBook.values()) {
+        for (ECategory ebook : ECategory.values()) {
             comboBoxCategory.addItem(ebook.toString());
         }
 
@@ -134,7 +134,7 @@ public class LibraryScreen extends JFrame {
 
     private void searchBook(ActionEvent event) {
         String name = nameField.getText();
-        EBook category = EBook.action.getEBook((String) comboBoxCategory.getSelectedItem());
+        ECategory category = ECategory.action.getECategory((String) comboBoxCategory.getSelectedItem());
         String author = authorField.getText();
         String isbn = isbnField.getText();
         if (!name.isEmpty() || category != null || !author.isEmpty() || !isbn.isEmpty()) {
