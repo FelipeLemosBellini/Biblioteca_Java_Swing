@@ -1,6 +1,6 @@
 package core.entities;
 
-import core.enums.EBook;
+import core.enums.ECategory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -9,13 +9,13 @@ public class Book {
     protected int id;
     protected String name;
     protected String author;
-    protected EBook category;
+    protected ECategory category;
     protected String ISBN;
     private Boolean borrowing = false;
     private Date dateOfBorrowing;
     private Date dateOfReturning;
 
-    public Book(int id, String name, String author, EBook category, String ISBN) {
+    public Book(int id, String name, String author, ECategory category, String ISBN) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -39,13 +39,13 @@ public class Book {
         return ISBN;
     }
 
-    public EBook getCategory() {
+    public ECategory getCategory() {
         return category;
     }
 
     public Boolean getBorrowing() { return borrowing; }
 
-    public void edit(String name, String author, EBook category, String ISBN) {
+    public void edit(String name, String author, ECategory category, String ISBN) {
         this.name = name;
         this.author = author;
         this.category = category;
