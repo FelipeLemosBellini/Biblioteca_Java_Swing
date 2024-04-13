@@ -43,9 +43,7 @@ public class Book {
         return category;
     }
 
-    public Boolean getBorrowing() {
-        return borrowing;
-    }
+    public Boolean getBorrowing() { return borrowing; }
 
     public void edit(String name, String author, EBook category, String ISBN) {
         this.name = name;

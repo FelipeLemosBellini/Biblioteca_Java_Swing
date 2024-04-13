@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 import java.util.List;
 
 public class LibraryScreen extends JFrame {
@@ -155,7 +156,22 @@ public class LibraryScreen extends JFrame {
     }
 
     private void borrow(ActionEvent event) {
+        int linhaSelecionada = table.getSelectedRow();
+        if (linhaSelecionada != -1) {
+            int id = (int) model.getValueAt(linhaSelecionada, 0);
+            Book book = bookUseCase.getBook(id);
 
+//             bookBorrowScreenSave = new BookBorrowScreenSave(book);
+//            bookBorrowScreenSave.addWindowListener(new WindowAdapter() {
+//                @Override
+//                public void windowClosed(WindowEvent e) {
+//                    updateTable();
+//                }
+//            });
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar.");
+        }
     }
 
     private void updateTable() {
