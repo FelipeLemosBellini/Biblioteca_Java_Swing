@@ -77,7 +77,7 @@ public class LibraryScreen extends JFrame {
         JButton searchButton = new JButton("Pesquisar");
         JButton removeButton = new JButton("Excluir");
         JButton seeButton = new JButton("Ver Livro");
-        JButton borrowButton = new JButton("Emprestar livro");
+        JButton borrowButton = new JButton("Empréstimo de livro");
 
         addButton.addActionListener(this::openSaveScreen);
         searchButton.addActionListener(this::searchBook);

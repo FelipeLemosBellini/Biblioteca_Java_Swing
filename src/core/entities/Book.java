@@ -2,6 +2,7 @@ package core.entities;
 
 import core.enums.ECategory;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -43,7 +44,17 @@ public class Book {
         return category;
     }
 
-    public Boolean getBorrowing() { return borrowing; }
+    public Boolean getBorrowing() {
+        return borrowing;
+    }
+
+    public String dateOfBorrowingToString() {
+        return returnDate(dateOfBorrowing);
+    }
+
+    public String dateOfReturningToString() {
+        return returnDate(dateOfReturning);
+    }
 
     public void edit(String name, String author, ECategory category, String ISBN) {
         this.name = name;
@@ -63,5 +74,16 @@ public class Book {
         this.dateOfBorrowing = calendar.getTime();
 
         return true;
+    }
+
+    public void returnTheBook() {
+        borrowing = false;
+        dateOfBorrowing = null;
+        dateOfReturning = null;
+    }
+
+    private String returnDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(date);
     }
 }
