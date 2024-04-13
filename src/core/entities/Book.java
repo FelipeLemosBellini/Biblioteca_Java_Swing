@@ -13,8 +13,8 @@ public class Book {
     protected ECategory category;
     protected String ISBN;
     private Boolean borrowing = false;
-    private Date dateOfBorrowing;
-    private Date dateOfReturning;
+    private Date dateOfBorrowing = new Date();
+    private Date dateOfReturning = new Date();
 
     public Book(int id, String name, String author, ECategory category, String ISBN) {
         this.id = id;
@@ -48,11 +48,11 @@ public class Book {
         return borrowing;
     }
 
-    public String dateOfBorrowingToString() {
+    public String getDateOfBorrowingToString() {
         return returnDate(dateOfBorrowing);
     }
 
-    public String dateOfReturningToString() {
+    public String getDateOfReturningToString() {
         return returnDate(dateOfReturning);
     }
 
