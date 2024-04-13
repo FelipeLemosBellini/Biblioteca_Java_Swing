@@ -60,7 +60,7 @@ public class LibraryScreen extends JFrame {
     }
 
     private void defineMenuConfiguration() {
-        JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
+        JPanel PanelButtons = new JPanel(new GridLayout(7, 2, 5, 5));
 
         categoryField = new JTextField(15);
         nameField = new JTextField(15);
@@ -130,7 +130,7 @@ public class LibraryScreen extends JFrame {
         int linhaSelecionada = table.getSelectedRow();
         if (linhaSelecionada != -1) {
             int id = (int) model.getValueAt(linhaSelecionada, 0);
-            var book = bookUseCase.getBook(id);
+            Book book = bookUseCase.getBook(id);
             bookUseCase.delete(book);
             updateTable();
         } else {
