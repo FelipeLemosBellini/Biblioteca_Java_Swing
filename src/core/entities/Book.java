@@ -2,7 +2,8 @@ package core.entities;
 
 import core.enums.EBook;
 
-import javax.naming.Name;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Book {
     protected int id;
@@ -10,6 +11,9 @@ public class Book {
     protected String author;
     protected EBook category;
     protected String ISBN;
+    private Boolean borrowing = false;
+    private Date dateOfBorrowing;
+    private Date dateOfReturning;
 
     public Book(int id, String name, String author, EBook category, String ISBN) {
         this.id = id;
@@ -39,10 +43,27 @@ public class Book {
         return category;
     }
 
+    public Boolean getBorrowing() {
+        return borrowing;
+    }
+
     public void edit(String name, String author, EBook category, String ISBN) {
         this.name = name;
         this.author = author;
         this.category = category;
         this.ISBN = ISBN;
+    }
+
+    public boolean borrow(Date dateOfReturning) {
+        if (borrowing)
+            return false;
+
+        borrowing = true;
+        this.dateOfReturning = dateOfReturning;
+
+        Calendar calendar = Calendar.getInstance();
+        this.dateOfBorrowing = calendar.getTime();
+
+        return true;
     }
 }
