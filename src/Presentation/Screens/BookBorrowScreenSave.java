@@ -9,15 +9,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class BookBorrowScreenSave extends JFrame {
-    private final BookUseCase bookUseCase;
-
     private JTextField dateOfReturn;
     private JComboBox<String> comboBoxCategory;
 
     private Book currentBook = null;
 
-    public BookBorrowScreenSave(BookUseCase bookUseCase, Book book) {
-        this.bookUseCase = bookUseCase;
+    public BookBorrowScreenSave(Book book) {
         this.currentBook = book;
 
         defineWindowConfiguration();

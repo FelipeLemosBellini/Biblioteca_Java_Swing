@@ -101,6 +101,7 @@ public class LibraryScreen extends JFrame {
         PanelButtons.add(searchButton);
         PanelButtons.add(removeButton);
         PanelButtons.add(seeButton);
+        PanelButtons.add(borrowButton);
 
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
@@ -161,13 +162,13 @@ public class LibraryScreen extends JFrame {
             int id = (int) model.getValueAt(linhaSelecionada, 0);
             Book book = bookUseCase.getBook(id);
 
-//             bookBorrowScreenSave = new BookBorrowScreenSave(book);
-//            bookBorrowScreenSave.addWindowListener(new WindowAdapter() {
-//                @Override
-//                public void windowClosed(WindowEvent e) {
-//                    updateTable();
-//                }
-//            });
+            BookBorrowScreenSave bookBorrowScreenSave = new BookBorrowScreenSave(book);
+            bookBorrowScreenSave.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    updateTable();
+                }
+            });
 
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar.");
