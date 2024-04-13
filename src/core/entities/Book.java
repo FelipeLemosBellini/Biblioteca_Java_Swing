@@ -83,7 +83,6 @@ public class Book {
     }
 
     private String returnDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        return formatter.format(date);
+        return new SimpleDateFormat("dd/MM/yyyy").format(date);
     }
 }
