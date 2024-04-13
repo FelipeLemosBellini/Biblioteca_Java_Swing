@@ -51,6 +51,7 @@ public class LibraryScreen extends JFrame {
         model.addColumn("Autor");
         model.addColumn("Categoria");
         model.addColumn("ISBN");
+        model.addColumn("Está emprestado");
 
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -64,6 +65,7 @@ public class LibraryScreen extends JFrame {
         nameField = new JTextField(15);
         authorField = new JTextField(15);
         isbnField = new JTextField(15);
+        isbnField = new JTextField(15);
         comboBoxCategory = new JComboBox<String>(new String[]{});
         comboBoxCategory.addItem("");
         for (EBook ebook : EBook.values()) {
@@ -74,11 +76,13 @@ public class LibraryScreen extends JFrame {
         JButton searchButton = new JButton("Pesquisar");
         JButton removeButton = new JButton("Excluir");
         JButton seeButton = new JButton("Ver Livro");
+        JButton borrowButton = new JButton("Emprestar livro");
 
         addButton.addActionListener(this::openSaveScreen);
         searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
         seeButton.addActionListener(this::openSaveScreen);
+        borrowButton.addActionListener(this::borrow);
 
         PanelButtons.add(new JLabel("Nome:"));
         PanelButtons.add(nameField);
@@ -150,11 +154,15 @@ public class LibraryScreen extends JFrame {
         }
     }
 
+    private void borrow(ActionEvent event) {
+
+    }
+
     private void updateTable() {
         model.setNumRows(0);
         List<Book> booksList = bookUseCase.getBooks();
         for (Book book : booksList) {
-            model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
+            model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN(), book.getBorrowing()});
         }
     }
 }
