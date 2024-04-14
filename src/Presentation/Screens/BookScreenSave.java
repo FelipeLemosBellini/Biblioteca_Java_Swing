@@ -59,6 +59,7 @@ public class BookScreenSave  extends JFrame {
         JButton removeButton = new JButton("Cancelar");
 
         addButton.addActionListener(this::saveRow);
+        removeButton.addActionListener(this::closeWindow);
 
         PanelButtons.add(new JLabel("Nome:"));
         PanelButtons.add(nameField);
@@ -76,6 +77,10 @@ public class BookScreenSave  extends JFrame {
         PanelButtons.add(removeButton);
 
         getContentPane().add(PanelButtons);
+    }
+
+    private void closeWindow(ActionEvent event) {
+        dispose();
     }
 
     private void saveRow(ActionEvent event) {

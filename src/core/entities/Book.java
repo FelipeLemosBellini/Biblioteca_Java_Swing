@@ -13,8 +13,8 @@ public class Book {
     protected ECategory category;
     protected String ISBN;
     private Boolean borrowing = false;
-    private Date dateOfBorrowing = new Date();
-    private Date dateOfReturning = new Date();
+    private Date dateOfBorrowing;
+    private Date dateOfReturning;
 
     public Book(int id, String name, String author, ECategory category, String ISBN) {
         this.id = id;
@@ -83,6 +83,9 @@ public class Book {
     }
 
     private String returnDate(Date date) {
-        return new SimpleDateFormat("dd/MM/yyyy").format(date);
+        if(date != null)
+            return new SimpleDateFormat("dd/MM/yyyy").format(date);
+        else
+            return "00/00/0000";
     }
 }

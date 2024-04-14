@@ -16,7 +16,6 @@ import java.util.List;
 public class LibraryScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
-    private JTextField categoryField;
     private JTextField nameField;
     private JTextField authorField;
     private JTextField isbnField;
@@ -62,7 +61,6 @@ public class LibraryScreen extends JFrame {
     private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(7, 2, 5, 5));
 
-        categoryField = new JTextField(15);
         nameField = new JTextField(15);
         authorField = new JTextField(15);
         isbnField = new JTextField(15);
@@ -139,21 +137,7 @@ public class LibraryScreen extends JFrame {
     }
 
     private void searchBook(ActionEvent event) {
-        String name = nameField.getText();
-        ECategory category = ECategory.action.getECategory((String) comboBoxCategory.getSelectedItem());
-        String author = authorField.getText();
-        String isbn = isbnField.getText();
-        if (!name.isEmpty() || category != null || !author.isEmpty() || !isbn.isEmpty()) {
-            List<Book> booksList = bookUseCase.searchBook(name.isEmpty() ? "" : name, author.isEmpty() ? "" : author, category, isbn.isEmpty() ? "" : isbn);
-            if (!booksList.isEmpty()) {
-                model.setNumRows(0);
-                for (Book book : booksList) {
-                    model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()});
-                }
-            }
-        } else {
             updateTable();
-        }
     }
 
     private void borrow(ActionEvent event) {
@@ -177,7 +161,14 @@ public class LibraryScreen extends JFrame {
 
     private void updateTable() {
         model.setNumRows(0);
-        List<Book> booksList = bookUseCase.getBooks();
+
+        String name = nameField.getText();
+        ECategory category = ECategory.action.getECategory((String) comboBoxCategory.getSelectedItem());
+        String author = authorField.getText();
+        String isbn = isbnField.getText();
+
+        List<Book> booksList = bookUseCase.searchBook(name.isEmpty() ? "" : name, author.isEmpty() ? "" : author, category, isbn.isEmpty() ? "" : isbn);
+
         for (Book book : booksList) {
             model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN(), book.getBorrowing()});
         }

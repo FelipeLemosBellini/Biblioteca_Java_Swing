@@ -36,14 +36,17 @@ public class BookBorrowScreenSave extends JFrame {
 
         var borrowText = currentBook.getBorrowing() ? "Emprestado" : "Disponível";
         borrow = new JTextField(borrowText,15);
+        borrow.setEditable(false);
         var stringDateOfReturn = currentBook.getDateOfReturningToString();
         var stringdateOfBorrow = currentBook.getDateOfBorrowingToString();
 
 
         try {
-            MaskFormatter formatter = new MaskFormatter("##/##/#### ##:##");
+            MaskFormatter formatter = new MaskFormatter("##/##/####");
             dateOfReturn = new JFormattedTextField(formatter);
             dateOfBorrow = new JFormattedTextField(formatter);
+
+            dateOfBorrow.setEditable(false);
 
             if (stringDateOfReturn != null && !stringDateOfReturn.isEmpty()) {
                 dateOfReturn.setValue(stringDateOfReturn);
@@ -59,10 +62,12 @@ public class BookBorrowScreenSave extends JFrame {
         }
         JButton returnBookButton = new JButton("Devolver");
 
-        JButton addButton = new JButton("Salvar");
+        JButton addButton = new JButton("Emprestar");
         JButton removeButton = new JButton("Cancelar");
 
         addButton.addActionListener(this::borrowBook);
+        returnBookButton.addActionListener(this::returnBook);
+        removeButton.addActionListener(this::closeWindow);
 
         PanelButtons.add(new JLabel("Status do livro:"));
         PanelButtons.add(borrow);
@@ -82,6 +87,20 @@ public class BookBorrowScreenSave extends JFrame {
         getContentPane().add(PanelButtons);
     }
 
+    private void closeWindow(ActionEvent event) {
+        dispose();
+    }
+
+    private void returnBook(ActionEvent event){
+        if(currentBook.getBorrowing()){
+            currentBook.returnTheBook();
+            dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "O Livro não está emprestado!");
+        }
+    }
+
     private void borrowBook(ActionEvent event) {
         try {
             String dateOfReturnText = dateOfReturn.getText();
@@ -90,9 +109,12 @@ public class BookBorrowScreenSave extends JFrame {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date data = dateFormat.parse(dateOfReturnText);
 
-                currentBook.borrow(data);
+                var wasBorrow = currentBook.borrow(data);
 
-                dispose();
+                if(wasBorrow)
+                    dispose();
+                else
+                    JOptionPane.showMessageDialog(this, "O Livro nao esta disponivel");
             } else {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos");
             }
