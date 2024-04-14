@@ -28,14 +28,14 @@ public class BookScreenSave  extends JFrame {
 
     private void defineWindowConfiguration(){
         setTitle("Gestão de livros");
-        setSize(400, 400);
+        setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setVisible(true);
     }
 
     private void defineMenuConfiguration(){
-        JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
+        JPanel PanelButtons = new JPanel(new GridLayout(5, 2, 5, 5));
 
         comboBoxCategory = new JComboBox<String>(new String[]{});
         for (ECategory ebook : ECategory.values()) {

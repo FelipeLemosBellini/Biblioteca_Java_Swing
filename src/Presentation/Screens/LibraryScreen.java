@@ -51,7 +51,7 @@ public class LibraryScreen extends JFrame {
         model.addColumn("Autor");
         model.addColumn("Categoria");
         model.addColumn("ISBN");
-        model.addColumn("Está emprestado");
+        model.addColumn("Disponibilidade");
 
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -59,7 +59,7 @@ public class LibraryScreen extends JFrame {
     }
 
     private void defineMenuConfiguration() {
-        JPanel PanelButtons = new JPanel(new GridLayout(7, 2, 5, 5));
+        JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
         nameField = new JTextField(15);
         authorField = new JTextField(15);
@@ -71,16 +71,14 @@ public class LibraryScreen extends JFrame {
             comboBoxCategory.addItem(ebook.toString());
         }
 
-        JButton addButton = new JButton("Adicionar");
+        JButton addButton = new JButton("Adicionar/Editar");
         JButton searchButton = new JButton("Pesquisar");
         JButton removeButton = new JButton("Excluir");
-        JButton seeButton = new JButton("Ver Livro");
         JButton borrowButton = new JButton("Empréstimo de livro");
 
         addButton.addActionListener(this::openSaveScreen);
         searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
-        seeButton.addActionListener(this::openSaveScreen);
         borrowButton.addActionListener(this::borrow);
 
         PanelButtons.add(new JLabel("Nome:"));
@@ -98,7 +96,6 @@ public class LibraryScreen extends JFrame {
         PanelButtons.add(addButton);
         PanelButtons.add(searchButton);
         PanelButtons.add(removeButton);
-        PanelButtons.add(seeButton);
         PanelButtons.add(borrowButton);
 
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
@@ -170,7 +167,8 @@ public class LibraryScreen extends JFrame {
         List<Book> booksList = bookUseCase.searchBook(name.isEmpty() ? "" : name, author.isEmpty() ? "" : author, category, isbn.isEmpty() ? "" : isbn);
 
         for (Book book : booksList) {
-            model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN(), book.getBorrowing()});
+            var borrowText = book.getBorrowing() ? "Emprestado" : "Disponível";
+            model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN(), borrowText});
         }
     }
 }
