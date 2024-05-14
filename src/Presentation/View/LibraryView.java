@@ -1,31 +1,32 @@
-package Presentation.Screens;
+package Presentation.View;
 
+import Presentation.Controller.LibraryController;
+import Presentation.Exceptions.NotSelectedRowException;
 import core.entities.Book;
 import core.enums.ECategory;
-import core.use_cases.BookUseCase;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Date;
 import java.util.List;
 
-public class LibraryScreen extends JFrame {
+public class LibraryView extends JFrame {
+    private final LibraryController _libraryController;
+    
     private JTable table;
     private DefaultTableModel model;
+    
     private JTextField nameField;
     private JTextField authorField;
     private JTextField isbnField;
     private JComboBox<String> comboBoxCategory;
 
-    private BookUseCase bookUseCase = new BookUseCase();
 
-    public LibraryScreen() {
+    public LibraryView(LibraryController libraryController) {
+        _libraryController = libraryController;
+        
         defineWindowConfiguration();
-
         setVisible(true);
     }
 
@@ -76,6 +77,7 @@ public class LibraryScreen extends JFrame {
         JButton removeButton = new JButton("Excluir");
         JButton borrowButton = new JButton("Empréstimo de livro");
 
+        //TODO: mover metodos para a model
         addButton.addActionListener(this::openSaveScreen);
         searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
@@ -101,35 +103,38 @@ public class LibraryScreen extends JFrame {
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
 
-    private void openSaveScreen(ActionEvent event) {
-
-        Book book = null;
-
+    
+    
+    private int getBookIdFromTable() throws NotSelectedRowException{
         int selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
-            int id = (int) model.getValueAt(selectedRow, 0);
-            book = bookUseCase.getBook(id);
+            return (int) model.getValueAt(selectedRow, 0);
         }
-
-        BookScreenSave bookScreenSave = new BookScreenSave(bookUseCase, book);
-
-        bookScreenSave.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                updateTable();
-            }
-        });
+        else {
+            throw new NotSelectedRowException();
+        }
+    }
+    
+    private void openSaveScreen(ActionEvent event) {
+        try {
+            int id = getBookIdFromTable();
+            Book book = _libraryController.getBook(id);
+            _libraryController.openBookEdit(book);
+        }
+        catch (NotSelectedRowException e) {
+            _libraryController.openBookEdit(null);
+        }
     }
 
     private void removeRow(ActionEvent event) {
-        int linhaSelecionada = table.getSelectedRow();
-        if (linhaSelecionada != -1) {
-            int id = (int) model.getValueAt(linhaSelecionada, 0);
-            Book book = bookUseCase.getBook(id);
-            bookUseCase.delete(book);
+        try {
+            int id = getBookIdFromTable();
+            Book book = _libraryController.getBook(id);
+            _libraryController.deleteBook(book);
+
             updateTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.");
+        } catch (NotSelectedRowException e) {
+            JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
         }
     }
 
@@ -138,21 +143,12 @@ public class LibraryScreen extends JFrame {
     }
 
     private void borrow(ActionEvent event) {
-        int linhaSelecionada = table.getSelectedRow();
-        if (linhaSelecionada != -1) {
-            int id = (int) model.getValueAt(linhaSelecionada, 0);
-            Book book = bookUseCase.getBook(id);
-
-            BookBorrowScreenSave bookBorrowScreenSave = new BookBorrowScreenSave(book);
-            bookBorrowScreenSave.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    updateTable();
-                }
-            });
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar.");
+        try {
+            int id = getBookIdFromTable();
+            Book book = _libraryController.getBook(id);
+            _libraryController.openBookLending(book);
+        }catch (NotSelectedRowException e) {
+            JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar");
         }
     }
 
@@ -164,7 +160,7 @@ public class LibraryScreen extends JFrame {
         String author = authorField.getText();
         String isbn = isbnField.getText();
 
-        List<Book> booksList = bookUseCase.searchBook(name.isEmpty() ? "" : name, author.isEmpty() ? "" : author, category, isbn.isEmpty() ? "" : isbn);
+        List<Book> booksList = _libraryController.getBook(name, author, category, isbn);
 
         for (Book book : booksList) {
             var borrowText = book.getBorrowing() ? "Emprestado" : "Disponível";

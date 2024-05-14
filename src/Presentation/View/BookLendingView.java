@@ -1,5 +1,7 @@
-package Presentation.Screens;
+package Presentation.View;
 
+import Presentation.Controller.BookLendingController;
+import Presentation.Controller.LibraryController;
 import core.entities.Book;
 
 import javax.swing.*;
@@ -10,13 +12,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BookBorrowScreenSave extends JFrame {
+public class BookLendingView extends JFrame {
+    private final BookLendingController _bookLendingController;
+    
     private JFormattedTextField dateOfReturn;
     private JFormattedTextField dateOfBorrow;
     private JTextField borrow;
     private Book currentBook = null;
 
-    public BookBorrowScreenSave(Book book) {
+    public BookLendingView(BookLendingController bookLendingController, Book book) {
+        _bookLendingController = bookLendingController;
         this.currentBook = book;
 
         defineWindowConfiguration();

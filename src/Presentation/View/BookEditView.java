@@ -1,5 +1,7 @@
-package Presentation.Screens;
+package Presentation.View;
 
+import Presentation.Controller.BookEditController;
+import Presentation.Controller.LibraryController;
 import core.entities.Book;
 import core.enums.ECategory;
 import core.use_cases.BookUseCase;
@@ -8,8 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class BookScreenSave  extends JFrame {
-    private final BookUseCase bookUseCase;
+public class BookEditView extends JFrame {
+    private final BookUseCase bookUseCase = new BookUseCase();
+    private final BookEditController _bookEditController;
 
     private JTextField nameField;
     private JTextField authorField;
@@ -18,10 +21,10 @@ public class BookScreenSave  extends JFrame {
 
     private Book currentBook = null;
 
-    public BookScreenSave(BookUseCase bookUseCase, Book book) {
-        this.bookUseCase = bookUseCase;
+    public BookEditView(BookEditController bookEditController, Book book) {
+        _bookEditController = bookEditController;
         this.currentBook = book;
-
+        
         defineWindowConfiguration();
         defineMenuConfiguration();
     }
