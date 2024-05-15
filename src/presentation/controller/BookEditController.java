@@ -20,9 +20,12 @@ public class BookEditController {
         _bookRepositoryListener.subscribe(listener);
     }
 
+    public void closeWindow(){
+        _bookRepositoryListener.notifyDataChanged();
+    }
+
     public void createBook(String name, String author, ECategory category, String isbn) {
         Book newBook = new Book(0, name, author, category, isbn);
         _bookRepository.addBook(newBook);
-        _bookRepositoryListener.notifyDataChanged();
     }
 }

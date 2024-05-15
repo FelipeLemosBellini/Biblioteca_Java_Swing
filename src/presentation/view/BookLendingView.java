@@ -7,11 +7,14 @@ import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BookLendingView extends JFrame {
+    //TODO: move borrow book method to repository
     private final BookLendingController _bookLendingController;
     
     private JFormattedTextField dateOfReturn;
@@ -30,7 +33,14 @@ public class BookLendingView extends JFrame {
     private void defineWindowConfiguration() {
         setTitle("Gestão de livros");
         setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
 
         setVisible(true);
     }
@@ -92,13 +102,17 @@ public class BookLendingView extends JFrame {
     }
 
     private void closeWindow(ActionEvent event) {
+        closeWindow();
+    }
+    private void closeWindow() {
+        _bookLendingController.closeWindow();
         dispose();
     }
 
     private void returnBook(ActionEvent event){
         if(currentBook.getBorrowing()){
             currentBook.returnTheBook();
-            dispose();
+            closeWindow();
         }
         else{
             JOptionPane.showMessageDialog(this, "O Livro não está emprestado!");
@@ -116,7 +130,7 @@ public class BookLendingView extends JFrame {
                 var wasBorrow = currentBook.borrow(data);
 
                 if(wasBorrow)
-                    dispose();
+                    closeWindow();
                 else
                     JOptionPane.showMessageDialog(this, "O Livro nao esta disponivel");
             } else {

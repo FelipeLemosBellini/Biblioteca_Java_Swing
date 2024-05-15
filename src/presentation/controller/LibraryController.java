@@ -24,6 +24,9 @@ public class LibraryController {
         _bookRepositoryListener = bookRepositoryListener;
     }
 
+    public void closeWindow(){
+    }
+
     public void addListener(IBookRepositoryListener listener){
         _bookRepositoryListener.subscribe(listener);
     }

@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class LibraryView extends JFrame implements IBookRepositoryListener {
@@ -35,7 +37,14 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     private void defineWindowConfiguration() {
         setTitle("Gestão de livros");
         setSize(1200, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
 
         defineTableConfiguration();
         defineMenuConfiguration();
@@ -101,6 +110,14 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
         PanelButtons.add(borrowButton);
 
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
+    }
+
+    private void closeWindow(ActionEvent event) {
+        closeWindow();
+    }
+    private void closeWindow() {
+        _libraryController.closeWindow();
+        dispose();
     }
 
     private int getBookIdFromTable() throws NotSelectedRowException {

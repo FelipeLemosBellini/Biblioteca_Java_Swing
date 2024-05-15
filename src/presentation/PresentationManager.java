@@ -33,7 +33,7 @@ public class PresentationManager {
     }
 
     public void StartBookLending(Book book){
-        var controller = new BookLendingController(this);
+        var controller = new BookLendingController(_bookRepositoryListener);
         new BookLendingView(controller, book);
     }
 }

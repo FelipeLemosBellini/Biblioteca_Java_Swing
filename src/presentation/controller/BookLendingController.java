@@ -1,11 +1,16 @@
 package presentation.controller;
 
 import presentation.PresentationManager;
+import presentation.model.BookRepositoryListener;
 
 public class BookLendingController {
-    private final PresentationManager _presentationManager;
+    private final BookRepositoryListener _bookRepositoryListener;
 
-    public BookLendingController(PresentationManager presentationManager) {
-        _presentationManager = presentationManager;
+    public BookLendingController(BookRepositoryListener bookRepositoryListener) {
+        _bookRepositoryListener = bookRepositoryListener;
+    }
+    
+    public void closeWindow(){
+        _bookRepositoryListener.notifyDataChanged();
     }
 }

@@ -1,14 +1,14 @@
 package presentation.view;
 
-import infrastructure.interfaces.IBookRepository;
 import presentation.controller.BookEditController;
 import core.entities.Book;
 import core.enums.ECategory;
-import presentation.model.BookRepositoryListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class BookEditView extends JFrame {
     private final BookEditController _bookEditController;
@@ -28,13 +28,18 @@ public class BookEditView extends JFrame {
         defineMenuConfiguration();
     }
     
-    
-
     private void defineWindowConfiguration(){
         setTitle("Gestão de livros");
         setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
+        
         setVisible(true);
     }
 
@@ -84,6 +89,10 @@ public class BookEditView extends JFrame {
     }
 
     private void closeWindow(ActionEvent event) {
+        closeWindow();
+    }
+    private void closeWindow() {
+        _bookEditController.closeWindow();
         dispose();
     }
 
@@ -102,7 +111,7 @@ public class BookEditView extends JFrame {
                 else
                     currentBook.edit(name, author, category, isbn);
 
-                dispose();
+                closeWindow();
             } else {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos");
             }
