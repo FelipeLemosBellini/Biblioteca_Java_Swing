@@ -1,9 +1,11 @@
 package presentation.view;
 
+import presentation.contracts.IBookRepositoryListener;
 import presentation.controller.LibraryController;
 import presentation.exceptions.NotSelectedRowException;
 import core.entities.Book;
 import core.enums.ECategory;
+import presentation.model.BookRepositoryListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,21 +13,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class LibraryView extends JFrame {
+public class LibraryView extends JFrame implements IBookRepositoryListener {
     private final LibraryController _libraryController;
-    
+
     private JTable table;
     private DefaultTableModel model;
-    
+
     private JTextField nameField;
     private JTextField authorField;
     private JTextField isbnField;
     private JComboBox<String> comboBoxCategory;
 
-
     public LibraryView(LibraryController libraryController) {
         _libraryController = libraryController;
-        
+        _libraryController.addListener(this);
+
         defineWindowConfiguration();
         setVisible(true);
     }
@@ -38,7 +40,6 @@ public class LibraryView extends JFrame {
         defineTableConfiguration();
         defineMenuConfiguration();
     }
-
     private void defineTableConfiguration() {
         model = new DefaultTableModel() {
             @Override
@@ -58,7 +59,6 @@ public class LibraryView extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
-
     private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
@@ -103,29 +103,23 @@ public class LibraryView extends JFrame {
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
 
-    
-    
-    private int getBookIdFromTable() throws NotSelectedRowException{
+    private int getBookIdFromTable() throws NotSelectedRowException {
         int selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
             return (int) model.getValueAt(selectedRow, 0);
-        }
-        else {
+        } else {
             throw new NotSelectedRowException();
         }
     }
-    
     private void openSaveScreen(ActionEvent event) {
         try {
             int id = getBookIdFromTable();
             Book book = _libraryController.getBook(id);
             _libraryController.openBookEdit(book);
-        }
-        catch (NotSelectedRowException e) {
+        } catch (NotSelectedRowException e) {
             _libraryController.openBookEdit(null);
         }
     }
-
     private void removeRow(ActionEvent event) {
         try {
             int id = getBookIdFromTable();
@@ -137,21 +131,23 @@ public class LibraryView extends JFrame {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
         }
     }
-
-    private void searchBook(ActionEvent event) {
-            updateTable();
-    }
-
     private void borrow(ActionEvent event) {
         try {
             int id = getBookIdFromTable();
             Book book = _libraryController.getBook(id);
             _libraryController.openBookLending(book);
-        }catch (NotSelectedRowException e) {
+        } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar");
         }
     }
 
+    @Override
+    public void updateBookList() {
+        updateTable();
+    }
+    private void searchBook(ActionEvent event) {
+        updateTable();
+    }
     private void updateTable() {
         model.setNumRows(0);
 

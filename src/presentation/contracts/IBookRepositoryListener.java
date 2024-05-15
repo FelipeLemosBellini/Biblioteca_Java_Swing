@@ -1,5 +1,5 @@
 package presentation.contracts;
 
-public interface IBookListListener {
+public interface IBookRepositoryListener {
     void updateBookList();
 }

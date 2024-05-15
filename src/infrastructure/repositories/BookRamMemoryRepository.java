@@ -1,28 +1,29 @@
-package core.use_cases;
+package infrastructure.repositories;
 
 import core.entities.Book;
 import core.enums.ECategory;
+import infrastructure.interfaces.IBookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookUseCase {
+public class BookRamMemoryRepository implements IBookRepository {
     private int sequence = 0;
     private List<Book> listBooks = new ArrayList<>();
 
-    public void create(String name, String author, ECategory category, String ISBN) {
+    
+    @Override
+    public void addBook(Book book) {
         this.sequence++;
-        listBooks.add(new Book(getSequenceBooks(), name, author, category, ISBN));
+        listBooks.add(new Book(getSequenceBooks(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN()));
     }
 
-    public void delete(Book book) {
+    @Override
+    public void removeBook(Book book) {
         this.listBooks.remove(book);
     }
 
-    public List<Book> getBooks() {
-        return this.listBooks;
-    }
-
+    @Override
     public Book getBook(int id) {
         for (Book book : listBooks) {
             if (book.getId() == id) {
@@ -32,6 +33,7 @@ public class BookUseCase {
         return null;
     }
 
+    @Override
     public List<Book> searchBook(String name, String author, ECategory category, String ISBN) {
         List<Book> search = new ArrayList<>();
         for (Book book : listBooks) {

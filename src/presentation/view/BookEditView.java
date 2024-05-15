@@ -1,16 +1,16 @@
 package presentation.view;
 
+import infrastructure.interfaces.IBookRepository;
 import presentation.controller.BookEditController;
 import core.entities.Book;
 import core.enums.ECategory;
-import core.use_cases.BookUseCase;
+import presentation.model.BookRepositoryListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class BookEditView extends JFrame {
-    private final BookUseCase bookUseCase = new BookUseCase();
     private final BookEditController _bookEditController;
 
     private JTextField nameField;
@@ -27,6 +27,8 @@ public class BookEditView extends JFrame {
         defineWindowConfiguration();
         defineMenuConfiguration();
     }
+    
+    
 
     private void defineWindowConfiguration(){
         setTitle("Gestão de livros");
@@ -94,8 +96,9 @@ public class BookEditView extends JFrame {
 
             if (!name.isEmpty() && category != null && !author.isEmpty() && !isbn.isEmpty()) {
 
-                if(currentBook == null)
-                    bookUseCase.create(name, author, category, isbn);
+                if(currentBook == null) {
+                    _bookEditController.createBook(name, author, category, isbn);
+                }
                 else
                     currentBook.edit(name, author, category, isbn);
 
