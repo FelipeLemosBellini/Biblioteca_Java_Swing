@@ -1,6 +1,6 @@
-package Presentation.Model;
+package presentation.model;
 
-import Presentation.Contracts.IBookListListener;
+import presentation.contracts.IBookListListener;
 import core.entities.Book;
 
 import java.util.ArrayList;

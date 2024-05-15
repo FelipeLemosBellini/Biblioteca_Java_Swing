@@ -1,7 +1,7 @@
-package Presentation.View;
+package presentation.view;
 
-import Presentation.Controller.LibraryController;
-import Presentation.Exceptions.NotSelectedRowException;
+import presentation.controller.LibraryController;
+import presentation.exceptions.NotSelectedRowException;
 import core.entities.Book;
 import core.enums.ECategory;
 
@@ -32,7 +32,7 @@ public class LibraryView extends JFrame {
 
     private void defineWindowConfiguration() {
         setTitle("Gestão de livros");
-        setSize(1200, 780);
+        setSize(1200, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         defineTableConfiguration();

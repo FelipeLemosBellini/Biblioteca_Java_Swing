@@ -1,6 +1,6 @@
-package Presentation.Controller;
+package presentation.controller;
 
-import Presentation.PresentationManager;
+import presentation.PresentationManager;
 
 public class BookEditController {
     private final PresentationManager _presentationManager;

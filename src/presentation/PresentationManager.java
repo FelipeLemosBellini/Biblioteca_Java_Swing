@@ -1,11 +1,11 @@
-package Presentation;
+package presentation;
 
-import Presentation.Controller.BookEditController;
-import Presentation.Controller.BookLendingController;
-import Presentation.Controller.LibraryController;
-import Presentation.View.BookEditView;
-import Presentation.View.BookLendingView;
-import Presentation.View.LibraryView;
+import presentation.controller.BookEditController;
+import presentation.controller.BookLendingController;
+import presentation.controller.LibraryController;
+import presentation.view.BookEditView;
+import presentation.view.BookLendingView;
+import presentation.view.LibraryView;
 import core.entities.Book;
 import core.use_cases.BookUseCase;
 

@@ -1,7 +1,6 @@
-package Presentation.View;
+package presentation.view;
 
-import Presentation.Controller.BookLendingController;
-import Presentation.Controller.LibraryController;
+import presentation.controller.BookLendingController;
 import core.entities.Book;
 
 import javax.swing.*;

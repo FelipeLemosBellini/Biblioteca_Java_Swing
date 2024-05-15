@@ -1,4 +1,4 @@
-package Presentation.Exceptions;
+package presentation.exceptions;
 
 public class NotSelectedRowException extends Exception{
     public NotSelectedRowException()

@@ -1,6 +1,6 @@
-package Presentation.Controller;
+package presentation.controller;
 
-import Presentation.PresentationManager;
+import presentation.PresentationManager;
 
 public class BookLendingController {
     private final PresentationManager _presentationManager;

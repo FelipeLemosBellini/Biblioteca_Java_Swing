@@ -2,7 +2,7 @@ package core.entities;
 
 import core.enums.EProfile;
 
-public class User {
+abstract class User {
     private final String login;
 
     private final String password;
