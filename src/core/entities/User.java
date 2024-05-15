@@ -2,7 +2,7 @@ package core.entities;
 
 import core.enums.EProfile;
 
-abstract class User {
+public abstract class User {
     private final String login;
 
     private final String password;
@@ -15,15 +15,15 @@ abstract class User {
         this.profile = profile;
     }
 
-    public String getLogin() {
+    protected String getLogin() {
         return login;
     }
 
-    public EProfile getProfile() {
+    protected EProfile getProfile() {
         return profile;
     }
 
-    public boolean verifyPassword(String passwordToTest) {
+    protected boolean verifyPassword(String passwordToTest) {
         return this.password.equals(passwordToTest);
     }
 }
