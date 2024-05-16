@@ -47,14 +47,14 @@ public class PresentationManager {
     }
 
     public void startBookEdit(Book book) {
-        createWindow("BookEdit_" + book.getId(), () -> {
+        createWindow("BookEdit", () -> {
             var controller = new BookEditController(_bookRepository, _bookRepositoryListener);
             return new BookEditView(controller, book);
         });
     }
 
     public void startBookLending(Book book) {
-        createWindow("BookLending_" + book.getId(), () -> {
+        createWindow("BookLending", () -> {
             var controller = new BookLendingController(_bookRepositoryListener);
             return new BookLendingView(controller, book);
         });

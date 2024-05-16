@@ -30,9 +30,9 @@ public class LibraryController {
     public void addListener(IBookRepositoryListener listener){
         _bookRepositoryListener.subscribe(listener);
     }
-    
+
     public void openBookEdit(Book book){
-        _presentationManager.startBookEdit(book);
+            _presentationManager.startBookEdit(book);
     }
 
     public void openBookLending(Book book){

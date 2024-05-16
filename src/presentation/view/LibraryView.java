@@ -148,7 +148,8 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
             Book book = _libraryController.getBook(id);
             _libraryController.openBookEdit(book);
         } catch (NotSelectedRowException e) {
-            _libraryController.openBookEdit(new Book(0, null, null, ECategory.action, null));
+            Book book = null;
+            _libraryController.openBookEdit(book);
         }
     }
 
