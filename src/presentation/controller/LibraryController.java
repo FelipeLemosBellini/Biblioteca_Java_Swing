@@ -32,11 +32,11 @@ public class LibraryController {
     }
     
     public void openBookEdit(Book book){
-        _presentationManager.StartBookEdit(book);
+        _presentationManager.startBookEdit(book);
     }
 
     public void openBookLending(Book book){
-        _presentationManager.StartBookLending(book);
+        _presentationManager.startBookLending(book);
     }
     
     

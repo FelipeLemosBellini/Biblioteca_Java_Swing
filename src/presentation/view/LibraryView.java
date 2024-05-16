@@ -5,7 +5,7 @@ import presentation.controller.LibraryController;
 import presentation.exceptions.NotSelectedRowException;
 import core.entities.Book;
 import core.enums.ECategory;
-import presentation.model.BookRepositoryListener;
+import presentation.view.components.MenuBarComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -48,7 +48,9 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
 
         defineTableConfiguration();
         defineMenuConfiguration();
+        defineMenuBar();
     }
+
     private void defineTableConfiguration() {
         model = new DefaultTableModel() {
             @Override
@@ -68,6 +70,7 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
         JScrollPane scrollPane = new JScrollPane(table);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
+
     private void defineMenuConfiguration() {
         JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
 
@@ -112,6 +115,16 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
         getContentPane().add(PanelButtons, BorderLayout.SOUTH);
     }
 
+    private void defineMenuBar() {
+        JMenuBar menuBar = MenuBarComponent.createMenuBar(
+                this,
+                e -> closeWindow(),
+                e -> closeWindow()
+        );
+        
+        setJMenuBar(menuBar);
+    }
+
     private void closeWindow(ActionEvent event) {
         closeWindow();
     }
@@ -128,15 +141,17 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
             throw new NotSelectedRowException();
         }
     }
+
     private void openSaveScreen(ActionEvent event) {
         try {
             int id = getBookIdFromTable();
             Book book = _libraryController.getBook(id);
             _libraryController.openBookEdit(book);
         } catch (NotSelectedRowException e) {
-            _libraryController.openBookEdit(null);
+            _libraryController.openBookEdit(new Book(0, null, null, ECategory.action, null));
         }
     }
+
     private void removeRow(ActionEvent event) {
         try {
             int id = getBookIdFromTable();
@@ -148,6 +163,7 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
         }
     }
+
     private void borrow(ActionEvent event) {
         try {
             int id = getBookIdFromTable();
@@ -162,9 +178,11 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     public void updateBookList() {
         updateTable();
     }
+
     private void searchBook(ActionEvent event) {
         updateTable();
     }
+
     private void updateTable() {
         model.setNumRows(0);
 
