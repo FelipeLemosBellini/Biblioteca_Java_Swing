@@ -48,7 +48,7 @@ public class LibraryController {
         return _bookRepository.getBook(id);   
     }
     
-    public List<Book> getBook(String name, String author, ECategory category, String isbn){
-        return _bookRepository.searchBook(name.isEmpty() ? "" : name, author.isEmpty() ? "" : author, category, isbn.isEmpty() ? "" : isbn);
+    public List<Book> getBook(String searchString){
+        return _bookRepository.searchBook(searchString);
     }
 }

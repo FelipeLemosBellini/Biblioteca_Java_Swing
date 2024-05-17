@@ -34,26 +34,20 @@ public class BookRamMemoryRepository implements IBookRepository {
     }
 
     @Override
-    public List<Book> searchBook(String name, String author, ECategory category, String ISBN) {
+    public List<Book> searchBook(String searchString) {
         List<Book> search = new ArrayList<>();
+        if (searchString == null || searchString.isEmpty()) {
+            return listBooks; // Retorna todos os livros se a string de busca estiver vazia
+        }
+
+        String lowerCaseSearchString = searchString.toLowerCase();
+
         for (Book book : listBooks) {
-            boolean matches = true;
-
-            if (name != null && !name.isEmpty()) {
-                matches &= book.getName().toLowerCase().contains(name.toLowerCase());
-            }
-
-            if (author != null && !author.isEmpty()) {
-                matches &= book.getAuthor().toLowerCase().contains(author.toLowerCase());
-            }
-
-            if (category != null) {
-                matches &= book.getCategory() == category;
-            }
-
-            if (ISBN != null && !ISBN.isEmpty()) {
-                matches &= book.getISBN().toLowerCase().contains(ISBN.toLowerCase());
-            }
+            boolean matches =
+                    book.getName().toLowerCase().contains(lowerCaseSearchString) ||
+                            book.getAuthor().toLowerCase().contains(lowerCaseSearchString) ||
+                            book.getCategory().name().toLowerCase().contains(lowerCaseSearchString) ||
+                            book.getISBN().toLowerCase().contains(lowerCaseSearchString);
 
             if (matches) {
                 search.add(book);

@@ -1,16 +1,21 @@
 package presentation.view.components;
 
+import presentation.PresentationManager;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class MenuBarComponent {
-    public static JMenuBar createMenuBar(JFrame parentFrame, ActionListener manageUsersAction, ActionListener exitAction) {
+    public static JMenuBar createMenuBar(JFrame parentFrame, PresentationManager presentationManager, ActionListener exitAction) {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu configMenu = new JMenu("Configurações");
 
         JMenuItem manageUsersItem = new JMenuItem("Gerenciar Usuários");
-        manageUsersItem.addActionListener(manageUsersAction);
+        manageUsersItem.addActionListener(e -> presentationManager.startUserManagement());
+
+        JMenuItem manageLibrary = new JMenuItem("Gerenciar Biblioteca");
+        manageLibrary.addActionListener(e -> presentationManager.startLibrary());
 
         JMenuItem aboutItem = new JMenuItem("Sobre");
         aboutItem.addActionListener(e -> showAboutDialog(parentFrame));
@@ -19,14 +24,17 @@ public class MenuBarComponent {
         exitItem.addActionListener(exitAction);
 
         configMenu.add(manageUsersItem);
+        configMenu.add(manageLibrary);
         configMenu.add(aboutItem);
         configMenu.add(exitItem);
 
-        JMenu fileMenu = new JMenu("Home");
+        JMenu homeMenu = new JMenu("Home");
 
-        fileMenu.addActionListener(e -> newFileAction());
+        JMenuItem homeItem = new JMenuItem("Voltar para a Home");
+        homeItem.addActionListener(e -> presentationManager.startHome());
+        homeMenu.add(homeItem);
 
-        menuBar.add(fileMenu);
+        menuBar.add(homeMenu);
         menuBar.add(configMenu);
 
         return menuBar;

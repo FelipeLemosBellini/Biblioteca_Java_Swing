@@ -1,15 +1,14 @@
 package presentation.view;
 
+import presentation.PresentationManager;
 import presentation.contracts.IBookRepositoryListener;
 import presentation.controller.LibraryController;
 import presentation.exceptions.NotSelectedRowException;
 import core.entities.Book;
-import core.enums.ECategory;
 import presentation.view.components.MenuBarComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -17,28 +16,26 @@ import java.util.List;
 
 public class LibraryView extends JFrame implements IBookRepositoryListener {
     private final LibraryController _libraryController;
+    private final PresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
+    private JTextField searchStringField;
 
-    private JTextField nameField;
-    private JTextField authorField;
-    private JTextField isbnField;
-    private JComboBox<String> comboBoxCategory;
-
-    public LibraryView(LibraryController libraryController) {
+    public LibraryView(LibraryController libraryController, PresentationManager presentationManager) {
         _libraryController = libraryController;
         _libraryController.addListener(this);
 
-        defineWindowConfiguration();
+        _presentationManager = presentationManager;
+
+        initComponents();
         setVisible(true);
     }
 
-    private void defineWindowConfiguration() {
+    private void initComponents() {
         setTitle("Gestão de livros");
-        setSize(1200, 500);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -46,12 +43,31 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
             }
         });
 
-        defineTableConfiguration();
-        defineMenuConfiguration();
         defineMenuBar();
+        defineLayout();
     }
 
-    private void defineTableConfiguration() {
+    private void defineMenuBar() {
+        JMenuBar menuBar = MenuBarComponent.createMenuBar(
+                this,
+                _presentationManager,
+                e -> closeWindow()
+        );
+        setJMenuBar(menuBar);
+    }
+
+    private void defineLayout() {
+        JPanel mainPanel = new JPanel();
+        GroupLayout layout = new GroupLayout(mainPanel);
+        mainPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        JLabel nameLabel = new JLabel("Pesquisar na Tabela:");
+        searchStringField = new JTextField(15);
+        JButton searchButton = new JButton("Pesquisar");
+        searchButton.addActionListener(this::searchBook);
+
         model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -68,66 +84,44 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
 
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
-    }
-
-    private void defineMenuConfiguration() {
-        JPanel PanelButtons = new JPanel(new GridLayout(6, 2, 5, 5));
-
-        nameField = new JTextField(15);
-        authorField = new JTextField(15);
-        isbnField = new JTextField(15);
-        isbnField = new JTextField(15);
-        comboBoxCategory = new JComboBox<String>(new String[]{});
-        comboBoxCategory.addItem("");
-        for (ECategory ebook : ECategory.values()) {
-            comboBoxCategory.addItem(ebook.toString());
-        }
 
         JButton addButton = new JButton("Adicionar/Editar");
-        JButton searchButton = new JButton("Pesquisar");
         JButton removeButton = new JButton("Excluir");
         JButton borrowButton = new JButton("Empréstimo de livro");
 
-        //TODO: mover metodos para a model
         addButton.addActionListener(this::openSaveScreen);
-        searchButton.addActionListener(this::searchBook);
         removeButton.addActionListener(this::removeRow);
         borrowButton.addActionListener(this::borrow);
 
-        PanelButtons.add(new JLabel("Nome:"));
-        PanelButtons.add(nameField);
-
-        PanelButtons.add(new JLabel("Autor"));
-        PanelButtons.add(authorField);
-
-        PanelButtons.add(new JLabel("Categoria"));
-        PanelButtons.add(comboBoxCategory);
-
-        PanelButtons.add(new JLabel("ISBN"));
-        PanelButtons.add(isbnField);
-
-        PanelButtons.add(addButton);
-        PanelButtons.add(searchButton);
-        PanelButtons.add(removeButton);
-        PanelButtons.add(borrowButton);
-
-        getContentPane().add(PanelButtons, BorderLayout.SOUTH);
-    }
-
-    private void defineMenuBar() {
-        JMenuBar menuBar = MenuBarComponent.createMenuBar(
-                this,
-                e -> closeWindow(),
-                e -> closeWindow()
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(nameLabel)
+                                .addComponent(searchStringField)
+                                .addComponent(searchButton))
+                        .addComponent(scrollPane)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(addButton)
+                                .addComponent(removeButton)
+                                .addComponent(borrowButton))
         );
-        
-        setJMenuBar(menuBar);
+
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(nameLabel)
+                                .addComponent(searchStringField)
+                                .addComponent(searchButton))
+                        .addComponent(scrollPane)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(addButton)
+                                .addComponent(removeButton)
+                                .addComponent(borrowButton))
+        );
+
+        getContentPane().add(mainPanel);
     }
 
-    private void closeWindow(ActionEvent event) {
-        closeWindow();
-    }
     private void closeWindow() {
         _libraryController.closeWindow();
         dispose();
@@ -158,7 +152,6 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
             int id = getBookIdFromTable();
             Book book = _libraryController.getBook(id);
             _libraryController.deleteBook(book);
-
             updateTable();
         } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
@@ -185,17 +178,13 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     }
 
     private void updateTable() {
-        model.setNumRows(0);
+        model.setRowCount(0);
 
-        String name = nameField.getText();
-        ECategory category = ECategory.action.getECategory((String) comboBoxCategory.getSelectedItem());
-        String author = authorField.getText();
-        String isbn = isbnField.getText();
-
-        List<Book> booksList = _libraryController.getBook(name, author, category, isbn);
+        String searchString = searchStringField.getText();
+        List<Book> booksList = _libraryController.getBook(searchString);
 
         for (Book book : booksList) {
-            var borrowText = book.getBorrowing() ? "Emprestado" : "Disponível";
+            String borrowText = book.getBorrowing() ? "Emprestado" : "Disponível";
             model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN(), borrowText});
         }
     }

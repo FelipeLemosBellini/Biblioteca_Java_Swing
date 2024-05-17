@@ -4,6 +4,7 @@ import presentation.controller.BookLendingController;
 import core.entities.Book;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,9 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BookLendingView extends JFrame {
-    //TODO: move borrow book method to repository
     private final BookLendingController _bookLendingController;
-    
+
     private JFormattedTextField dateOfReturn;
     private JFormattedTextField dateOfBorrow;
     private JTextField borrow;
@@ -32,7 +32,7 @@ public class BookLendingView extends JFrame {
 
     private void defineWindowConfiguration() {
         setTitle("Gestão de livros");
-        setSize(400, 300);
+        setSize(500, 300);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() {
@@ -46,14 +46,14 @@ public class BookLendingView extends JFrame {
     }
 
     private void defineMenuConfiguration() {
-        JPanel PanelButtons = new JPanel(new GridLayout(5, 2, 5, 5));
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        var borrowText = currentBook.getBorrowing() ? "Emprestado" : "Disponível";
-        borrow = new JTextField(borrowText,15);
-        borrow.setEditable(false);
-        var stringDateOfReturn = currentBook.getDateOfReturningToString();
-        var stringdateOfBorrow = currentBook.getDateOfBorrowingToString();
-
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                new EmptyBorder(5, 5, 5, 5)));
 
         try {
             MaskFormatter formatter = new MaskFormatter("##/##/####");
@@ -62,43 +62,51 @@ public class BookLendingView extends JFrame {
 
             dateOfBorrow.setEditable(false);
 
-            if (stringDateOfReturn != null && !stringDateOfReturn.isEmpty()) {
-                dateOfReturn.setValue(stringDateOfReturn);
+            if (currentBook.getDateOfReturningToString() != null) {
+                dateOfReturn.setValue(currentBook.getDateOfReturningToString());
             }
 
-            if (stringdateOfBorrow != null && !stringdateOfBorrow.isEmpty()) {
-                dateOfBorrow.setValue(stringdateOfBorrow);
+            if (currentBook.getDateOfBorrowingToString() != null) {
+                dateOfBorrow.setValue(currentBook.getDateOfBorrowingToString());
             }
         } catch (ParseException e) {
             e.printStackTrace();
             dateOfBorrow = new JFormattedTextField();
             dateOfReturn = new JFormattedTextField();
         }
+
+        borrow = new JTextField(currentBook.getBorrowing() ? "Emprestado" : "Disponível", 15);
+        borrow.setEditable(false);
+
         JButton returnBookButton = new JButton("Devolver");
+        JButton borrowButton = new JButton("Emprestar");
+        JButton cancelButton = new JButton("Cancelar");
 
-        JButton addButton = new JButton("Emprestar");
-        JButton removeButton = new JButton("Cancelar");
-
-        addButton.addActionListener(this::borrowBook);
         returnBookButton.addActionListener(this::returnBook);
-        removeButton.addActionListener(this::closeWindow);
+        borrowButton.addActionListener(this::borrowBook);
+        cancelButton.addActionListener(this::closeWindow);
 
-        PanelButtons.add(new JLabel("Status do livro:"));
-        PanelButtons.add(borrow);
+        formPanel.add(new JLabel("Status do livro:"));
+        formPanel.add(borrow);
 
-        PanelButtons.add(new JLabel("Data de Emprestimo:"));
-        PanelButtons.add(dateOfBorrow);
+        formPanel.add(new JLabel("Data de Empréstimo:"));
+        formPanel.add(dateOfBorrow);
 
-        PanelButtons.add(new JLabel("Data de Retorno do Livro:"));
-        PanelButtons.add(dateOfReturn);
+        formPanel.add(new JLabel("Data de Retorno do Livro:"));
+        formPanel.add(dateOfReturn);
 
-        PanelButtons.add(new JLabel("Retorna o livro para a prateleira:"));
-        PanelButtons.add(returnBookButton);
+        formPanel.add(new JLabel("Retornar livro para a prateleira:"));
+        formPanel.add(returnBookButton);
 
-        PanelButtons.add(addButton);
-        PanelButtons.add(removeButton);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        getContentPane().add(PanelButtons);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(borrowButton);
+        buttonPanel.add(cancelButton);
+
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        getContentPane().add(mainPanel);
     }
 
     private void closeWindow(ActionEvent event) {

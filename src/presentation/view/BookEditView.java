@@ -5,6 +5,7 @@ import core.entities.Book;
 import core.enums.ECategory;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -23,12 +24,12 @@ public class BookEditView extends JFrame {
     public BookEditView(BookEditController bookEditController, Book book) {
         _bookEditController = bookEditController;
         this.currentBook = book;
-        
+
         defineWindowConfiguration();
         defineMenuConfiguration();
     }
-    
-    private void defineWindowConfiguration(){
+
+    private void defineWindowConfiguration() {
         setTitle("Gestão de livros");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -39,54 +40,65 @@ public class BookEditView extends JFrame {
                 closeWindow();
             }
         });
-        
+
         setVisible(true);
     }
 
-    private void defineMenuConfiguration(){
-        JPanel PanelButtons = new JPanel(new GridLayout(5, 2, 5, 5));
+    private void defineMenuConfiguration() {
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        comboBoxCategory = new JComboBox<String>(new String[]{});
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                new EmptyBorder(5, 5, 5, 5)));
+
+        comboBoxCategory = new JComboBox<>();
         for (ECategory ebook : ECategory.values()) {
             comboBoxCategory.addItem(ebook.toString());
         }
 
-        if (currentBook != null){
-            nameField = new JTextField(currentBook.getName(),15);
-            authorField = new JTextField(currentBook.getAuthor(),15);
-            isbnField = new JTextField(currentBook.getISBN(),15);
+        if (currentBook != null) {
+            nameField = new JTextField(currentBook.getName(), 15);
+            authorField = new JTextField(currentBook.getAuthor(), 15);
+            isbnField = new JTextField(currentBook.getISBN(), 15);
 
             comboBoxCategory.setSelectedItem(currentBook.getCategory().toString());
-        }
-        else{
+        } else {
             nameField = new JTextField(15);
             authorField = new JTextField(15);
             isbnField = new JTextField(15);
         }
 
-        JButton addButton = new JButton("Salvar");
-        JButton removeButton = new JButton("Cancelar");
+        JButton saveButton = new JButton("Salvar");
+        JButton cancelButton = new JButton("Cancelar");
 
-        addButton.addActionListener(this::saveRow);
-        removeButton.addActionListener(this::closeWindow);
+        saveButton.addActionListener(this::saveRow);
+        cancelButton.addActionListener(this::closeWindow);
 
-        PanelButtons.add(new JLabel("Nome:"));
-        PanelButtons.add(nameField);
+        formPanel.add(new JLabel("Nome:"));
+        formPanel.add(nameField);
 
-        PanelButtons.add(new JLabel("Autor"));
-        PanelButtons.add(authorField);
+        formPanel.add(new JLabel("Autor:"));
+        formPanel.add(authorField);
 
-        PanelButtons.add(new JLabel("Categoria"));
-        PanelButtons.add(comboBoxCategory);
+        formPanel.add(new JLabel("Categoria:"));
+        formPanel.add(comboBoxCategory);
 
-    PanelButtons.add(new JLabel("ISBN"));
-        PanelButtons.add(isbnField);
+        formPanel.add(new JLabel("ISBN:"));
+        formPanel.add(isbnField);
 
-        PanelButtons.add(addButton);
-        PanelButtons.add(removeButton);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(saveButton);
+        buttonPanel.add(cancelButton);
 
-        getContentPane().add(PanelButtons);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        getContentPane().add(mainPanel);
     }
+
 
     private void closeWindow(ActionEvent event) {
         closeWindow();

@@ -2,18 +2,14 @@ package presentation;
 
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.repositories.BookRamMemoryRepository;
-import presentation.controller.BookEditController;
-import presentation.controller.BookLendingController;
-import presentation.controller.HomeController;
-import presentation.controller.LibraryController;
+import presentation.controller.*;
 import presentation.model.BookRepositoryListener;
-import presentation.view.BookEditView;
-import presentation.view.BookLendingView;
-import presentation.view.HomeView;
-import presentation.view.LibraryView;
+import presentation.view.*;
+import java.awt.event.ActionEvent;
 import core.entities.Book;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
@@ -38,11 +34,18 @@ public class PresentationManager {
             return new HomeView(this, controller);
         });
     }
-
+    
     public void startLibrary() {
         createWindow("Library", () -> {
             var controller = new LibraryController(this, _bookRepository, _bookRepositoryListener);
-            return new LibraryView(controller);
+            return new LibraryView(controller, this);
+        });
+    }
+    
+    public void startUserManagement() {
+        createWindow("UserManagement", () -> {
+            var controller = new UserManagementController(this);
+            return new UserManagementView(controller, this);
         });
     }
 
