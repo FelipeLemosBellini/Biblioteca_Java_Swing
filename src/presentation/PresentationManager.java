@@ -5,11 +5,9 @@ import infrastructure.repositories.BookRamMemoryRepository;
 import presentation.controller.*;
 import presentation.model.BookRepositoryListener;
 import presentation.view.*;
-import java.awt.event.ActionEvent;
 import core.entities.Book;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
@@ -25,7 +23,14 @@ public class PresentationManager {
         _bookRepositoryListener = new BookRepositoryListener();
         openWindows = new HashMap<>();
 
+        startLogin();
         startHome();
+    }
+
+    public void startLogin() {
+        createWindow("Login", () -> {
+            return new LoginView();
+        });
     }
 
     public void startHome() {

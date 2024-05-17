@@ -5,7 +5,6 @@ import presentation.controller.HomeController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeView extends JFrame {
@@ -22,7 +21,7 @@ public class HomeView extends JFrame {
 
     private void configureWindow() {
         setTitle("Administração de Sistema");
-        setSize(600, 400);
+        setSize(400, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
