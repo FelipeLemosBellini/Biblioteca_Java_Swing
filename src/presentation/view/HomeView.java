@@ -1,5 +1,6 @@
 package presentation.view;
 
+import core.entities.User;
 import presentation.PresentationManager;
 import presentation.controller.HomeController;
 

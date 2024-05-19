@@ -1,7 +1,11 @@
 package presentation;
 
+import core.entities.Administrator;
+import core.entities.User;
 import infrastructure.interfaces.IBookRepository;
+import infrastructure.interfaces.IUserRepository;
 import infrastructure.repositories.BookRamMemoryRepository;
+import infrastructure.repositories.UserRamMemoryRepository;
 import presentation.controller.*;
 import presentation.model.BookRepositoryListener;
 import presentation.view.*;
@@ -15,22 +19,34 @@ import java.util.Map;
 
 public class PresentationManager {
     private final BookRepositoryListener _bookRepositoryListener;
+
     private final IBookRepository _bookRepository;
+    private final IUserRepository _userRepository;
+
+    private User _currentUser;
+
     private final Map<String, JFrame> openWindows;  // Use JFrame specifically
 
     public PresentationManager() {
         _bookRepository = new BookRamMemoryRepository();
         _bookRepositoryListener = new BookRepositoryListener();
+
+        _userRepository = new UserRamMemoryRepository();
+
         openWindows = new HashMap<>();
 
         startLogin();
-        startHome();
     }
 
     public void startLogin() {
         createWindow("Login", () -> {
-            return new LoginView();
+            var controller = new LoginController(this, _userRepository);
+            return new LoginView(controller);
         });
+    }
+
+    public void setCurrentUser(User user) {
+        _currentUser = user;
     }
 
     public void startHome() {
@@ -39,14 +55,14 @@ public class PresentationManager {
             return new HomeView(this, controller);
         });
     }
-    
+
     public void startLibrary() {
         createWindow("Library", () -> {
             var controller = new LibraryController(this, _bookRepository, _bookRepositoryListener);
             return new LibraryView(controller, this);
         });
     }
-    
+
     public void startUserManagement() {
         createWindow("UserManagement", () -> {
             var controller = new UserManagementController(this);
@@ -68,6 +84,14 @@ public class PresentationManager {
         });
     }
 
+    public void closeWindow(String windowName) {
+        JFrame window = openWindows.get(windowName);
+        if (window != null) {
+            window.dispose();
+            openWindows.remove(windowName);
+        }
+    }
+
     private void createWindow(String key, WindowCreator creator) {
         if (!openWindows.containsKey(key)) {
             var view = creator.create();
@@ -85,6 +109,7 @@ public class PresentationManager {
             view.requestFocus();
         }
     }
+
     @FunctionalInterface
     interface WindowCreator {
         JFrame create();

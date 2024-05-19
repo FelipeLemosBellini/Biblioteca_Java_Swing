@@ -11,7 +11,6 @@ public class BookRamMemoryRepository implements IBookRepository {
     private int sequence = 0;
     private List<Book> listBooks = new ArrayList<>();
 
-    
     @Override
     public void addBook(Book book) {
         this.sequence++;

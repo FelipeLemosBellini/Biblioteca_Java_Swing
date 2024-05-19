@@ -1,15 +1,24 @@
 package presentation.view;
 
+import presentation.controller.LoginController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame {
+    private final LoginController _loginController;
+    
     private JTextField usernameField;
     private JPasswordField passwordField;
-
-    public LoginView() {
+    
+    public LoginView(LoginController loginController) {
+        _loginController = loginController;
+        
+        defineWindowConfig();
+    }
+    
+    private void defineWindowConfig(){
         setTitle("Sistema de Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 400);
@@ -26,27 +35,15 @@ public class LoginView extends JFrame {
         JLabel passwordLabel = new JLabel("Senha:");
         passwordField = new JPasswordField(20);
         passwordField.setPreferredSize(new Dimension(300, 35));
-        
+
 
         JButton loginButton = new JButton("Entrar");
         loginButton.setPreferredSize(new Dimension(200, 35));
-        
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                System.out.println("Username: " + username + ", Password: " + password);
-            }
-        });
+
+        loginButton.addActionListener(this::login);
 
         JButton infoButton = new JButton("ℹ️ Informações");
-        infoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(LoginView.this, "Informações sobre o sistema");
-            }
-        });
+        infoButton.addActionListener(this::showInformation);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -82,5 +79,23 @@ public class LoginView extends JFrame {
         add(panel);
 
         setVisible(true);
+    }
+    
+    private void showInformation(ActionEvent event) {
+        JOptionPane.showMessageDialog(this, "Sistema Biblioteca versão 1.0\n\n" +
+                "Logins disponiveis:\n" +
+                "Login: admin | Senha: admin\n" +
+                "Login: employee | Senha: employee");
+    }
+
+    private void login(ActionEvent event) {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        
+        boolean wasLogged = _loginController.tryMakeUserLogin(username, password);
+        
+        if(!wasLogged)
+            JOptionPane.showMessageDialog(this, "Login ou senha incorretos");
+            
     }
 }
