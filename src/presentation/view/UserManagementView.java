@@ -25,6 +25,8 @@ public class UserManagementView extends JFrame {
         _presentationManager = presentationManager;
 
         initComponents();
+        
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -120,7 +122,6 @@ public class UserManagementView extends JFrame {
     }
     private void closeWindow() {
         _userManagementController.closeWindow();
-        dispose();
     }
 
     private void openSaveScreen(ActionEvent event) {

@@ -15,6 +15,7 @@ public class UserManagementController {
     }
 
     public void closeWindow(){
+        _presentationManager.closeWindow("UserManagement");
     }
 
     public void addListener(){

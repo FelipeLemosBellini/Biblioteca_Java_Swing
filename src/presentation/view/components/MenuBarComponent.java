@@ -23,18 +23,15 @@ public class MenuBarComponent {
         JMenuItem exitItem = new JMenuItem("Sair");
         exitItem.addActionListener(exitAction);
 
+        JMenuItem homeItem = new JMenuItem("Voltar para a Home");
+        homeItem.addActionListener(e -> presentationManager.startHome());
+
+        configMenu.add(homeItem);
         configMenu.add(manageUsersItem);
         configMenu.add(manageLibrary);
         configMenu.add(aboutItem);
         configMenu.add(exitItem);
 
-        JMenu homeMenu = new JMenu("Home");
-
-        JMenuItem homeItem = new JMenuItem("Voltar para a Home");
-        homeItem.addActionListener(e -> presentationManager.startHome());
-        homeMenu.add(homeItem);
-
-        menuBar.add(homeMenu);
         menuBar.add(configMenu);
 
         return menuBar;

@@ -39,6 +39,8 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
 
         defineMenuBar();
         defineLayout();
+        
+        setLocationRelativeTo(null);
     }
 
     private void defineMenuBar() {
@@ -117,7 +119,7 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     }
 
     private void closeWindow() {
-        dispose();
+        _presentationManager.closeWindow("Library");
     }
 
     private int getBookIdFromTable() throws NotSelectedRowException {
