@@ -1,9 +1,8 @@
 package presentation.controller;
 
-import infrastructure.interfaces.IBookRepository;
+import core.entities.User;
+import core.services.AdminPermissions;
 import presentation.PresentationManager;
-import presentation.contracts.IBookRepositoryListener;
-import presentation.model.BookRepositoryListener;
 
 public class UserManagementController {
     private final PresentationManager _presentationManager;
@@ -12,6 +11,7 @@ public class UserManagementController {
             PresentationManager presentationManager
     ) {
         _presentationManager = presentationManager;
+        
     }
 
     public void closeWindow(){

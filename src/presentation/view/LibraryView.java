@@ -35,13 +35,7 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     private void initComponents() {
         setTitle("Gestão de livros");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                closeWindow();
-            }
-        });
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         defineMenuBar();
         defineLayout();
@@ -123,7 +117,6 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     }
 
     private void closeWindow() {
-        _libraryController.closeWindow();
         dispose();
     }
 

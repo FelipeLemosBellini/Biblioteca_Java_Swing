@@ -1,7 +1,7 @@
 package presentation;
 
-import core.entities.Administrator;
 import core.entities.User;
+import core.services.AdminPermissions;
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.interfaces.IUserRepository;
 import infrastructure.repositories.BookRamMemoryRepository;
@@ -52,7 +52,7 @@ public class PresentationManager {
     public void startHome() {
         createWindow("Home", () -> {
             var controller = new HomeController(this);
-            return new HomeView(this, controller);
+            return new HomeView(controller);
         });
     }
 
@@ -64,12 +64,16 @@ public class PresentationManager {
     }
 
     public void startUserManagement() {
-        createWindow("UserManagement", () -> {
-            var controller = new UserManagementController(this);
-            return new UserManagementView(controller, this);
-        });
+        if(AdminPermissions.verifyAdminUser(_currentUser)) {
+            createWindow("UserManagement", () -> {
+                var controller = new UserManagementController(this);
+                return new UserManagementView(controller, this);
+            });
+        }
+        else 
+            startInformationWindow("Usuário sem permissão de acesso");
     }
-
+    
     public void startBookEdit(Book book) {
         createWindow("BookEdit", () -> {
             var controller = new BookEditController(_bookRepository, _bookRepositoryListener);
@@ -84,6 +88,13 @@ public class PresentationManager {
         });
     }
 
+    public void startInformationWindow(String message) {
+        createWindow("Information_" + message.replace(" ", "_"), () -> {
+            var controller = new InformationController(this);
+            return new InformationView(controller, message);
+        });
+    }   
+
     public void closeWindow(String windowName) {
         JFrame window = openWindows.get(windowName);
         if (window != null) {
@@ -96,13 +107,13 @@ public class PresentationManager {
         if (!openWindows.containsKey(key)) {
             var view = creator.create();
             openWindows.put(key, view);
+            
             view.addWindowListener(new WindowAdapter() {
                 @Override
-                public void windowClosed(WindowEvent windowEvent) {
-                    openWindows.remove(key);
+                public void windowClosing(WindowEvent e) {
+                    closeWindow(key);
                 }
             });
-            view.setVisible(true);  // Ensure the window is visible
         } else {
             var view = openWindows.get(key);
             view.toFront();

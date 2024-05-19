@@ -3,7 +3,6 @@ package presentation.controller;
 import infrastructure.interfaces.IBookRepository;
 import presentation.PresentationManager;
 import core.entities.Book;
-import core.enums.ECategory;
 import presentation.contracts.IBookRepositoryListener;
 import presentation.model.BookRepositoryListener;
 
@@ -22,9 +21,6 @@ public class LibraryController {
         _presentationManager = presentationManager;
         _bookRepository = bookRepository;
         _bookRepositoryListener = bookRepositoryListener;
-    }
-
-    public void closeWindow(){
     }
 
     public void addListener(IBookRepositoryListener listener){
