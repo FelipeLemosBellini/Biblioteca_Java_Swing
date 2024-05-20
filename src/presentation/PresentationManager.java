@@ -8,6 +8,7 @@ import infrastructure.repositories.BookRamMemoryRepository;
 import infrastructure.repositories.UserRamMemoryRepository;
 import presentation.controller.*;
 import presentation.model.BookRepositoryListener;
+import presentation.model.UserRepositoryListener;
 import presentation.view.*;
 import core.entities.Book;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class PresentationManager {
     private final BookRepositoryListener _bookRepositoryListener;
+    private final UserRepositoryListener _userRepositoryListener;
 
     private final IBookRepository _bookRepository;
     private final IUserRepository _userRepository;
@@ -32,6 +34,7 @@ public class PresentationManager {
         _bookRepositoryListener = new BookRepositoryListener();
 
         _userRepository = new UserRamMemoryRepository();
+        _userRepositoryListener = new UserRepositoryListener();
 
         openWindows = new HashMap<>();
 
@@ -66,12 +69,26 @@ public class PresentationManager {
     public void startUserManagement() {
         if(AdminPermissions.verifyAdminUser(_currentUser)) {
             createWindow("UserManagement", () -> {
-                var controller = new UserManagementController(this);
+                var controller = new UserManagementController(this, _userRepository, _userRepositoryListener);
                 return new UserManagementView(controller, this);
             });
         }
         else 
             startInformationWindow("Usuário sem permissão de acesso");
+    }
+
+    public void startUserEdit(User user) {
+        createWindow("UserEdit", () -> {
+            var controller = new UserEditController(this, _userRepository, _userRepositoryListener);
+            return new UserEditView(controller, user);
+        });
+    }
+
+    public void startUserPasswordEdit(User user) {
+        createWindow("UserEditPassword", () -> {
+            var controller = new UserEditPasswordController(this, _userRepositoryListener);
+            return new UserEditPasswordView(controller, user);
+        });
     }
     
     public void startBookEdit(Book book) {

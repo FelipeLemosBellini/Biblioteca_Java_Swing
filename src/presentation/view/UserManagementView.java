@@ -1,7 +1,10 @@
 package presentation.view;
 
+import core.entities.User;
 import presentation.PresentationManager;
+import presentation.contracts.IUserRepositoryListener;
 import presentation.controller.UserManagementController;
+import presentation.exceptions.NotSelectedRowException;
 import presentation.view.components.MenuBarComponent;
 
 import javax.swing.*;
@@ -9,8 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
-public class UserManagementView extends JFrame {
+public class UserManagementView extends JFrame implements IUserRepositoryListener {
     private final UserManagementController _userManagementController;
     private final PresentationManager _presentationManager;
 
@@ -20,11 +24,13 @@ public class UserManagementView extends JFrame {
 
     public UserManagementView(UserManagementController userManagementController, PresentationManager presentationManager) {
         _userManagementController = userManagementController;
-        _userManagementController.addListener();
+        _userManagementController.addListener(this);
 
         _presentationManager = presentationManager;
 
         initComponents();
+
+        updateTable();
         
         setLocationRelativeTo(null);
         setVisible(true);
@@ -87,6 +93,7 @@ public class UserManagementView extends JFrame {
 
         addButton.addActionListener(this::openSaveScreen);
         removeButton.addActionListener(this::removeRow);
+        changePasswordButton.addActionListener(this::openEditPassScreen);
 
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -117,33 +124,49 @@ public class UserManagementView extends JFrame {
         getContentPane().add(mainPanel);
     }
 
-    private void closeWindow(ActionEvent event) {
-        closeWindow();
-    }
     private void closeWindow() {
         _userManagementController.closeWindow();
     }
 
+    private int getUserIdFromTable() throws NotSelectedRowException {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            return (int) model.getValueAt(selectedRow, 0);
+        } else {
+            throw new NotSelectedRowException();
+        }
+    }
+
     private void openSaveScreen(ActionEvent event) {
-//        try {
-//            int id = getBookIdFromTable();
-//            Book book = _libraryController.getBook(id);
-//            _libraryController.openBookEdit(book);
-//        } catch (NotSelectedRowException e) {
-//            Book book = null;
-//            _libraryController.openBookEdit(book);
-//        }
+        try {
+            int id = getUserIdFromTable();
+            User user = _userManagementController.getUser(id);
+            _userManagementController.openEditWindow(user);
+        } catch (NotSelectedRowException e) {
+            User user = null;
+            _userManagementController.openEditWindow(user);
+        }
+    }
+
+    private void openEditPassScreen(ActionEvent event) {
+        try {
+            int id = getUserIdFromTable();
+            User user = _userManagementController.getUser(id);
+            _userManagementController.openEditPassWindow(user);
+        } catch (NotSelectedRowException e) {
+            JOptionPane.showMessageDialog(this, "Selecione um usuário!");
+        }
     }
 
     private void removeRow(ActionEvent event) {
-//        try {
-//            int id = getBookIdFromTable();
-//            Book book = _libraryController.getBook(id);
-//            _libraryController.deleteBook(book);
-//            updateTable();
-//        } catch (NotSelectedRowException e) {
-//            JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
-//        }
+        try {
+            int id = getUserIdFromTable();
+            User book = _userManagementController.getUser(id);
+            _userManagementController.deleteUser(book);
+            updateTable();
+        } catch (NotSelectedRowException e) {
+            JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
+        }
     }
 
     private void searchBook(ActionEvent event) {
@@ -154,11 +177,15 @@ public class UserManagementView extends JFrame {
         model.setRowCount(0);
 
         String searchString = searchStringField.getText();
-//        List<Book> booksList = _libraryController.getBook(searchString);
-//
-//        for (Book book : booksList) {
-//            String borrowText = book.getBorrowing() ? "Emprestado" : "Disponível";
-//            model.addRow(new Object[]{book.getId(), book.getName(), book.getAuthor(), book.getCategory(), book.getISBN(), borrowText});
-//        }
+        List<User> booksList = _userManagementController.getUsers(searchString);
+
+        for (User user : booksList) {
+            model.addRow(new Object[]{user.getId(), user.getLogin(), user.getProfile()});
+        }
+    }
+
+    @Override
+    public void updateUserList() {
+        updateTable();
     }
 }

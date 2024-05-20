@@ -12,16 +12,16 @@ import java.util.Objects;
 public class UserRamMemoryRepository implements IUserRepository {
     private int sequence = 0;
     private List<User> listOfUsers = new ArrayList<>();
-    
+
     public UserRamMemoryRepository() {
         SeedList();
     }
-    
-    private void SeedList(){
+
+    private void SeedList() {
         createUser(new User("admin", "admin", EProfile.admin));
         createUser(new User("employee", "employee", EProfile.employee));
     }
-    
+
     @Override
     public void createUser(User user) {
         user.setId(getSequence());
@@ -29,7 +29,7 @@ public class UserRamMemoryRepository implements IUserRepository {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void removeUser(User user) {
         listOfUsers.removeIf(u -> Objects.equals(u.getId(), user.getId()));
     }
 
@@ -52,8 +52,29 @@ public class UserRamMemoryRepository implements IUserRepository {
         }
         return null;
     }
-    
-    private int getSequence(){
+
+    @Override
+    public List<User> searchUser(String searchString) {
+        if (searchString == null || searchString.isEmpty())
+            return listOfUsers;
+
+        List<User> search = new ArrayList<>();
+        String lowerCaseSearchString = searchString.toLowerCase();
+
+        for (User user : listOfUsers) {
+            boolean matches =
+                    user.getLogin().toLowerCase().contains(lowerCaseSearchString) ||
+                    user.getProfile().name().toLowerCase().contains(lowerCaseSearchString);
+
+            if (matches) {
+                search.add(user);
+            }
+        }
+
+        return search;
+    }
+
+    private int getSequence() {
         this.sequence++;
         return this.sequence;
     }

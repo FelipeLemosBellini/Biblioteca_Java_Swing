@@ -1,15 +1,16 @@
 package core.entities;
 
+import core.enums.ECategory;
 import core.enums.EProfile;
 
 public class User {
     private int id;
 
-    private final String login;
+    private String login;
 
-    private final String password;
+    private String password;
 
-    private final EProfile profile;
+    private EProfile profile;
 
     public User(int id, String login, EProfile profile) {
         this.login = login;
@@ -35,7 +36,6 @@ public class User {
         this.id = id;
     }
     
-    
     public int getId() {
         return id;
     }
@@ -53,5 +53,18 @@ public class User {
             return false;
         
         return this.password.equals(passwordToTest);
+    }
+
+    public boolean changePassword(String oldPassword, String newPassword, String confirmNewPassword) {
+        if (!verifyPassword(oldPassword) || !newPassword.equals(confirmNewPassword))
+            return false;
+        
+        this.password = newPassword;
+        return true;
+    }
+
+    public void edit(String login, EProfile profile) {
+        this.login = login;
+        this.profile = profile;
     }
 }

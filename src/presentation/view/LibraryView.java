@@ -29,6 +29,7 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
         _presentationManager = presentationManager;
 
         initComponents();
+        updateTable();
         setVisible(true);
     }
 
