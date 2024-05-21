@@ -1,5 +1,6 @@
 package presentation.view;
 
+import core.entities.User;
 import presentation.PresentationManager;
 import presentation.controller.HomeController;
 
@@ -8,13 +9,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class HomeView extends JFrame {
-    private final HomeController homeController;
-    private final PresentationManager presentationManager;
+    private final HomeController _homeController;
 
-    public HomeView(PresentationManager presentationManager, HomeController homeController) {
-        this.homeController = homeController;
-        this.presentationManager = presentationManager;
-
+    public HomeView(HomeController homeController) {
+        _homeController = homeController;
+        
         configureWindow();
         setVisible(true);
     }
@@ -33,15 +32,17 @@ public class HomeView extends JFrame {
         mainPanel.add(headerPanel, BorderLayout.NORTH);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton userRegistrationButton = createButton("Cadastro de Usuário", e -> presentationManager.startUserManagement());
-        JButton libraryManagementButton = createButton("Gestão da Biblioteca", e -> presentationManager.startLibrary());
+        JButton userRegistrationButton = createButton("Cadastro de Usuário", e -> _homeController.openUserManager());
+        JButton libraryManagementButton = createButton("Gestão da Biblioteca", e -> _homeController.openLibraryManager());
         buttonPanel.add(userRegistrationButton);
         buttonPanel.add(libraryManagementButton);
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
 
         add(mainPanel);
-    }
 
+        setLocationRelativeTo(null);
+    }
+    
     private JButton createButton(String text, ActionListener actionListener) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.PLAIN, 14));

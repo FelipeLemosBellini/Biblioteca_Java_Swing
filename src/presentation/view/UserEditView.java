@@ -1,27 +1,29 @@
 package presentation.view;
 
-import presentation.controller.BookEditController;
-import core.entities.Book;
+import core.entities.User;
 import core.enums.ECategory;
+import core.enums.EProfile;
+import presentation.controller.UserEditController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class BookEditView extends JFrame {
-    private final BookEditController _bookEditController;
+public class UserEditView extends JFrame {
+    private final UserEditController _userEditController;
 
-    private JTextField nameField;
-    private JTextField authorField;
-    private JTextField isbnField;
+    private JTextField loginField;
+    private JTextField passwordField;
     private JComboBox<String> comboBoxCategory;
 
-    private Book currentBook = null;
+    private User currentUser = null;
 
-    public BookEditView(BookEditController bookEditController, Book book) {
-        _bookEditController = bookEditController;
-        this.currentBook = book;
+    public UserEditView(UserEditController userEditController, User user) {
+        _userEditController = userEditController;
+        this.currentUser = user;
 
         defineWindowConfiguration();
         defineMenuConfiguration();
@@ -47,21 +49,18 @@ public class BookEditView extends JFrame {
                 new EmptyBorder(5, 5, 5, 5)));
 
         comboBoxCategory = new JComboBox<>();
-        for (ECategory ebook : ECategory.values()) {
-            comboBoxCategory.addItem(ebook.toString());
+        for (EProfile eProfile : EProfile.values()) {
+            comboBoxCategory.addItem(eProfile.toString());
         }
 
-        if (currentBook != null) {
-            nameField = new JTextField(currentBook.getName(), 15);
-            authorField = new JTextField(currentBook.getAuthor(), 15);
-            isbnField = new JTextField(currentBook.getISBN(), 15);
-
-            comboBoxCategory.setSelectedItem(currentBook.getCategory().toString());
+        if (currentUser != null) {
+            loginField = new JTextField(currentUser.getLogin(), 15);
+            comboBoxCategory.setSelectedItem(currentUser.getProfile().toString());
         } else {
-            nameField = new JTextField(15);
-            authorField = new JTextField(15);
-            isbnField = new JTextField(15);
+            loginField = new JTextField(15);
         }
+
+        passwordField = new JTextField(15);
 
         JButton saveButton = new JButton("Salvar");
         JButton cancelButton = new JButton("Cancelar");
@@ -70,16 +69,15 @@ public class BookEditView extends JFrame {
         cancelButton.addActionListener(this::closeWindow);
 
         formPanel.add(new JLabel("Nome:"));
-        formPanel.add(nameField);
+        formPanel.add(loginField);
 
-        formPanel.add(new JLabel("Autor:"));
-        formPanel.add(authorField);
+        if (currentUser == null) {
+            formPanel.add(new JLabel("Senha:"));
+            formPanel.add(passwordField);
+        }
 
-        formPanel.add(new JLabel("Categoria:"));
+        formPanel.add(new JLabel("Perfil:"));
         formPanel.add(comboBoxCategory);
-
-        formPanel.add(new JLabel("ISBN:"));
-        formPanel.add(isbnField);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(saveButton);
@@ -95,30 +93,32 @@ public class BookEditView extends JFrame {
     private void closeWindow(ActionEvent event) {
         closeWindow();
     }
+
     private void closeWindow() {
-        _bookEditController.closeWindow();
-        dispose();
+        _userEditController.closeWindow();
     }
 
     private void saveRow(ActionEvent event) {
+        String name = loginField.getText();
+        EProfile category = EProfile.employee.getEProfile((String) comboBoxCategory.getSelectedItem());
+        String passwordFieldText = passwordField.getText();
+
+        if (name.isEmpty() || category == null) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+            return;
+        }
+
         try {
-            String name = nameField.getText();
-            ECategory category = ECategory.action.getECategory((String) comboBoxCategory.getSelectedItem());
-            String author = authorField.getText();
-            String isbn = isbnField.getText();
-
-            if (!name.isEmpty() && category != null && !author.isEmpty() && !isbn.isEmpty()) {
-
-                if(currentBook == null) {
-                    _bookEditController.createBook(name, author, category, isbn);
+            if (currentUser == null) {
+                if (passwordFieldText.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+                    return;
                 }
-                else
-                    currentBook.edit(name, author, category, isbn);
-
-                closeWindow();
+                _userEditController.createUser(name, passwordFieldText, category);
             } else {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+                currentUser.edit(name, category);
             }
+            closeWindow();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao adicionar o livro");
         }

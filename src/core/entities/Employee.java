@@ -7,8 +7,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "employee")
 public class Employee extends User {
-
-    public Employee(String login, String password, EProfile profile) {
-        super(login, password, profile);
+    public Employee(User user) {
+        super(user.getId(), user.getLogin(), user.getProfile());
     }
 }
