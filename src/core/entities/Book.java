@@ -5,8 +5,16 @@ import core.enums.ECategory;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "book")
 public class Book {
+    @Id
+    @GeneratedValue
     protected int id;
     protected String name;
     protected String author;
