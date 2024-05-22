@@ -20,13 +20,16 @@ public class User {
     @Column(name = "profile")
     private EProfile profile;
 
+    public User() {
+    }
+
     public User(int id, String login, EProfile profile) {
         this.login = login;
         this.password = null;
         this.profile = profile;
         this.id = id;
     }
-    
+
     public User(String login, String password, EProfile profile) {
         this.login = login;
         this.password = password;
@@ -43,7 +46,7 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -57,16 +60,16 @@ public class User {
     }
 
     public boolean verifyPassword(String passwordToTest) {
-        if(passwordToTest == null || passwordToTest.isEmpty())
+        if (passwordToTest == null || passwordToTest.isEmpty())
             return false;
-        
+
         return this.password.equals(passwordToTest);
     }
 
     public boolean changePassword(String oldPassword, String newPassword, String confirmNewPassword) {
         if (!verifyPassword(oldPassword) || !newPassword.equals(confirmNewPassword))
             return false;
-        
+
         this.password = newPassword;
         return true;
     }

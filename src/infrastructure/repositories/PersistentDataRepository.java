@@ -1,6 +1,8 @@
 package infrastructure.repositories;
+
 import core.entities.Employee;
 import core.entities.User;
+import infrastructure.interfaces.IPersistentDataRepository;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -8,24 +10,23 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class PersistentDataRepository {
+public class PersistentDataRepository implements IPersistentDataRepository {
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory getDatabaseSessionFactory() {
+    @Override
+    public SessionFactory getDatabaseSessionFactory() {
         return sessionFactory;
     }
 
-    public static void createSessionFactory() {
+    @Override
+    public void createSessionFactory() {
         final StandardServiceRegistry registry =
                 new StandardServiceRegistryBuilder()
                         .build();
         try {
             sessionFactory = new MetadataSources(registry).addAnnotatedClasses(
 //                    Book.class,
-                    Employee.class,
                             User.class
-//                            ,
-//                            Administrator.class
                     )
                     .buildMetadata()
                     .buildSessionFactory();

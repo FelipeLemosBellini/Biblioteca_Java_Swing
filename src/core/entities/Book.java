@@ -5,10 +5,8 @@ import core.enums.ECategory;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "book")
@@ -16,12 +14,20 @@ public class Book {
     @Id
     @GeneratedValue
     protected int id;
+    @Column(name = "name")
     protected String name;
+    @Column(name = "author")
     protected String author;
+    @Column(name = "category")
     protected ECategory category;
+    @Column(name = "ISBN")
     protected String ISBN;
+    @Column(name = "borrowing")
     private Boolean borrowing = false;
+    @Column(name = "dateOfBorrowing")
     private Date dateOfBorrowing;
+
+    @Column(name = "dateOfReturning")
     private Date dateOfReturning;
 
     public Book(int id, String name, String author, ECategory category, String ISBN) {
@@ -30,6 +36,9 @@ public class Book {
         this.author = author;
         this.category = category;
         this.ISBN = ISBN;
+    }
+
+    public Book() {
     }
 
     public int getId() {
@@ -91,7 +100,7 @@ public class Book {
     }
 
     private String returnDate(Date date) {
-        if(date != null)
+        if (date != null)
             return new SimpleDateFormat("dd/MM/yyyy").format(date);
         else
             return "00/00/0000";
