@@ -4,7 +4,7 @@ import core.entities.User;
 import core.services.AdminPermissions;
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.interfaces.IUserRepository;
-import infrastructure.repositories.BookRamMemoryRepository;
+import infrastructure.repositories.BookHibernateRepository;
 import infrastructure.repositories.PersistentDataRepository;
 import infrastructure.repositories.UserHibernateRepository;
 
@@ -32,7 +32,7 @@ public class PresentationManager {
     private final Map<String, JFrame> openWindows;  // Use JFrame specifically
 
     public PresentationManager() {
-        _bookRepository = new BookRamMemoryRepository();
+        _bookRepository = new BookHibernateRepository(startUserHibernateRepository());
         _bookRepositoryListener = new BookRepositoryListener();
 
         _userRepository = new UserHibernateRepository(startUserHibernateRepository());

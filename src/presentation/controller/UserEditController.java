@@ -1,15 +1,12 @@
 package presentation.controller;
 
-import core.entities.Book;
 import core.entities.User;
-import core.enums.ECategory;
 import core.enums.EProfile;
-import infrastructure.interfaces.IBookRepository;
+
 import infrastructure.interfaces.IUserRepository;
+
 import presentation.PresentationManager;
-import presentation.contracts.IBookRepositoryListener;
 import presentation.contracts.IUserRepositoryListener;
-import presentation.model.BookRepositoryListener;
 import presentation.model.UserRepositoryListener;
 
 public class UserEditController {
@@ -33,7 +30,7 @@ public class UserEditController {
     }
 
     public void createUser(String login, String password, EProfile profile) {
-        User newUser = new User(login, password, profile.toString());
+        User newUser = new User(login, password, profile);
         _userRepository.createUser(newUser);
     }
 }

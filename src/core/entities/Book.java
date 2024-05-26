@@ -9,7 +9,7 @@ import java.util.Date;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "book")
+@Table(name = "Book")
 public class Book {
     @Id
     @GeneratedValue

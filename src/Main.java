@@ -22,18 +22,18 @@ public class Main {
 //            System.out.println("Error inserting task: " + e.getMessage());
 //        }
 
-        UserHibernateRepository userHibernateRepository = new UserHibernateRepository(new PresentationManager().startUserHibernateRepository());
-
-        User user = userHibernateRepository.getUser(5);
-        System.out.println(user.getProfile());
-        System.out.println(user.getLogin());
-
-        List<User> userList = userHibernateRepository.searchUser("ff");
-        System.out.println(userList.getFirst().getId());
-
-        userHibernateRepository.removeUser(userList.getFirst());
-        userList = userHibernateRepository.searchUser("ff");
-        System.out.println(userList.getFirst().getId());
+//        UserHibernateRepository userHibernateRepository = new UserHibernateRepository(new PresentationManager().startUserHibernateRepository());
+//
+//        User user = userHibernateRepository.getUser(5);
+//        System.out.println(user.getProfile());
+//        System.out.println(user.getLogin());
+//
+//        List<User> userList = userHibernateRepository.searchUser("ff");
+//        System.out.println(userList.getFirst().getId());
+//
+//        userHibernateRepository.removeUser(userList.getFirst());
+//        userList = userHibernateRepository.searchUser("ff");
+//        System.out.println(userList.getFirst().getId());
 
 
         SwingUtilities.invokeLater(new Runnable() {

@@ -19,8 +19,8 @@ public class UserHibernateRepository implements IUserRepository {
     }
 
     private void SeedList() {
-        createUser(new User("admin", "admin", "admin"));
-        createUser(new User("employee", "employee", "employee"));
+        createUser(new User("admin", "admin", EProfile.admin));
+        createUser(new User("employee", "employee", EProfile.employee));
     }
 
     @Override
@@ -48,14 +48,12 @@ public class UserHibernateRepository implements IUserRepository {
         User user = null;
         try {
             user = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
-                // Use query parametrizada para evitar injeção de SQL
                 return session.createSelectionQuery("from User where id = :id", User.class)
                         .setParameter("id", id)
                         .uniqueResultOptional()
-                        .orElse(null); // Retorna null se não encontrar nenhum resultado
+                        .orElse(null);
             });
         } catch (Exception e) {
-            // Melhorar o tratamento de exceções
             System.err.println("Erro ao buscar usuário com id " + id);
             e.printStackTrace();
         }
@@ -64,11 +62,19 @@ public class UserHibernateRepository implements IUserRepository {
 
     @Override
     public User getUser(String loginSearch) {
-        return new User();
-//        return persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
-//            return new session.createSelectionQuery("from User where login = " + loginSearch, User.class)
-//                    .getResultList();
-//        });
+        User user = null;
+        try {
+            user = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+                return session.createQuery("from User where login = :login", User.class)
+                        .setParameter("login", loginSearch)
+                        .uniqueResultOptional()
+                        .orElse(null);
+            });
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar usuário com login " + loginSearch);
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override

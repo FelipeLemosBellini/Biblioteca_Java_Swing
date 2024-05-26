@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,25 +18,25 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "profile")
-    private String profile;
+    private EProfile profile;
 
     public User() {
     }
 
-    public User(int id, String login, String profile) {
+    public User(int id, String login, EProfile profile) {
         this.login = login;
         this.password = null;
         this.profile = profile;
         this.id = id;
     }
 
-    public User(String login, String password, String profile) {
+    public User(String login, String password, EProfile profile) {
         this.login = login;
         this.password = password;
         this.profile = profile;
     }
 
-    public User(int id, String login, String password, String profile) {
+    public User(int id, String login, String password, EProfile profile) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -55,7 +55,7 @@ public class User {
         return login;
     }
 
-    public String getProfile() {
+    public EProfile getProfile() {
         return profile;
     }
 
@@ -74,7 +74,7 @@ public class User {
         return true;
     }
 
-    public void edit(String login, String profile) {
+    public void edit(String login, EProfile profile) {
         this.login = login;
         this.profile = profile;
     }

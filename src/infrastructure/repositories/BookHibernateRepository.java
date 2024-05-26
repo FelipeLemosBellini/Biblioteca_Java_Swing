@@ -1,6 +1,7 @@
 package infrastructure.repositories;
 
 import core.entities.Book;
+import core.entities.User;
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.interfaces.IPersistentDataRepository;
 
@@ -10,7 +11,7 @@ public class BookHibernateRepository implements IBookRepository {
 
     IPersistentDataRepository persistentDataRepository;
 
-    BookHibernateRepository(IPersistentDataRepository persistentDataRepository) {
+    public BookHibernateRepository(IPersistentDataRepository persistentDataRepository) {
         this.persistentDataRepository = persistentDataRepository;
     }
 
@@ -30,14 +31,31 @@ public class BookHibernateRepository implements IBookRepository {
 
     @Override
     public Book getBook(int id) {
-        return new Book();
-//        persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
-////            session.byId<Book>(id);
-//        });
+        Book book = null;
+        try {
+            book = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+                return session.createSelectionQuery("from Book where id = :id", Book.class)
+                        .setParameter("id", id)
+                        .getSingleResultOrNull();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return book;
     }
 
     @Override
     public List<Book> searchBook(String searchString) {
-        return null;
+        List<Book> bookList = null;
+        try {
+            bookList = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+                return session.createSelectionQuery("from Book where name = :name", Book.class)
+                        .setParameter("name", searchString)
+                        .getResultList();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookList;
     }
 }

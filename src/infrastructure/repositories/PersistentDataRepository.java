@@ -1,5 +1,6 @@
 package infrastructure.repositories;
 
+import core.entities.Book;
 import core.entities.User;
 import infrastructure.interfaces.IPersistentDataRepository;
 import org.hibernate.SessionFactory;
@@ -25,7 +26,7 @@ public class PersistentDataRepository implements IPersistentDataRepository {
                         .build();
         try {
             newSessionFactory = new MetadataSources(registry).addAnnotatedClasses(
-//                    Book.class,
+                            Book.class,
                             User.class
                     )
                     .buildMetadata()
