@@ -18,8 +18,8 @@ public class UserRamMemoryRepository implements IUserRepository {
     }
 
     private void SeedList() {
-        createUser(new User("admin", "admin", EProfile.admin));
-        createUser(new User("employee", "employee", EProfile.employee));
+        createUser(new User("admin", "admin", "admin"));
+        createUser(new User("employee", "employee", "employee"));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UserRamMemoryRepository implements IUserRepository {
         for (User user : listOfUsers) {
             boolean matches =
                     user.getLogin().toLowerCase().contains(lowerCaseSearchString) ||
-                    user.getProfile().name().toLowerCase().contains(lowerCaseSearchString);
+                    user.getProfile().toLowerCase().contains(lowerCaseSearchString);
 
             if (matches) {
                 search.add(user);

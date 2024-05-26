@@ -7,6 +7,8 @@ import core.enums.EProfile;
 import infrastructure.interfaces.IUserRepository;
 import presentation.PresentationManager;
 
+import java.util.Objects;
+
 public class LoginController {
     private final PresentationManager _presentationManager;
     private final IUserRepository _userRepository;
@@ -44,9 +46,9 @@ public class LoginController {
     private void defineUserPermissions(User user){
         User currentUser;
         
-        if(user.getProfile() == EProfile.admin)
+        if(Objects.equals(user.getProfile(), "admin"))
             currentUser = new Administrator(user);
-        else if(user.getProfile() == EProfile.employee)
+        else if(Objects.equals(user.getProfile(), "employee"))
             currentUser = new Employee(user);
         else
             currentUser = user;

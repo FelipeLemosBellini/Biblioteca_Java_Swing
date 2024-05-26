@@ -17,23 +17,23 @@ public class UserEditController {
     private final UserRepositoryListener _userRepositoryListener;
     private final PresentationManager _presentationManager;
 
-    public UserEditController(PresentationManager presentationManager ,IUserRepository userRepository, UserRepositoryListener userRepositoryListener) {
+    public UserEditController(PresentationManager presentationManager, IUserRepository userRepository, UserRepositoryListener userRepositoryListener) {
         _userRepository = userRepository;
         _userRepositoryListener = userRepositoryListener;
         _presentationManager = presentationManager;
     }
-    
-    public void addListener(IUserRepositoryListener listener){
+
+    public void addListener(IUserRepositoryListener listener) {
         _userRepositoryListener.subscribe(listener);
     }
 
-    public void closeWindow(){
+    public void closeWindow() {
         _userRepositoryListener.notifyDataChanged();
         _presentationManager.closeWindow("UserEdit");
     }
 
     public void createUser(String login, String password, EProfile profile) {
-        User newUser = new User(login, password, profile);
+        User newUser = new User(login, password, profile.toString());
         _userRepository.createUser(newUser);
     }
 }

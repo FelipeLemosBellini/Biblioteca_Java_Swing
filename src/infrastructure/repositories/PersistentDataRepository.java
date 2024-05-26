@@ -1,6 +1,5 @@
 package infrastructure.repositories;
 
-import core.entities.Employee;
 import core.entities.User;
 import infrastructure.interfaces.IPersistentDataRepository;
 import org.hibernate.SessionFactory;
@@ -15,16 +14,17 @@ public class PersistentDataRepository implements IPersistentDataRepository {
 
     @Override
     public SessionFactory getDatabaseSessionFactory() {
+        sessionFactory = sessionFactory == null ? createSessionFactory() : sessionFactory;
         return sessionFactory;
     }
 
-    @Override
-    public void createSessionFactory() {
+    private SessionFactory createSessionFactory() {
+        SessionFactory newSessionFactory = null;
         final StandardServiceRegistry registry =
                 new StandardServiceRegistryBuilder()
                         .build();
         try {
-            sessionFactory = new MetadataSources(registry).addAnnotatedClasses(
+            newSessionFactory = new MetadataSources(registry).addAnnotatedClasses(
 //                    Book.class,
                             User.class
                     )
@@ -35,5 +35,6 @@ public class PersistentDataRepository implements IPersistentDataRepository {
             showMessageDialog(null, "Erro ao iniciar os dados, tente abrir a aplicação novamente");
             StandardServiceRegistryBuilder.destroy(registry);
         }
+        return newSessionFactory;
     }
 }

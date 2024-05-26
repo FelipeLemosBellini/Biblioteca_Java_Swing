@@ -5,7 +5,9 @@ import core.services.AdminPermissions;
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.interfaces.IUserRepository;
 import infrastructure.repositories.BookRamMemoryRepository;
-import infrastructure.repositories.UserRamMemoryRepository;
+import infrastructure.repositories.PersistentDataRepository;
+import infrastructure.repositories.UserHibernateRepository;
+
 import presentation.controller.*;
 import presentation.model.BookRepositoryListener;
 import presentation.model.UserRepositoryListener;
@@ -33,12 +35,16 @@ public class PresentationManager {
         _bookRepository = new BookRamMemoryRepository();
         _bookRepositoryListener = new BookRepositoryListener();
 
-        _userRepository = new UserRamMemoryRepository();
+        _userRepository = new UserHibernateRepository(startUserHibernateRepository());
         _userRepositoryListener = new UserRepositoryListener();
 
         openWindows = new HashMap<>();
 
         startLogin();
+    }
+
+    public PersistentDataRepository startUserHibernateRepository() {
+        return new PersistentDataRepository();
     }
 
     public void startLogin() {
@@ -67,13 +73,12 @@ public class PresentationManager {
     }
 
     public void startUserManagement() {
-        if(AdminPermissions.verifyAdminUser(_currentUser)) {
+        if (AdminPermissions.verifyAdminUser(_currentUser)) {
             createWindow("UserManagement", () -> {
                 var controller = new UserManagementController(this, _userRepository, _userRepositoryListener);
                 return new UserManagementView(controller, this);
             });
-        }
-        else 
+        } else
             startInformationWindow("Usuário sem permissão de acesso");
     }
 
@@ -90,7 +95,7 @@ public class PresentationManager {
             return new UserEditPasswordView(controller, user);
         });
     }
-    
+
     public void startBookEdit(Book book) {
         createWindow("BookEdit", () -> {
             var controller = new BookEditController(_bookRepository, _bookRepositoryListener);
@@ -110,7 +115,7 @@ public class PresentationManager {
             var controller = new InformationController(this);
             return new InformationView(controller, message);
         });
-    }   
+    }
 
     public void closeWindow(String windowName) {
         JFrame window = openWindows.get(windowName);
@@ -124,7 +129,7 @@ public class PresentationManager {
         if (!openWindows.containsKey(key)) {
             var view = creator.create();
             openWindows.put(key, view);
-            
+
             view.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

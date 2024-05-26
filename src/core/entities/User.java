@@ -18,25 +18,25 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "profile")
-    private EProfile profile;
+    private String profile;
 
     public User() {
     }
 
-    public User(int id, String login, EProfile profile) {
+    public User(int id, String login, String profile) {
         this.login = login;
         this.password = null;
         this.profile = profile;
         this.id = id;
     }
 
-    public User(String login, String password, EProfile profile) {
+    public User(String login, String password, String profile) {
         this.login = login;
         this.password = password;
         this.profile = profile;
     }
 
-    public User(int id, String login, String password, EProfile profile) {
+    public User(int id, String login, String password, String profile) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -55,7 +55,7 @@ public class User {
         return login;
     }
 
-    public EProfile getProfile() {
+    public String getProfile() {
         return profile;
     }
 
@@ -74,7 +74,7 @@ public class User {
         return true;
     }
 
-    public void edit(String login, EProfile profile) {
+    public void edit(String login, String profile) {
         this.login = login;
         this.profile = profile;
     }
