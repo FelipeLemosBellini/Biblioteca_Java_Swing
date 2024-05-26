@@ -46,9 +46,9 @@ public class LoginController {
     private void defineUserPermissions(User user){
         User currentUser;
         
-        if(Objects.equals(user.getProfile(), "admin"))
+        if(Objects.equals(user.getProfile(), EProfile.admin))
             currentUser = new Administrator(user);
-        else if(Objects.equals(user.getProfile(), "employee"))
+        else if(Objects.equals(user.getProfile(), EProfile.employee))
             currentUser = new Employee(user);
         else
             currentUser = user;
