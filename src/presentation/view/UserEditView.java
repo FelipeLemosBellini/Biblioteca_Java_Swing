@@ -116,7 +116,7 @@ public class UserEditView extends JFrame {
                 }
                 _userEditController.createUser(name, passwordFieldText, category);
             } else {
-                currentUser.edit(name, category);
+                _userEditController.editUser(currentUser, name, category);
             }
             closeWindow();
         } catch (NumberFormatException ex) {

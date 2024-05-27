@@ -5,6 +5,7 @@ import core.entities.User;
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.interfaces.IPersistentDataRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public class BookHibernateRepository implements IBookRepository {
@@ -57,5 +58,15 @@ public class BookHibernateRepository implements IBookRepository {
             e.printStackTrace();
         }
         return bookList;
+    }
+
+    @Override
+    public boolean borrow(Book book, Date dateOfReturning) {
+        return false;
+    }
+
+    @Override
+    public void returnTheBook(Book book) {
+
     }
 }

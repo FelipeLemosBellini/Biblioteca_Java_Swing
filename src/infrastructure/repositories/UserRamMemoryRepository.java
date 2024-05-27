@@ -28,6 +28,22 @@ public class UserRamMemoryRepository implements IUserRepository {
         listOfUsers.add(user);
     }
 
+    public boolean changePassword(User user, String oldPassword, String newPassword, String confirmNewPassword) {
+        if (!user.verifyPassword(oldPassword) || !newPassword.equals(confirmNewPassword))
+            return false;
+
+        user.setPassword(newPassword);
+            
+        return true;
+    }
+
+    public boolean editUser(User user, String login, EProfile profile) {
+        user.setLogin(login);
+        user.setProfile(profile);
+        
+        return true;
+    }
+
     @Override
     public void removeUser(User user) {
         listOfUsers.removeIf(u -> Objects.equals(u.getId(), user.getId()));
@@ -64,7 +80,7 @@ public class UserRamMemoryRepository implements IUserRepository {
         for (User user : listOfUsers) {
             boolean matches =
                     user.getLogin().toLowerCase().contains(lowerCaseSearchString) ||
-                    user.getProfile().name().toLowerCase().contains(lowerCaseSearchString);
+                            user.getProfile().name().toLowerCase().contains(lowerCaseSearchString);
 
             if (matches) {
                 search.add(user);

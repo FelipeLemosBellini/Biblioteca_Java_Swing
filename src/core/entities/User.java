@@ -13,10 +13,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    
     @Column(name = "login")
     private String login;
+    
     @Column(name = "password")
     private String password;
+    
     @Column(name = "profile")
     private EProfile profile;
 
@@ -47,6 +50,18 @@ public class User {
         this.id = id;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setProfile(EProfile profile) {
+        this.profile = profile;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public int getId() {
         return id;
     }
@@ -64,18 +79,5 @@ public class User {
             return false;
 
         return this.password.equals(passwordToTest);
-    }
-
-    public boolean changePassword(String oldPassword, String newPassword, String confirmNewPassword) {
-        if (!verifyPassword(oldPassword) || !newPassword.equals(confirmNewPassword))
-            return false;
-
-        this.password = newPassword;
-        return true;
-    }
-
-    public void edit(String login, EProfile profile) {
-        this.login = login;
-        this.profile = profile;
     }
 }

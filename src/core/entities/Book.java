@@ -14,16 +14,22 @@ public class Book {
     @Id
     @GeneratedValue
     protected int id;
+    
     @Column(name = "name")
     protected String name;
+    
     @Column(name = "author")
     protected String author;
+    
     @Column(name = "category")
     protected ECategory category;
+    
     @Column(name = "ISBN")
     protected String ISBN;
+    
     @Column(name = "borrowing")
     private Boolean borrowing = false;
+    
     @Column(name = "dateOfBorrowing")
     private Date dateOfBorrowing;
 
@@ -73,6 +79,18 @@ public class Book {
         return returnDate(dateOfReturning);
     }
 
+    public void setBorrowing(Boolean borrowing) {
+        this.borrowing = borrowing;
+    }
+    
+    public void setDateOfBorrowing(Date dateOfBorrowing) {
+        this.dateOfBorrowing = dateOfBorrowing;
+    }
+    
+    public void setDateOfReturning(Date dateOfReturning) {
+        this.dateOfReturning = dateOfReturning;
+    }
+
     public void edit(String name, String author, ECategory category, String ISBN) {
         this.name = name;
         this.author = author;
@@ -80,24 +98,24 @@ public class Book {
         this.ISBN = ISBN;
     }
 
-    public boolean borrow(Date dateOfReturning) {
-        if (borrowing)
-            return false;
-
-        borrowing = true;
-        this.dateOfReturning = dateOfReturning;
-
-        Calendar calendar = Calendar.getInstance();
-        this.dateOfBorrowing = calendar.getTime();
-
-        return true;
-    }
-
-    public void returnTheBook() {
-        borrowing = false;
-        dateOfBorrowing = null;
-        dateOfReturning = null;
-    }
+//    public boolean borrow(Date dateOfReturning) {
+//        if (borrowing)
+//            return false;
+//
+//        borrowing = true;
+//        this.dateOfReturning = dateOfReturning;
+//
+//        Calendar calendar = Calendar.getInstance();
+//        this.dateOfBorrowing = calendar.getTime();
+//
+//        return true;
+//    }
+//
+//    public void returnTheBook() {
+//        borrowing = false;
+//        dateOfBorrowing = null;
+//        dateOfReturning = null;
+//    }
 
     private String returnDate(Date date) {
         if (date != null)

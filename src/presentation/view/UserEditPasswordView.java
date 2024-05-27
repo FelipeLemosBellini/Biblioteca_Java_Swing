@@ -101,7 +101,7 @@ public class UserEditPasswordView extends JFrame {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado");
                 return;
             } else {
-                var passWasEdited = currentUser.changePassword(oldPasswordFieldText, newPasswordFieldText, confirmedPasswordFieldText);
+                var passWasEdited = _userEditPasswordController.changePassword(currentUser,oldPasswordFieldText, newPasswordFieldText, confirmedPasswordFieldText);
                 
                 if (!passWasEdited) {
                     JOptionPane.showMessageDialog(this, "A senha antiga ou as novas senhas não coencidem");

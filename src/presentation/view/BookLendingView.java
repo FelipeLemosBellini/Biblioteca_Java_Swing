@@ -119,7 +119,7 @@ public class BookLendingView extends JFrame {
 
     private void returnBook(ActionEvent event){
         if(currentBook.getBorrowing()){
-            currentBook.returnTheBook();
+            _bookLendingController.returnBook(currentBook);
             closeWindow();
         }
         else{
@@ -135,7 +135,7 @@ public class BookLendingView extends JFrame {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date data = dateFormat.parse(dateOfReturnText);
 
-                var wasBorrow = currentBook.borrow(data);
+                var wasBorrow = _bookLendingController.borrowBook(currentBook, data);
 
                 if(wasBorrow)
                     closeWindow();

@@ -27,7 +27,7 @@ public class PresentationManager {
 
     private User _currentUser;
 
-    private final Map<String, JFrame> openWindows;  // Use JFrame specifically
+    private final Map<String, JFrame> openWindows;
 
     public PresentationManager() {
 
@@ -37,7 +37,6 @@ public class PresentationManager {
         //teste hibernate descomenta
         _bookRepository = new BookHibernateRepository(startUserHibernateRepository());
         _userRepository = new UserHibernateRepository(startUserHibernateRepository());
-
 
         //teste RAM local descomenta
 //        _userRepository = new UserRamMemoryRepository();
@@ -96,7 +95,7 @@ public class PresentationManager {
 
     public void startUserPasswordEdit(User user) {
         createWindow("UserEditPassword", () -> {
-            var controller = new UserEditPasswordController(this, _userRepositoryListener);
+            var controller = new UserEditPasswordController(this, _userRepositoryListener, _userRepository);
             return new UserEditPasswordView(controller, user);
         });
     }
@@ -110,7 +109,7 @@ public class PresentationManager {
 
     public void startBookLending(Book book) {
         createWindow("BookLending", () -> {
-            var controller = new BookLendingController(_bookRepositoryListener);
+            var controller = new BookLendingController(_bookRepositoryListener, _bookRepository);
             return new BookLendingView(controller, book);
         });
     }

@@ -15,7 +15,7 @@ public class UserHibernateRepository implements IUserRepository {
 
     public UserHibernateRepository(IPersistentDataRepository persistentDataRepository) {
         this.persistentDataRepository = persistentDataRepository;
-        SeedList();
+//        SeedList();
     }
 
     private void SeedList() {
@@ -35,6 +35,17 @@ public class UserHibernateRepository implements IUserRepository {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean editUser(User user, String login, EProfile profile) {
+        return false;
+    }
+
+    @Override
+    public boolean changePassword(User user, String oldPassword, String newPassword, String confirmNewPassword) {
+        return false;
+    }
+
 
     @Override
     public void removeUser(User user) {

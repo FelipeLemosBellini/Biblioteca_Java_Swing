@@ -33,4 +33,8 @@ public class UserEditController {
         User newUser = new User(login, password, profile);
         _userRepository.createUser(newUser);
     }
+
+    public void editUser(User user, String login, EProfile profile) {
+        _userRepository.editUser(user, login, profile);
+    }
 }

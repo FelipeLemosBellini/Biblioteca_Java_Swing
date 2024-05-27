@@ -5,6 +5,8 @@ import core.enums.ECategory;
 import infrastructure.interfaces.IBookRepository;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class BookRamMemoryRepository implements IBookRepository {
@@ -53,6 +55,28 @@ public class BookRamMemoryRepository implements IBookRepository {
             }
         }
         return search;
+    }
+
+    @Override
+    public boolean borrow(Book book, Date dateOfReturning) {
+        if (book.getBorrowing())
+            return false;
+
+        book.setBorrowing(true);
+        book.setDateOfReturning(dateOfReturning);
+
+        Calendar calendar = Calendar.getInstance();
+        
+        book.setDateOfReturning(calendar.getTime());
+
+        return true;
+    }
+
+    @Override
+    public void returnTheBook(Book book) {
+        book.setBorrowing(false);
+        book.setDateOfBorrowing(null);
+        book.setDateOfReturning(null);
     }
 
     private int getSequenceBooks() {
