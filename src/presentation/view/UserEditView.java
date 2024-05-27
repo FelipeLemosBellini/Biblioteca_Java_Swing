@@ -3,6 +3,7 @@ package presentation.view;
 import core.entities.User;
 import core.enums.ECategory;
 import core.enums.EProfile;
+import core.interfaces.ICurrentUser;
 import presentation.controller.UserEditController;
 
 import javax.swing.*;
@@ -19,11 +20,11 @@ public class UserEditView extends JFrame {
     private JTextField passwordField;
     private JComboBox<String> comboBoxCategory;
 
-    private User currentUser = null;
+    private ICurrentUser _currentUser;
 
-    public UserEditView(UserEditController userEditController, User user) {
+    public UserEditView(UserEditController userEditController, ICurrentUser currentUser) {
         _userEditController = userEditController;
-        this.currentUser = user;
+        _currentUser = currentUser;
 
         defineWindowConfiguration();
         defineMenuConfiguration();
@@ -53,9 +54,9 @@ public class UserEditView extends JFrame {
             comboBoxCategory.addItem(eProfile.toString());
         }
 
-        if (currentUser != null) {
-            loginField = new JTextField(currentUser.getLogin(), 15);
-            comboBoxCategory.setSelectedItem(currentUser.getProfile().toString());
+        if (_currentUser.getCurrentUser() != null) {
+            loginField = new JTextField(_currentUser.getCurrentUser().getLogin(), 15);
+            comboBoxCategory.setSelectedItem(_currentUser.getCurrentUser().getProfile().toString());
         } else {
             loginField = new JTextField(15);
         }
@@ -71,7 +72,7 @@ public class UserEditView extends JFrame {
         formPanel.add(new JLabel("Nome:"));
         formPanel.add(loginField);
 
-        if (currentUser == null) {
+        if (_currentUser.getCurrentUser() == null) {
             formPanel.add(new JLabel("Senha:"));
             formPanel.add(passwordField);
         }
@@ -109,14 +110,14 @@ public class UserEditView extends JFrame {
         }
 
         try {
-            if (currentUser == null) {
+            if (_currentUser.getCurrentUser() == null) {
                 if (passwordFieldText.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Preencha todos os campos");
                     return;
                 }
                 _userEditController.createUser(name, passwordFieldText, category);
             } else {
-                _userEditController.editUser(currentUser, name, category);
+                _userEditController.editUser(_currentUser.getCurrentUser(), name, category);
             }
             closeWindow();
         } catch (NumberFormatException ex) {

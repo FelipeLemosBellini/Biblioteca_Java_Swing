@@ -1,6 +1,7 @@
 package presentation;
 
 import core.entities.User;
+import core.interfaces.ICurrentUser;
 import core.services.AdminPermissions;
 import infrastructure.interfaces.IBookRepository;
 import infrastructure.interfaces.IUserRepository;
@@ -19,68 +20,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PresentationManager {
-    private final BookRepositoryListener _bookRepositoryListener;
-    private final UserRepositoryListener _userRepositoryListener;
-
-    private final IBookRepository _bookRepository;
-    private final IUserRepository _userRepository;
-
-    private User _currentUser;
+    private ICurrentUser _currentUser;
 
     private final Map<String, JFrame> openWindows;
 
-    public PresentationManager() {
-
-        _bookRepositoryListener = new BookRepositoryListener();
-        _userRepositoryListener = new UserRepositoryListener();
-
-        //teste hibernate descomenta
-        _bookRepository = new BookHibernateRepository(startUserHibernateRepository());
-        _userRepository = new UserHibernateRepository(startUserHibernateRepository());
-
-        //teste RAM local descomenta
-//        _userRepository = new UserRamMemoryRepository();
-//        _bookRepository = new BookRamMemoryRepository();
-
+    public PresentationManager(ICurrentUser currentUser) {
+        _currentUser = currentUser;
         openWindows = new HashMap<>();
-
-        startLogin();
-    }
-
-    public PersistentDataRepository startUserHibernateRepository() {
-        return new PersistentDataRepository();
     }
 
     public void startLogin() {
         createWindow("Login", () -> {
-            var controller = new LoginController(this, _userRepository);
-            return new LoginView(controller);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getLoginView();
         });
-    }
-
-    public void setCurrentUser(User user) {
-        _currentUser = user;
     }
 
     public void startHome() {
         createWindow("Home", () -> {
-            var controller = new HomeController(this);
-            return new HomeView(controller);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getHomeView();
         });
     }
 
     public void startLibrary() {
         createWindow("Library", () -> {
-            var controller = new LibraryController(this, _bookRepository, _bookRepositoryListener);
-            return new LibraryView(controller, this);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getLibraryView();
         });
     }
 
     public void startUserManagement() {
-        if (AdminPermissions.verifyAdminUser(_currentUser)) {
+        if (AdminPermissions.verifyAdminUser(_currentUser.getCurrentUser())) {
             createWindow("UserManagement", () -> {
-                var controller = new UserManagementController(this, _userRepository, _userRepositoryListener);
-                return new UserManagementView(controller, this);
+                var serviceLocator = ServiceLocator.getInstance();
+                return serviceLocator.getUserManagementView();
             });
         } else
             startInformationWindow("Usuário sem permissão de acesso");
@@ -88,36 +62,36 @@ public class PresentationManager {
 
     public void startUserEdit(User user) {
         createWindow("UserEdit", () -> {
-            var controller = new UserEditController(this, _userRepository, _userRepositoryListener);
-            return new UserEditView(controller, user);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getUserEditView();
         });
     }
 
     public void startUserPasswordEdit(User user) {
         createWindow("UserEditPassword", () -> {
-            var controller = new UserEditPasswordController(this, _userRepositoryListener, _userRepository);
-            return new UserEditPasswordView(controller, user);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getUserEditPasswordView();
         });
     }
 
     public void startBookEdit(Book book) {
         createWindow("BookEdit", () -> {
-            var controller = new BookEditController(_bookRepository, _bookRepositoryListener);
-            return new BookEditView(controller, book);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getBookEditView(book);
         });
     }
 
     public void startBookLending(Book book) {
         createWindow("BookLending", () -> {
-            var controller = new BookLendingController(_bookRepositoryListener, _bookRepository);
-            return new BookLendingView(controller, book);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getBookLendingView(book);
         });
     }
 
     public void startInformationWindow(String message) {
         createWindow("Information_" + message.replace(" ", "_"), () -> {
-            var controller = new InformationController(this);
-            return new InformationView(controller, message);
+            var serviceLocator = ServiceLocator.getInstance();
+            return serviceLocator.getInformationView(message);
         });
     }
 

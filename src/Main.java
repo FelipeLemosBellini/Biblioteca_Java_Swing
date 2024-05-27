@@ -5,6 +5,7 @@ import infrastructure.repositories.PersistentDataRepository;
 import infrastructure.repositories.UserHibernateRepository;
 import org.hibernate.SessionFactory;
 import presentation.PresentationManager;
+import presentation.ServiceLocator;
 
 import javax.swing.*;
 import java.util.List;
@@ -35,10 +36,9 @@ public class Main {
 //        userList = userHibernateRepository.searchUser("ff");
 //        System.out.println(userList.getFirst().getId());
 
-
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new PresentationManager();
+                ServiceLocator.getInstance().getPresentationManager().startLogin();
             }
         });
     }

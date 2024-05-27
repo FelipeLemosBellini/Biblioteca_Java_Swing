@@ -4,6 +4,7 @@ import core.entities.Administrator;
 import core.entities.Employee;
 import core.entities.User;
 import core.enums.EProfile;
+import core.interfaces.ICurrentUser;
 import infrastructure.interfaces.IUserRepository;
 import presentation.PresentationManager;
 
@@ -12,14 +13,17 @@ import java.util.Objects;
 public class LoginController {
     private final PresentationManager _presentationManager;
     private final IUserRepository _userRepository;
+    private final ICurrentUser _currentUser;
     
     public LoginController(
             PresentationManager presentationManager,
-            IUserRepository userRepository
+            IUserRepository userRepository,
+            ICurrentUser currentUser
     ) 
     {
         _presentationManager = presentationManager;
         _userRepository = userRepository;
+        _currentUser = currentUser;
     }
     
     public boolean tryMakeUserLogin(String login, String password){
@@ -52,7 +56,11 @@ public class LoginController {
             currentUser = new Employee(user);
         else
             currentUser = user;
-        
-        _presentationManager.setCurrentUser(currentUser);
+
+        try {
+            _currentUser.setCurrentUser(currentUser);
+        } catch (Exception e) {
+            _presentationManager.startInformationWindow("Usuário já autenticado!");
+        }
     }
 }

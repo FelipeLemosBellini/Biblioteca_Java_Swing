@@ -2,6 +2,7 @@ package presentation.view;
 
 import core.entities.User;
 import core.enums.EProfile;
+import core.interfaces.ICurrentUser;
 import presentation.contracts.IUserRepositoryListener;
 import presentation.controller.UserEditController;
 import presentation.controller.UserEditPasswordController;
@@ -19,11 +20,11 @@ public class UserEditPasswordView extends JFrame {
     private JTextField newPasswordField;
     private JTextField confirmedPasswordField;
 
-    private final User currentUser;
+    private final ICurrentUser _currentUser;
 
-    public UserEditPasswordView(UserEditPasswordController userEditPasswordController, User user) {
+    public UserEditPasswordView(UserEditPasswordController userEditPasswordController, ICurrentUser currentUser) {
         _userEditPasswordController = userEditPasswordController;
-        this.currentUser = user;
+        _currentUser = currentUser;
 
         defineWindowConfiguration();
         defineMenuConfiguration();
@@ -97,11 +98,11 @@ public class UserEditPasswordView extends JFrame {
         }
 
         try {
-            if (currentUser == null) {
+            if (_currentUser.getCurrentUser() == null) {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado");
                 return;
             } else {
-                var passWasEdited = _userEditPasswordController.changePassword(currentUser,oldPasswordFieldText, newPasswordFieldText, confirmedPasswordFieldText);
+                var passWasEdited = _userEditPasswordController.changePassword(_currentUser.getCurrentUser(),oldPasswordFieldText, newPasswordFieldText, confirmedPasswordFieldText);
                 
                 if (!passWasEdited) {
                     JOptionPane.showMessageDialog(this, "A senha antiga ou as novas senhas não coencidem");
