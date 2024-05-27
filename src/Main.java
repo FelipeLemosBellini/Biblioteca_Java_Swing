@@ -1,14 +1,6 @@
-import core.entities.Employee;
-import core.entities.User;
-import core.enums.EProfile;
-import infrastructure.repositories.PersistentDataRepository;
-import infrastructure.repositories.UserHibernateRepository;
-import org.hibernate.SessionFactory;
-import presentation.PresentationManager;
-import presentation.ServiceLocator;
+import dependencyInjection.ServiceLocator;
 
 import javax.swing.*;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
