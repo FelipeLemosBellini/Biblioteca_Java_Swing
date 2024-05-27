@@ -1,4 +1,5 @@
 import dependencyInjection.ServiceLocator;
+import features.user.datasources.IUserRepository;
 
 import javax.swing.*;
 
@@ -28,6 +29,8 @@ public class Main {
 //        userList = userHibernateRepository.searchUser("ff");
 //        System.out.println(userList.getFirst().getId());
 
+        IUserRepository repository = ServiceLocator.getInstance().getUserRepository();
+        
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 ServiceLocator.getInstance().getPresentationManager().startLogin();

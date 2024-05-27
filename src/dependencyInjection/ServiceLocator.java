@@ -1,29 +1,37 @@
 package dependencyInjection;
 
-import book.datasources.BookHibernateRepository;
-import book.datasources.IBookRepository;
-import book.entities.BookEntity;
-import book.presentation.BookEditController;
-import book.presentation.BookEditView;
-import book.presentation.BookLendingController;
-import book.presentation.BookLendingView;
-import home.presentation.HomeController;
-import home.presentation.HomeView;
-import informer.InformationController;
-import informer.InformationView;
-import library.presentation.LibraryController;
-import library.presentation.LibraryView;
-import login.presentation.LoginController;
-import login.presentation.LoginView;
-import user.services.ICurrentUser;
-import user.services.CurrentUserImpl;
-import book.datasources.BookRepositoryListener;
-import user.datasources.IUserRepository;
-import user.datasources.UserHibernateDAO;
-import user.datasources.UserRepositoryListener;
-import user.presentation.*;
-import hibernate.PersistentDataRepository;
-import utils.PresentationManager;
+import features.book.datasources.BookHibernateRepository;
+import features.book.datasources.IBookRepository;
+import features.book.entities.BookEntity;
+import features.book.presentation.BookEditController;
+import features.book.presentation.BookEditView;
+import features.bookLoan.BookLendingController;
+import features.bookLoan.BookLendingView;
+import features.home.HomeController;
+import features.home.HomeView;
+import features.informer.InformationController;
+import features.informer.InformationView;
+import features.library.datasources.ILibraryDao;
+import features.library.datasources.ILibraryRepository;
+import features.library.datasources.LibraryDaoHibernateImpl;
+import features.library.datasources.LibraryRepositoryImpl;
+import features.library.presentation.LibraryController;
+import features.library.presentation.LibraryView;
+import features.login.datasources.ILoginDao;
+import features.login.datasources.ILoginRepository;
+import features.login.datasources.LoginDaoHibernateImpl;
+import features.login.datasources.LoginRepositoryImpl;
+import features.login.presentation.LoginController;
+import features.login.presentation.LoginView;
+import features.currentUser.ICurrentUser;
+import features.currentUser.CurrentUserImpl;
+import features.book.datasources.BookRepositoryListener;
+import features.user.datasources.IUserRepository;
+import features.user.datasources.UserHibernateDAO;
+import features.user.datasources.UserRepositoryListener;
+import features.user.presentation.*;
+import infraestructure.PersistentDataRepository;
+import infraestructure.PresentationManager;
 
 public class ServiceLocator {
     private static ServiceLocator instance;
@@ -103,17 +111,33 @@ public class ServiceLocator {
     public HomeView getHomeView() {
         return new HomeView(getHomeController());
     }
+
+    public ILoginDao getLoginDao(){
+        return new LoginDaoHibernateImpl(getPersistentDataRepository());
+    }
+    
+    public ILoginRepository getLoginRepository() {
+        return new LoginRepositoryImpl(getLoginDao());
+    }
     
     public LoginController getLoginController() {
-        return new LoginController(getPresentationManager(), getUserRepository(), getCurrentUser());
+        return new LoginController(getPresentationManager(), getLoginRepository(), getCurrentUser());
     }
     
     public LoginView getLoginView() {
         return new LoginView(getLoginController());
     }
+
+    public ILibraryDao getLibraryDao() {
+        return new LibraryDaoHibernateImpl(getPersistentDataRepository());
+    }
+    
+    public ILibraryRepository getLibraryRepository() {
+        return new LibraryRepositoryImpl(getLibraryDao());
+    }
     
     public LibraryController getLibraryController() {
-        return new LibraryController(getPresentationManager(), getBookRepository(), getBookRepositoryListener());
+        return new LibraryController(getPresentationManager(), getLibraryRepository(), getBookRepositoryListener());
     }
     
     public LibraryView getLibraryView() {
