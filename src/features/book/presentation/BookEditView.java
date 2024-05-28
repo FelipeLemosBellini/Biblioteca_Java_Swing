@@ -96,7 +96,6 @@ public class BookEditView extends JFrame {
     }
     private void closeWindow() {
         _bookEditController.closeWindow();
-        dispose();
     }
 
     private void saveRow(ActionEvent event) {

@@ -1,4 +1,4 @@
-package features.bookLoan;
+package features.bookLoan.presentation;
 
 import features.book.entities.BookEntity;
 
@@ -13,16 +13,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BookLendingView extends JFrame {
-    private final BookLendingController _bookLendingController;
+public class BookLoanView extends JFrame {
+    private final BookLoanController _bookLoanController;
 
     private JFormattedTextField dateOfReturn;
     private JFormattedTextField dateOfBorrow;
     private JTextField borrow;
     private BookEntity currentBookEntity = null;
 
-    public BookLendingView(BookLendingController bookLendingController, BookEntity bookEntity) {
-        _bookLendingController = bookLendingController;
+    public BookLoanView(BookLoanController bookLoanController, BookEntity bookEntity) {
+        _bookLoanController = bookLoanController;
         this.currentBookEntity = bookEntity;
 
         defineWindowConfiguration();
@@ -112,13 +112,13 @@ public class BookLendingView extends JFrame {
         closeWindow();
     }
     private void closeWindow() {
-        _bookLendingController.closeWindow();
+        _bookLoanController.closeWindow();
         dispose();
     }
 
     private void returnBook(ActionEvent event){
         if(currentBookEntity.getBorrowing()){
-            _bookLendingController.returnBook(currentBookEntity);
+            _bookLoanController.returnBook(currentBookEntity);
             closeWindow();
         }
         else{
@@ -134,7 +134,7 @@ public class BookLendingView extends JFrame {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date data = dateFormat.parse(dateOfReturnText);
 
-                var wasBorrow = _bookLendingController.borrowBook(currentBookEntity, data);
+                var wasBorrow = _bookLoanController.borrowBook(currentBookEntity, data);
 
                 if(wasBorrow)
                     closeWindow();

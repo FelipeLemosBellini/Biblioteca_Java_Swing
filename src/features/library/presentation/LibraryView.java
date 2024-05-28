@@ -1,7 +1,7 @@
 package features.library.presentation;
 
 import infraestructure.PresentationManager;
-import features.book.datasources.IBookRepositoryListener;
+import features.book.dataSources.IBookListener;
 import utils.NotSelectedRowException;
 import features.book.entities.BookEntity;
 import utils.MenuBarComponent;
@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class LibraryView extends JFrame implements IBookRepositoryListener {
+public class LibraryView extends JFrame implements IBookListener {
     private final LibraryController _libraryController;
     private final PresentationManager _presentationManager;
 
@@ -162,7 +162,7 @@ public class LibraryView extends JFrame implements IBookRepositoryListener {
     }
 
     @Override
-    public void updateBookList() {
+    public void notifyBookChanged() {
         updateTable();
     }
 

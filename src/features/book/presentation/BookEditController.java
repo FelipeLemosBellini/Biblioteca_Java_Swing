@@ -1,27 +1,33 @@
 package features.book.presentation;
 
-import features.book.datasources.BookRepositoryListener;
-import features.book.datasources.IBookRepository;
-import features.book.datasources.IBookRepositoryListener;
+import features.book.dataSources.*;
 import features.book.entities.BookEntity;
 import features.book.entities.ECategoryEntity;
+import infraestructure.PresentationManager;
 
 public class BookEditController {
     private final IBookRepository _bookRepository;
-    private final BookRepositoryListener _bookRepositoryListener;
+    private final IBookNotifier _bookNotifier;
+    private final IBookSubscriber _bookSubscriber;
 
-    public BookEditController(IBookRepository bookRepository, BookRepositoryListener bookRepositoryListener) {
+    private final PresentationManager _presentationManager;
+    
+    
+    public BookEditController(PresentationManager presentationManager, IBookRepository bookRepository, IBookNotifier bookNotifier, IBookSubscriber bookSubscriber) {
         _bookRepository = bookRepository;
-        _bookRepositoryListener = bookRepositoryListener;
-        
+        _bookNotifier = bookNotifier;
+        _bookSubscriber = bookSubscriber;
+        _presentationManager = presentationManager;
     }
     
-    public void addListener(IBookRepositoryListener listener){
-        _bookRepositoryListener.subscribe(listener);
+    public void addListener(IBookListener listener){
+        _bookSubscriber.subscribe(listener);
     }
 
     public void closeWindow(){
-        _bookRepositoryListener.notifyDataChanged();
+        _presentationManager.closeWindow("BookEdit");
+        _bookNotifier.notifyBookChanged();
+        
     }
 
     public void createBook(String name, String author, ECategoryEntity category, String isbn) {

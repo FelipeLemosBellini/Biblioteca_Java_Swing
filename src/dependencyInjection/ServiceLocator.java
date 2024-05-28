@@ -1,12 +1,13 @@
 package dependencyInjection;
 
-import features.book.datasources.BookHibernateRepository;
-import features.book.datasources.IBookRepository;
+import features.book.dataSources.*;
 import features.book.entities.BookEntity;
 import features.book.presentation.BookEditController;
 import features.book.presentation.BookEditView;
-import features.bookLoan.BookLendingController;
-import features.bookLoan.BookLendingView;
+import features.bookLoan.dataSources.BookLoanRepositoryImpl;
+import features.bookLoan.dataSources.IBookLoanRepository;
+import features.bookLoan.presentation.BookLoanController;
+import features.bookLoan.presentation.BookLoanView;
 import features.home.HomeController;
 import features.home.HomeView;
 import features.informer.InformationController;
@@ -25,7 +26,6 @@ import features.login.presentation.LoginController;
 import features.login.presentation.LoginView;
 import features.currentUser.ICurrentUser;
 import features.currentUser.CurrentUserImpl;
-import features.book.datasources.BookRepositoryListener;
 import features.user.datasources.IUserRepository;
 import features.user.datasources.UserHibernateDAO;
 import features.user.datasources.UserRepositoryListener;
@@ -62,13 +62,13 @@ public class ServiceLocator {
         return presentationManager;
     }
 
-    private BookRepositoryListener bookRepositoryListener;
-    public BookRepositoryListener getBookRepositoryListener() {
-        if(bookRepositoryListener == null) {
-            bookRepositoryListener = new BookRepositoryListener();
+    private IBookSubscriber bookSubscriber;
+    public IBookSubscriber getBookSubscriber() {
+        if(bookSubscriber == null) {
+            bookSubscriber = new BookListener();
         }
 
-        return bookRepositoryListener;
+        return bookSubscriber;
     }
 
     private UserRepositoryListener userRepositoryListener;
@@ -137,7 +137,7 @@ public class ServiceLocator {
     }
     
     public LibraryController getLibraryController() {
-        return new LibraryController(getPresentationManager(), getLibraryRepository(), getBookRepositoryListener());
+        return new LibraryController(getPresentationManager(), getLibraryRepository(), getBookSubscriber());
     }
     
     public LibraryView getLibraryView() {
@@ -169,19 +169,27 @@ public class ServiceLocator {
     }
     
     public BookEditController getBookEditController(){
-        return new BookEditController(getBookRepository(), getBookRepositoryListener());
+        return new BookEditController(getPresentationManager(), getBookRepository(), getBookNotifier(), getBookSubscriber());
     }
     
     public BookEditView getBookEditView(BookEntity bookEntity) {
         return new BookEditView(getBookEditController(), bookEntity);
     }
     
-    public BookLendingController getBookLendingController(){
-        return new BookLendingController(getBookRepositoryListener(), getBookRepository());
+    public IBookNotifier getBookNotifier(){
+        return new BookListener();
     }
     
-    public BookLendingView getBookLendingView(BookEntity bookEntity) {
-        return new BookLendingView(getBookLendingController(), bookEntity);
+    public IBookLoanRepository getBookLoanRepository() {
+        return new BookLoanRepositoryImpl();
+    }
+    
+    public BookLoanController getBookLendingController(){
+        return new BookLoanController(getBookNotifier(), getBookLoanRepository());
+    }
+    
+    public BookLoanView getBookLendingView(BookEntity bookEntity) {
+        return new BookLoanView(getBookLendingController(), bookEntity);
     }
     
     public InformationController getInformationController() {

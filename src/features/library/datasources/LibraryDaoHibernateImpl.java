@@ -1,6 +1,7 @@
 package features.library.datasources;
 
 import features.book.entities.BookEntity;
+import features.book.entities.ECategoryEntity;
 import infraestructure.IPersistentDataRepository;
 
 import java.util.List;
@@ -18,9 +19,35 @@ public class LibraryDaoHibernateImpl implements ILibraryDao {
         
         try {
             bookEntityList = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
-                return session.createSelectionQuery("from BookEntity where name = :name", BookEntity.class)
-                        .setParameter("name", search)
-                        .getResultList();
+                if (search == null || search.trim().isEmpty()) {
+                    return session.createSelectionQuery("from BookEntity", BookEntity.class).getResultList();
+                } else {
+                    Long id = null;
+                    try {
+                        id = Long.parseLong(search);
+                    } catch (NumberFormatException e) {
+                    }
+
+                    ECategoryEntity category = ECategoryEntity.action.getECategory(search);
+                    String query = "from BookEntity where name like :search " +
+                            "or author like :search " +
+                            "or ISBN like :search" +
+                            (category != null ? " or category = :category" : "") +
+                            (id != null ? " or id = :id" : "");
+
+                    var queryBuilder = session.createSelectionQuery(query, BookEntity.class)
+                            .setParameter("search", "%" + search + "%");
+
+                    if (category != null) {
+                        queryBuilder.setParameter("category", category);
+                    }
+
+                    if (id != null) {
+                        queryBuilder.setParameter("id", id);
+                    }
+
+                    return queryBuilder.getResultList();
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();
