@@ -3,8 +3,8 @@ package features.user.presentation;
 import features.user.datasources.IUserListener;
 import features.user.entities.UserEntity;
 import infraestructure.PresentationManager;
-import utils.NotSelectedRowException;
-import utils.MenuBarComponent;
+import features.viewComponents.NotSelectedRowException;
+import features.viewComponents.MenuBarComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

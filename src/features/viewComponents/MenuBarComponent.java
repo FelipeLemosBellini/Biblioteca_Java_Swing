@@ -1,4 +1,4 @@
-package utils;
+package features.viewComponents;
 
 import infraestructure.PresentationManager;
 
@@ -39,13 +39,5 @@ public class MenuBarComponent {
 
     private static void showAboutDialog(JFrame parentFrame) {
         JOptionPane.showMessageDialog(parentFrame, "Library Management System\nVersion 1.0", "About", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private static void newFileAction() {
-        System.out.println("Novo arquivo acionado");
-    }
-
-    private static void openFileAction() {
-        System.out.println("Abrir arquivo acionado");
     }
 }

@@ -13,6 +13,6 @@ public interface IBookDao {
     
     List<BookEntity> searchBooks(String search);
     
-    void updateToBorrow(BookEntity bookEntity, Date dateOfReturning);
+    boolean updateToBorrow(BookEntity bookEntity, Date dateOfReturning);
     void updateToUnborrowed(BookEntity bookEntity);
 }

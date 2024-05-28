@@ -72,8 +72,8 @@ public class BookHibernateDaoImpl implements IBookDao {
     }
 
     @Override
-    public void updateToBorrow(BookEntity bookEntity, Date dateOfReturning) {
-
+    public boolean updateToBorrow(BookEntity bookEntity, Date dateOfReturning) {
+        return false;
     }
 
     @Override

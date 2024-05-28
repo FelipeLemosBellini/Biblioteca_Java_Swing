@@ -71,10 +71,37 @@ public class UserHibernateDAOImpl implements IUserRepository {
         List<UserEntity> userEntities = null;
         try {
             userEntities = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
-                return session.createQuery("from UserEntity", UserEntity.class).getResultList();
+                if (searchString == null || searchString.trim().isEmpty()) {
+                    return session.createSelectionQuery("from UserEntity", UserEntity.class).getResultList();
+                } else {
+                    int id = 0;
+                    try {
+                        id = Integer.parseInt(searchString);
+                    } catch (NumberFormatException e) {
+                    }
+
+                    EProfileEntity profile = EProfileEntity.admin.getEProfile(searchString);
+
+                    String query = "from UserEntity where login like :search " +
+                            (profile != null ? "or profile = :profile" : "") +
+                            (id != 0 ? "or id = :id" : "");
+
+                    var queryBuilder = session.createSelectionQuery(query, UserEntity.class)
+                            .setParameter("search", "%" + searchString + "%");
+
+                    if (profile != null) {
+                        queryBuilder.setParameter("profile", profile);
+                    }
+
+                    if (id != 0) {
+                        queryBuilder.setParameter("id", id);
+                    }
+
+                    return queryBuilder.getResultList();
+                }
             });
         } catch (Exception e) {
-            System.err.println("Erro ao buscar todos os usuários");
+            System.err.println("Erro ao buscar usuários: " + e.getMessage());
             e.printStackTrace();
         }
         return userEntities;

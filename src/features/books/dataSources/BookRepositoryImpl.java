@@ -2,9 +2,10 @@ package features.books.dataSources;
 
 import features.books.entities.BookEntity;
 
+import java.util.Date;
 import java.util.List;
 
-public class BookRepositoryImpl implements IBookRepository{
+public class BookRepositoryImpl implements IBookRepository {
     private IBookDao _bookDao;
 
     public BookRepositoryImpl(IBookDao bookDao) {
@@ -27,12 +28,22 @@ public class BookRepositoryImpl implements IBookRepository{
     }
 
     @Override
+    public boolean updateToBorrow(BookEntity bookEntity, Date dateOfReturning) {
+        return _bookDao.updateToBorrow(bookEntity, dateOfReturning);
+    }
+
+    @Override
+    public void updateToUnborrowed(BookEntity bookEntity) {
+        _bookDao.updateToUnborrowed(bookEntity);
+    }
+
+    @Override
     public BookEntity getBook(int id) {
         return _bookDao.readBook(id);
     }
 
     @Override
     public void editBook(BookEntity bookEntity) {
-        
+        _bookDao.updateBook(bookEntity);
     }
 }

@@ -4,8 +4,6 @@ import features.books.dataSources.*;
 import features.books.entities.BookEntity;
 import features.books.presentation.BookEditController;
 import features.books.presentation.BookEditView;
-import features.loans.dataSources.BookLoanRepositoryImpl;
-import features.loans.dataSources.IBookLoanRepository;
 import features.books.presentation.BookLoanController;
 import features.books.presentation.BookLoanView;
 import features.menu.MenuController;
@@ -127,6 +125,14 @@ public class ServiceLocator {
         return new LoginView(getLoginController());
     }
 
+    public BookLoanController getBookLoanController() {
+        return new BookLoanController(getBookNotifier(), getBookRepository());
+    }
+    
+    public BookLoanView getBookLoanView(BookEntity bookEntity) {
+        return new BookLoanView(getBookLoanController(), bookEntity);
+    }
+
     public BooksController getLibraryController() {
         return new BooksController(getPresentationManager(), getBookRepository(), getBookSubscriber());
     }
@@ -169,18 +175,6 @@ public class ServiceLocator {
 
     public IBookNotifier getBookNotifier() {
         return new BookObserverImpl();
-    }
-
-    public IBookLoanRepository getBookLoanRepository() {
-        return new BookLoanRepositoryImpl();
-    }
-
-    public BookLoanController getBookLendingController() {
-        return new BookLoanController(getBookNotifier(), getBookLoanRepository());
-    }
-
-    public BookLoanView getBookLendingView(BookEntity bookEntity) {
-        return new BookLoanView(getBookLendingController(), bookEntity);
     }
 
     public InformationController getInformationController() {

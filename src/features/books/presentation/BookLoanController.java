@@ -1,18 +1,18 @@
 package features.books.presentation;
 
 import features.books.dataSources.IBookNotifier;
+import features.books.dataSources.IBookRepository;
 import features.books.entities.BookEntity;
-import features.loans.dataSources.IBookLoanRepository;
 
 import java.util.Date;
 
 public class BookLoanController {
     private final IBookNotifier _bookNotifier;
-    private final IBookLoanRepository _bookLoanRepository;
+    private final IBookRepository _bookRepository;
 
-    public BookLoanController(IBookNotifier bookNotifier, IBookLoanRepository bookloanRepository) {
+    public BookLoanController(IBookNotifier bookNotifier, IBookRepository bookRepository) {
         _bookNotifier = bookNotifier;
-        _bookLoanRepository = bookloanRepository;
+        _bookRepository = bookRepository;
     }
     
     public void closeWindow(){
@@ -20,10 +20,10 @@ public class BookLoanController {
     }
     
     public boolean borrowBook(BookEntity bookEntity, Date dateOfReturning){
-        return _bookLoanRepository.borrow(bookEntity, dateOfReturning);
+        return _bookRepository.updateToBorrow(bookEntity, dateOfReturning);
     }
     
     public void returnBook(BookEntity bookEntity){
-        _bookLoanRepository.returnTheBook(bookEntity);
+        _bookRepository.updateToUnborrowed(bookEntity);
     }
 }

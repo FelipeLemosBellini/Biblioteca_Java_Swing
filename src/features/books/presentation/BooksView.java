@@ -2,9 +2,9 @@ package features.books.presentation;
 
 import infraestructure.PresentationManager;
 import features.books.dataSources.IBookListener;
-import utils.NotSelectedRowException;
+import features.viewComponents.NotSelectedRowException;
 import features.books.entities.BookEntity;
-import utils.MenuBarComponent;
+import features.viewComponents.MenuBarComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

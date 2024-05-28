@@ -78,7 +78,7 @@ public class PresentationManager {
     public void startBookLending(BookEntity bookEntity) {
         createWindow("BookLending", () -> {
             var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getBookLendingView(bookEntity);
+            return serviceLocator.getBookLoanView(bookEntity);
         });
     }
 
