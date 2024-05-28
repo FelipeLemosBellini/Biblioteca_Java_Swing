@@ -5,7 +5,7 @@ import features.user.entities.AdministratorEntity;
 import features.user.entities.EmployeeEntity;
 import features.user.entities.UserEntity;
 import features.user.entities.EProfileEntity;
-import features.currentUser.ICurrentUser;
+import features.session.ICurrentUser;
 import infraestructure.PresentationManager;
 
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package infraestructure;
 
-import features.book.entities.BookEntity;
+import features.books.entities.BookEntity;
 import features.user.entities.UserEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;

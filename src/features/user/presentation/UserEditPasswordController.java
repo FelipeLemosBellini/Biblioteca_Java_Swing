@@ -1,23 +1,23 @@
 package features.user.presentation;
 
-import features.user.datasources.UserRepositoryListener;
+import features.user.datasources.UserObserverImpl;
 import features.user.datasources.IUserRepository;
 import features.user.entities.UserEntity;
 import infraestructure.PresentationManager;
 
 public class UserEditPasswordController {
-    private final UserRepositoryListener _userRepositoryListener;
+    private final UserObserverImpl _userObserverImpl;
     private final PresentationManager _presentationManager;
     private final IUserRepository _userRepository;
 
-    public UserEditPasswordController(PresentationManager presentationManager, UserRepositoryListener userRepositoryListener, IUserRepository userRepository) {
-        _userRepositoryListener = userRepositoryListener;
+    public UserEditPasswordController(PresentationManager presentationManager, UserObserverImpl userObserverImpl, IUserRepository userRepository) {
+        _userObserverImpl = userObserverImpl;
         _presentationManager = presentationManager;
         _userRepository = userRepository;
     }
 
     public void closeWindow() {
-        _userRepositoryListener.notifyDataChanged();
+        _userObserverImpl.notifyDataChanged();
         _presentationManager.closeWindow("UserEditPassword");
     }
 

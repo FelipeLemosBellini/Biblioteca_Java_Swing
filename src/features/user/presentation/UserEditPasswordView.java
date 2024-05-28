@@ -1,6 +1,6 @@
 package features.user.presentation;
 
-import features.currentUser.ICurrentUser;
+import features.session.ICurrentUser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -1,6 +1,6 @@
 package features.user.presentation;
 
-import features.currentUser.ICurrentUser;
+import features.session.ICurrentUser;
 import features.user.entities.EProfileEntity;
 
 import javax.swing.*;

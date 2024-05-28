@@ -1,7 +1,7 @@
 package features.user.presentation;
 
 import features.user.datasources.IUserListener;
-import features.user.datasources.UserRepositoryListener;
+import features.user.datasources.UserObserverImpl;
 import features.user.datasources.IUserRepository;
 import features.user.entities.UserEntity;
 import infraestructure.PresentationManager;
@@ -11,20 +11,20 @@ import java.util.List;
 public class UserManagementController {
     private final PresentationManager _presentationManager;
     private final IUserRepository _userRepository;
-    private final UserRepositoryListener _userRepositoryListener;
+    private final UserObserverImpl _userObserverImpl;
 
     public UserManagementController(
             PresentationManager presentationManager,
             IUserRepository userRepository,
-            UserRepositoryListener userRepositoryListener
+            UserObserverImpl userObserverImpl
     ) {
         _presentationManager = presentationManager;
         _userRepository = userRepository;
-        _userRepositoryListener = userRepositoryListener;
+        _userObserverImpl = userObserverImpl;
     }
 
     public void addListener(IUserListener listener){
-        _userRepositoryListener.subscribe(listener);
+        _userObserverImpl.subscribe(listener);
     }
 
     public void closeWindow(){

@@ -2,10 +2,10 @@ package infraestructure;
 
 import dependencyInjection.ServiceLocator;
 import features.user.entities.UserEntity;
-import features.currentUser.ICurrentUser;
+import features.session.ICurrentUser;
 import features.permissions.AdminPermissions;
 
-import features.book.entities.BookEntity;
+import features.books.entities.BookEntity;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
