@@ -39,7 +39,6 @@ public class ServiceLocator {
     }
 
     private ICurrentUser currentUser;
-
     public ICurrentUser getCurrentUser() {
         if (currentUser == null) {
             currentUser = new CurrentUserImpl();

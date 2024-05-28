@@ -1,4 +1,9 @@
+import dependencyInjection.DependencyManager;
 import dependencyInjection.ServiceLocator;
+import dependencyInjection.ServiceLocatorImpl;
+import features.books.dataSources.BookHibernateDaoImpl;
+import features.books.dataSources.IBookDao;
+import features.session.ICurrentUser;
 import features.user.datasources.IUserRepository;
 
 import javax.swing.*;
@@ -30,11 +35,19 @@ public class Main {
 //        System.out.println(userList.getFirst().getId());
 
         IUserRepository repository = ServiceLocator.getInstance().getUserRepository();
-        
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 ServiceLocator.getInstance().getPresentationManager().startLogin();
             }
         });
+//        var manager = new DependencyManager();
+//        
+//        manager.AddDependences();
+//        
+//        var locator = ServiceLocatorImpl.getInstance();
+//
+//        BookHibernateDaoImpl serviceA1 = (BookHibernateDaoImpl) locator.getService(BookHibernateDaoImpl.class);
+//        var userRepository = locator.getService(IBookDao.class);
     }
 }
