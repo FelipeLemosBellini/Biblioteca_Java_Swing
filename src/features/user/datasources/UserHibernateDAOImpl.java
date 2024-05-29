@@ -11,14 +11,8 @@ public class UserHibernateDAOImpl implements IUserDao {
 
     public UserHibernateDAOImpl(IPersistentDataRepository persistentDataRepository) {
         this._persistentDataRepository = persistentDataRepository;
-        SeedList();
     }
-
-    private void SeedList() {
-        createUser(new UserEntity("admin", "admin", EProfileEntity.admin));
-        createUser(new UserEntity("employee", "employee", EProfileEntity.employee));
-    }
-
+    
     @Override
     public void createUser(UserEntity userEntity) {
         try {
@@ -58,6 +52,23 @@ public class UserHibernateDAOImpl implements IUserDao {
             });
         } catch (Exception e) {
             System.err.println("Erro ao buscar usuário com id " + id);
+            e.printStackTrace();
+        }
+        return userEntity;
+    }
+
+    @Override
+    public UserEntity readUser(String login) {
+        UserEntity userEntity = null;
+        try {
+            userEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+                return session.createSelectionQuery("from UserEntity where login = :login", UserEntity.class)
+                        .setParameter("login", login)
+                        .uniqueResultOptional()
+                        .orElse(null);
+            });
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar usuário com login " + login);
             e.printStackTrace();
         }
         return userEntity;

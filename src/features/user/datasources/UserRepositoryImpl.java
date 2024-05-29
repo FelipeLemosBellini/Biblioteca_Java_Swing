@@ -32,6 +32,11 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
+    public UserEntity getUser(String login) {
+        return _userDao.readUser(login);
+    }
+
+    @Override
     public List<UserEntity> searchUsers(String searchString) {
         return _userDao.searchUsers(searchString);
     }

@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class BookLoanView extends JFrame {
@@ -111,17 +112,17 @@ public class BookLoanView extends JFrame {
     private void closeWindow(ActionEvent event) {
         closeWindow();
     }
+
     private void closeWindow() {
         _bookLoanController.closeWindow();
         dispose();
     }
 
-    private void returnBook(ActionEvent event){
-        if(currentBookEntity.getBorrowing()){
+    private void returnBook(ActionEvent event) {
+        if (currentBookEntity.getBorrowing()) {
             _bookLoanController.returnBook(currentBookEntity);
             closeWindow();
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(this, "O Livro não está emprestado!");
         }
     }
@@ -131,12 +132,30 @@ public class BookLoanView extends JFrame {
             String dateOfReturnText = dateOfReturn.getText();
 
             if (!dateOfReturnText.isEmpty()) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                Date data = dateFormat.parse(dateOfReturnText);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date receivedDate = sdf.parse(dateOfReturnText);
+                
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                Date currentDate = cal.getTime();
+                
+                Date finalDate;
 
-                var wasBorrow = _bookLoanController.borrowBook(currentBookEntity, data);
+                if (receivedDate.before(currentDate)) {
+                    cal.setTime(currentDate);
+                    cal.add(Calendar.DAY_OF_MONTH, 7);
+                    
+                    finalDate = cal.getTime();
+                } else {
+                    finalDate = receivedDate;
+                }
 
-                if(wasBorrow)
+                boolean wasBorrow = _bookLoanController.borrowBook(currentBookEntity, finalDate);
+                
+                if (wasBorrow)
                     closeWindow();
                 else
                     JOptionPane.showMessageDialog(this, "O Livro nao esta disponivel");
