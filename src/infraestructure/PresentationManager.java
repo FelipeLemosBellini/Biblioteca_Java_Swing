@@ -73,28 +73,28 @@ public class PresentationManager {
     public void startUserPasswordEdit(UserEntity userEntity) {
         createWindow("UserEditPassword", () -> {
             var serviceLocator = ServiceLocatorImpl.getInstance();
-            return (UserEditPasswordView)serviceLocator.getService(UserEditPasswordView.class);
+            return (UserEditPasswordView)serviceLocator.getService(UserEditPasswordView.class, userEntity);
         });
     }
 
     public void startBookEdit(BookEntity bookEntity) {
         createWindow("BookEdit", () -> {
             var serviceLocator = ServiceLocatorImpl.getInstance();
-            return (BookEditView)serviceLocator.getService(BookEditView.class);
+            return (BookEditView)serviceLocator.getService(BookEditView.class, bookEntity);
         });
     }
 
     public void startBookLending(BookEntity bookEntity) {
         createWindow("BookLending", () -> {
             var serviceLocator = ServiceLocatorImpl.getInstance();
-            return (BookLoanView)serviceLocator.getService(BookLoanView.class);
+            return (BookLoanView)serviceLocator.getService(BookLoanView.class, bookEntity);
         });
     }
 
     public void startInformationWindow(String message) {
         createWindow("Information_" + message.replace(" ", "_"), () -> {
             var serviceLocator = ServiceLocatorImpl.getInstance();
-            return (InformationView)serviceLocator.getService(InformationView.class);
+            return (InformationView)serviceLocator.getService(InformationView.class, message);
         });
     }
 

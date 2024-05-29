@@ -38,14 +38,25 @@ public class ServiceLocatorImpl implements IServiceLocator {
         services.put(serviceInterface.getSimpleName(), serviceDescriptor);
     }
 
-    public Object getService(Class<?> serviceClass) {
-        return getService(serviceClass.getSimpleName());
+    public Object getService(Class<?> serviceClass, Object... optionalParameters) {
+        return getService(serviceClass.getSimpleName(), optionalParameters);
     }
 
-    private Object getService(String key) {
+    private Object getService(String key, Object... optionalObjects) {
         var serviceDescriptor = services.get(key);
-        if (serviceDescriptor == null)
-            return null;
+
+        if (serviceDescriptor == null) {
+            for (Object obj : optionalObjects) {
+                if (obj == null)
+                    return null;
+
+                if (obj.getClass().getSimpleName().equals(key)) {
+                    return obj;
+                }
+            }
+
+            throw new RuntimeException("No registered service for " + key);
+        }
 
         try {
             Constructor<?>[] constructors = serviceDescriptor.getServiceClass().getConstructors();
@@ -61,10 +72,8 @@ public class ServiceLocatorImpl implements IServiceLocator {
                     for (int i = 0; i < parameterTypes.length; i++) {
 
                         String parameterKey = parameterTypes[i].getSimpleName();
-                        Object dependency = getService(parameterKey);
+                        Object dependency = getService(parameterKey, optionalObjects);
 
-                        if (dependency == null)
-                            throw new RuntimeException("No registered service for " + parameterKey);
 
                         parameters[i] = dependency;
                     }
@@ -75,7 +84,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
+
         return null;
     }
 
@@ -93,7 +102,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
                     if (!singletonInstances.containsKey(singletonKey)) {
                         singletonInstances.put(singletonKey, constructor.newInstance(parameters));
                     }
-                    
+
                     return singletonInstances.get(singletonKey);
             }
 
