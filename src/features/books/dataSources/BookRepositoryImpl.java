@@ -2,11 +2,10 @@ package features.books.dataSources;
 
 import features.books.entities.BookEntity;
 
-import java.util.Date;
 import java.util.List;
 
 public class BookRepositoryImpl implements IBookRepository {
-    private IBookDao _bookDao;
+    private final IBookDao _bookDao;
 
     public BookRepositoryImpl(IBookDao bookDao) {
         _bookDao = bookDao;

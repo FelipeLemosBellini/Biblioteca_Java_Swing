@@ -1,6 +1,6 @@
 package features.user.presentation;
 
-import features.session.ICurrentUser;
+import features.user.datasources.IUserListener;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
 
@@ -16,7 +16,7 @@ public class UserEditView extends JFrame {
     private JTextField passwordField;
     private JComboBox<String> comboBoxCategory;
 
-    private UserEntity _editingUser;
+    private final UserEntity _editingUser;
 
     public UserEditView(UserEditController userEditController, UserEntity editingUser) {
         _userEditController = userEditController;

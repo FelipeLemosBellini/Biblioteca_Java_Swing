@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class ServiceLocatorImpl implements IServiceLocator {
     private static ServiceLocatorImpl instance;
-    private Map<String, ServiceDescriptor> services = new HashMap<>();
-    private Map<String, Object> singletonInstances = new HashMap<>();
+    private final Map<String, ServiceDescriptor> services = new HashMap<>();
+    private final Map<String, Object> singletonInstances = new HashMap<>();
 
     public static ServiceLocatorImpl getInstance() {
         if (instance == null) {

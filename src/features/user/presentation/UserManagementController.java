@@ -2,7 +2,6 @@ package features.user.presentation;
 
 import features.user.datasources.IUserListener;
 import features.user.datasources.IUserSubscriber;
-import features.user.datasources.UserObserverImpl;
 import features.user.datasources.IUserRepository;
 import features.user.entities.UserEntity;
 import infraestructure.PresentationManager;

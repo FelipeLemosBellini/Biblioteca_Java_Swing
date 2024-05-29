@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PresentationManager {
-    private ICurrentUser _currentUser;
+    private final ICurrentUser _currentUser;
 
     private final Map<String, JFrame> openWindows;
 

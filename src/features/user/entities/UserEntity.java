@@ -60,12 +60,4 @@ public class UserEntity {
 
         return true;
     }
-    
-
-    public boolean verifyPassword(String passwordToTest) {
-        if (passwordToTest == null || passwordToTest.isEmpty())
-            return false;
-
-        return this.password.equals(passwordToTest);
-    }
 }

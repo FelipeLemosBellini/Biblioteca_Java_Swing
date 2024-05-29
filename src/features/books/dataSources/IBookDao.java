@@ -2,7 +2,6 @@ package features.books.dataSources;
 
 import features.books.entities.BookEntity;
 
-import java.util.Date;
 import java.util.List;
 
 public interface IBookDao {

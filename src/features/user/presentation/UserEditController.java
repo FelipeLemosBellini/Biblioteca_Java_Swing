@@ -8,18 +8,12 @@ import infraestructure.PresentationManager;
 public class UserEditController {
     private final IUserRepository _userRepository;
     private final IUserNotifier _userNotifier;
-    private final IUserSubscriber _userSubscriber;
     private final PresentationManager _presentationManager;
 
-    public UserEditController(PresentationManager presentationManager, IUserRepository userRepository, IUserNotifier userNotifier, IUserSubscriber userSubscriber) {
+    public UserEditController(PresentationManager presentationManager, IUserRepository userRepository, IUserNotifier userNotifier) {
         _userRepository = userRepository;
         _userNotifier = userNotifier;
-        _userSubscriber = userSubscriber;
         _presentationManager = presentationManager;
-    }
-
-    public void addListener(IUserListener listener) {
-        _userSubscriber.subscribe(listener);
     }
 
     public void closeWindow() {

@@ -16,7 +16,7 @@ public class BookEditView extends JFrame {
     private JTextField isbnField;
     private JComboBox<String> comboBoxCategory;
 
-    private BookEntity currentBookEntity = null;
+    private final BookEntity currentBookEntity;
 
     public BookEditView(BookEditController bookEditController, BookEntity bookEntity) {
         _bookEditController = bookEditController;

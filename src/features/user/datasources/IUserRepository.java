@@ -1,6 +1,5 @@
 package features.user.datasources;
 
-import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
 
 import java.util.List;

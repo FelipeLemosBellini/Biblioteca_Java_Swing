@@ -1,13 +1,11 @@
 package features.user.datasources;
 
-import features.books.dataSources.IBookDao;
-import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
 
 import java.util.List;
 
 public class UserRepositoryImpl implements IUserRepository {
-    private IUserDao _userDao;
+    private final IUserDao _userDao;
 
     public UserRepositoryImpl(IUserDao userDao) {
         _userDao = userDao;
