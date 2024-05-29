@@ -1,9 +1,9 @@
 package infraestructure;
 
 import construtionSet.dependencyInjection.implementations.ServiceLocatorImpl;
-import features.books.presentation.BookEditView;
-import features.books.presentation.BookLoanView;
-import features.books.presentation.BooksView;
+import features.books.presentation.views.BookEditView;
+import features.books.presentation.views.BookLoanView;
+import features.books.presentation.views.BooksView;
 import features.login.presentation.LoginView;
 import features.menu.MenuView;
 import features.messageInformer.InformationView;
@@ -12,9 +12,9 @@ import features.session.ICurrentUser;
 import features.permissions.AdminPermissions;
 
 import features.books.entities.BookEntity;
-import features.user.presentation.UserEditPasswordView;
-import features.user.presentation.UserEditView;
-import features.user.presentation.UserManagementView;
+import features.user.presentation.views.UserEditPasswordView;
+import features.user.presentation.views.UserEditView;
+import features.user.presentation.views.UsersView;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -57,7 +57,7 @@ public class PresentationManager {
         if (AdminPermissions.verifyAdminUser(_currentUser.getCurrentUser())) {
             createWindow("UserManagement", () -> {
                 var serviceLocator = ServiceLocatorImpl.getInstance();
-                return (UserManagementView)serviceLocator.getService(UserManagementView.class);
+                return (UsersView)serviceLocator.getService(UsersView.class);
             });
         } else
             startInformationWindow("Usuário sem permissão de acesso");

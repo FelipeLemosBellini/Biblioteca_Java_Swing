@@ -1,44 +1,55 @@
-package features.books.presentation;
+package features.user.presentation.views;
 
+import features.user.datasources.IUserListener;
+import features.user.entities.UserEntity;
+import features.user.presentation.controllers.UsersController;
 import infraestructure.PresentationManager;
-import features.books.dataSources.IBookListener;
-import features.viewComponents.NotSelectedRowException;
-import features.books.entities.BookEntity;
-import features.viewComponents.MenuBarComponent;
+import features.commonViewComponents.NotSelectedRowException;
+import features.commonViewComponents.MenuBarComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class BooksView extends JFrame implements IBookListener {
-    private final BooksController _booksController;
+public class UsersView extends JFrame implements IUserListener {
+    private final UsersController _usersController;
     private final PresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
     private JTextField searchStringField;
 
-    public BooksView(BooksController booksController, PresentationManager presentationManager) {
-        _booksController = booksController;
-        _booksController.addListener(this);
+    public UsersView(UsersController usersController, PresentationManager presentationManager) {
+        _usersController = usersController;
+        _usersController.addListener(this);
 
         _presentationManager = presentationManager;
 
         initComponents();
+
         updateTable();
+        
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
+
     private void initComponents() {
-        setTitle("Gestão de livros");
+        setTitle("Gestão de Usuários");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
 
         defineMenuBar();
         defineLayout();
-        
-        setLocationRelativeTo(null);
     }
 
     private void defineMenuBar() {
@@ -70,22 +81,19 @@ public class BooksView extends JFrame implements IBookListener {
         };
 
         model.addColumn("Id");
-        model.addColumn("Nome");
-        model.addColumn("Autor");
-        model.addColumn("Categoria");
-        model.addColumn("ISBN");
-        model.addColumn("Disponibilidade");
+        model.addColumn("Login");
+        model.addColumn("Profile");
 
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
 
         JButton addButton = new JButton("Adicionar/Editar");
         JButton removeButton = new JButton("Excluir");
-        JButton borrowButton = new JButton("Empréstimo de livro");
+        JButton changePasswordButton = new JButton("Alterar Senha");
 
         addButton.addActionListener(this::openSaveScreen);
         removeButton.addActionListener(this::removeRow);
-        borrowButton.addActionListener(this::borrow);
+        changePasswordButton.addActionListener(this::openEditPassScreen);
 
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -97,7 +105,7 @@ public class BooksView extends JFrame implements IBookListener {
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(addButton)
                                 .addComponent(removeButton)
-                                .addComponent(borrowButton))
+                                .addComponent(changePasswordButton))
         );
 
         layout.setVerticalGroup(
@@ -110,17 +118,17 @@ public class BooksView extends JFrame implements IBookListener {
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(addButton)
                                 .addComponent(removeButton)
-                                .addComponent(borrowButton))
+                                .addComponent(changePasswordButton))
         );
 
         getContentPane().add(mainPanel);
     }
 
     private void closeWindow() {
-        _presentationManager.closeWindow("Library");
+        _usersController.closeWindow();
     }
 
-    private int getBookIdFromTable() throws NotSelectedRowException {
+    private int getUserIdFromTable() throws NotSelectedRowException {
         int selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
             return (int) model.getValueAt(selectedRow, 0);
@@ -131,39 +139,34 @@ public class BooksView extends JFrame implements IBookListener {
 
     private void openSaveScreen(ActionEvent event) {
         try {
-            int id = getBookIdFromTable();
-            BookEntity bookEntity = _booksController.getBook(id);
-            _booksController.openBookEdit(bookEntity);
+            int id = getUserIdFromTable();
+            UserEntity userEntity = _usersController.getUser(id);
+            _usersController.openEditWindow(userEntity);
         } catch (NotSelectedRowException e) {
-            BookEntity bookEntity = null;
-            _booksController.openBookEdit(bookEntity);
+            UserEntity userEntity = null;
+            _usersController.openEditWindow(userEntity);
+        }
+    }
+
+    private void openEditPassScreen(ActionEvent event) {
+        try {
+            int id = getUserIdFromTable();
+            UserEntity userEntity = _usersController.getUser(id);
+            _usersController.openEditPassWindow(userEntity);
+        } catch (NotSelectedRowException e) {
+            JOptionPane.showMessageDialog(this, "Selecione um usuário!");
         }
     }
 
     private void removeRow(ActionEvent event) {
         try {
-            int id = getBookIdFromTable();
-            BookEntity bookEntity = _booksController.getBook(id);
-            _booksController.deleteBook(bookEntity);
+            int id = getUserIdFromTable();
+            UserEntity user = _usersController.getUser(id);
+            _usersController.deleteUser(user);
             updateTable();
         } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
         }
-    }
-
-    private void borrow(ActionEvent event) {
-        try {
-            int id = getBookIdFromTable();
-            BookEntity bookEntity = _booksController.getBook(id);
-            _booksController.openBookLending(bookEntity);
-        } catch (NotSelectedRowException e) {
-            JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar");
-        }
-    }
-
-    @Override
-    public void updateBooksChanged() {
-        updateTable();
     }
 
     private void searchBook(ActionEvent event) {
@@ -174,11 +177,15 @@ public class BooksView extends JFrame implements IBookListener {
         model.setRowCount(0);
 
         String searchString = searchStringField.getText();
-        List<BookEntity> booksList = _booksController.getBook(searchString);
+        List<UserEntity> booksList = _usersController.getUsers(searchString);
 
-        for (BookEntity bookEntity : booksList) {
-            String borrowText = bookEntity.getBorrowing() ? "Emprestado" : "Disponível";
-            model.addRow(new Object[]{bookEntity.getId(), bookEntity.getName(), bookEntity.getAuthor(), bookEntity.getCategory(), bookEntity.getISBN(), borrowText});
+        for (UserEntity userEntity : booksList) {
+            model.addRow(new Object[]{userEntity.getId(), userEntity.getLogin(), userEntity.getProfile()});
         }
+    }
+
+    @Override
+    public void updateUsersChanged() {
+        updateTable();
     }
 }

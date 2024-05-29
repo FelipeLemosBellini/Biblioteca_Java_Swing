@@ -1,6 +1,7 @@
-package features.user.presentation;
+package features.user.presentation.views;
 
 import features.user.entities.UserEntity;
+import features.user.presentation.controllers.UserEditPasswordController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

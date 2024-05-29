@@ -1,54 +1,45 @@
-package features.user.presentation;
+package features.books.presentation.views;
 
-import features.user.datasources.IUserListener;
-import features.user.entities.UserEntity;
+import features.books.presentation.controllers.BooksController;
 import infraestructure.PresentationManager;
-import features.viewComponents.NotSelectedRowException;
-import features.viewComponents.MenuBarComponent;
+import features.books.dataSources.IBookListener;
+import features.commonViewComponents.NotSelectedRowException;
+import features.books.entities.BookEntity;
+import features.commonViewComponents.MenuBarComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class UserManagementView extends JFrame implements IUserListener {
-    private final UserManagementController _userManagementController;
+public class BooksView extends JFrame implements IBookListener {
+    private final BooksController _booksController;
     private final PresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
     private JTextField searchStringField;
 
-    public UserManagementView(UserManagementController userManagementController, PresentationManager presentationManager) {
-        _userManagementController = userManagementController;
-        _userManagementController.addListener(this);
+    public BooksView(BooksController booksController, PresentationManager presentationManager) {
+        _booksController = booksController;
+        _booksController.addListener(this);
 
         _presentationManager = presentationManager;
 
         initComponents();
-
         updateTable();
-        
-        setLocationRelativeTo(null);
         setVisible(true);
     }
 
-
     private void initComponents() {
-        setTitle("Gestão de Usuários");
+        setTitle("Gestão de livros");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                closeWindow();
-            }
-        });
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         defineMenuBar();
         defineLayout();
+        
+        setLocationRelativeTo(null);
     }
 
     private void defineMenuBar() {
@@ -80,19 +71,22 @@ public class UserManagementView extends JFrame implements IUserListener {
         };
 
         model.addColumn("Id");
-        model.addColumn("Login");
-        model.addColumn("Profile");
+        model.addColumn("Nome");
+        model.addColumn("Autor");
+        model.addColumn("Categoria");
+        model.addColumn("ISBN");
+        model.addColumn("Disponibilidade");
 
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
 
         JButton addButton = new JButton("Adicionar/Editar");
         JButton removeButton = new JButton("Excluir");
-        JButton changePasswordButton = new JButton("Alterar Senha");
+        JButton borrowButton = new JButton("Empréstimo de livro");
 
         addButton.addActionListener(this::openSaveScreen);
         removeButton.addActionListener(this::removeRow);
-        changePasswordButton.addActionListener(this::openEditPassScreen);
+        borrowButton.addActionListener(this::borrow);
 
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -104,7 +98,7 @@ public class UserManagementView extends JFrame implements IUserListener {
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(addButton)
                                 .addComponent(removeButton)
-                                .addComponent(changePasswordButton))
+                                .addComponent(borrowButton))
         );
 
         layout.setVerticalGroup(
@@ -117,17 +111,17 @@ public class UserManagementView extends JFrame implements IUserListener {
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(addButton)
                                 .addComponent(removeButton)
-                                .addComponent(changePasswordButton))
+                                .addComponent(borrowButton))
         );
 
         getContentPane().add(mainPanel);
     }
 
     private void closeWindow() {
-        _userManagementController.closeWindow();
+        _presentationManager.closeWindow("Library");
     }
 
-    private int getUserIdFromTable() throws NotSelectedRowException {
+    private int getBookIdFromTable() throws NotSelectedRowException {
         int selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
             return (int) model.getValueAt(selectedRow, 0);
@@ -138,34 +132,39 @@ public class UserManagementView extends JFrame implements IUserListener {
 
     private void openSaveScreen(ActionEvent event) {
         try {
-            int id = getUserIdFromTable();
-            UserEntity userEntity = _userManagementController.getUser(id);
-            _userManagementController.openEditWindow(userEntity);
+            int id = getBookIdFromTable();
+            BookEntity bookEntity = _booksController.getBook(id);
+            _booksController.openBookEdit(bookEntity);
         } catch (NotSelectedRowException e) {
-            UserEntity userEntity = null;
-            _userManagementController.openEditWindow(userEntity);
-        }
-    }
-
-    private void openEditPassScreen(ActionEvent event) {
-        try {
-            int id = getUserIdFromTable();
-            UserEntity userEntity = _userManagementController.getUser(id);
-            _userManagementController.openEditPassWindow(userEntity);
-        } catch (NotSelectedRowException e) {
-            JOptionPane.showMessageDialog(this, "Selecione um usuário!");
+            BookEntity bookEntity = null;
+            _booksController.openBookEdit(bookEntity);
         }
     }
 
     private void removeRow(ActionEvent event) {
         try {
-            int id = getUserIdFromTable();
-            UserEntity user = _userManagementController.getUser(id);
-            _userManagementController.deleteUser(user);
+            int id = getBookIdFromTable();
+            BookEntity bookEntity = _booksController.getBook(id);
+            _booksController.deleteBook(bookEntity);
             updateTable();
         } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");
         }
+    }
+
+    private void borrow(ActionEvent event) {
+        try {
+            int id = getBookIdFromTable();
+            BookEntity bookEntity = _booksController.getBook(id);
+            _booksController.openBookLending(bookEntity);
+        } catch (NotSelectedRowException e) {
+            JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar");
+        }
+    }
+
+    @Override
+    public void updateBooksChanged() {
+        updateTable();
     }
 
     private void searchBook(ActionEvent event) {
@@ -176,15 +175,11 @@ public class UserManagementView extends JFrame implements IUserListener {
         model.setRowCount(0);
 
         String searchString = searchStringField.getText();
-        List<UserEntity> booksList = _userManagementController.getUsers(searchString);
+        List<BookEntity> booksList = _booksController.getBook(searchString);
 
-        for (UserEntity userEntity : booksList) {
-            model.addRow(new Object[]{userEntity.getId(), userEntity.getLogin(), userEntity.getProfile()});
+        for (BookEntity bookEntity : booksList) {
+            String borrowText = bookEntity.getBorrowing() ? "Emprestado" : "Disponível";
+            model.addRow(new Object[]{bookEntity.getId(), bookEntity.getName(), bookEntity.getAuthor(), bookEntity.getCategory(), bookEntity.getISBN(), borrowText});
         }
-    }
-
-    @Override
-    public void updateUsersChanged() {
-        updateTable();
     }
 }

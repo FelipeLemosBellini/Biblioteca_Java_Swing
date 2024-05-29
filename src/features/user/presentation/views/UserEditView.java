@@ -1,8 +1,8 @@
-package features.user.presentation;
+package features.user.presentation.views;
 
-import features.user.datasources.IUserListener;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
+import features.user.presentation.controllers.UserEditController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

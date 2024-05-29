@@ -1,4 +1,4 @@
-package features.user.presentation;
+package features.user.presentation.controllers;
 
 import features.user.datasources.IUserListener;
 import features.user.datasources.IUserSubscriber;
@@ -8,12 +8,12 @@ import infraestructure.PresentationManager;
 
 import java.util.List;
 
-public class UserManagementController {
+public class UsersController {
     private final PresentationManager _presentationManager;
     private final IUserRepository _userRepository;
     private final IUserSubscriber _userSubscriber;
 
-    public UserManagementController(
+    public UsersController(
             PresentationManager presentationManager,
             IUserRepository userRepository,
             IUserSubscriber userSubscriber

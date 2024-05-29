@@ -1,4 +1,4 @@
-package features.user.presentation;
+package features.user.presentation.controllers;
 
 import features.user.datasources.IUserNotifier;
 import features.user.datasources.IUserRepository;

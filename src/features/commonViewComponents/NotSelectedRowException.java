@@ -1,4 +1,4 @@
-package features.viewComponents;
+package features.commonViewComponents;
 
 public class NotSelectedRowException extends Exception{
     public NotSelectedRowException()

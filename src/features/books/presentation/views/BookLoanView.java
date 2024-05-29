@@ -1,6 +1,7 @@
-package features.books.presentation;
+package features.books.presentation.views;
 
 import features.books.entities.BookEntity;
+import features.books.presentation.controllers.BookLoanController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

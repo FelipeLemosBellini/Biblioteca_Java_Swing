@@ -1,4 +1,4 @@
-package features.viewComponents;
+package features.commonViewComponents;
 
 import infraestructure.PresentationManager;
 
