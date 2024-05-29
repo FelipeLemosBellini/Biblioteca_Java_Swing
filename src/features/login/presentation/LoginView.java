@@ -3,14 +3,15 @@ package features.login.presentation;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LoginView extends JFrame {
-    private final LoginController _loginController;
+public class LoginView extends JFrame implements ILoginView {
+    private final ILoginController _loginController;
     
     private JTextField usernameField;
     private JPasswordField passwordField;
     
-    public LoginView(LoginController loginController) {
+    public LoginView(ILoginController loginController) {
         _loginController = loginController;
         
         defineWindowConfig();

@@ -4,17 +4,17 @@ import features.user.datasources.IUserListener;
 import features.user.datasources.IUserSubscriber;
 import features.user.datasources.IUserRepository;
 import features.user.entities.UserEntity;
-import infraestructure.PresentationManager;
+import infraestructure.IPresentationManager;
 
 import java.util.List;
 
-public class UsersController {
-    private final PresentationManager _presentationManager;
+public class UsersController implements IUsersController {
+    private final IPresentationManager _presentationManager;
     private final IUserRepository _userRepository;
     private final IUserSubscriber _userSubscriber;
 
     public UsersController(
-            PresentationManager presentationManager,
+            IPresentationManager presentationManager,
             IUserRepository userRepository,
             IUserSubscriber userSubscriber
     ) {

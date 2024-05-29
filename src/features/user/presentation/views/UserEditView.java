@@ -2,6 +2,7 @@ package features.user.presentation.views;
 
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
+import features.user.presentation.controllers.IUserEditController;
 import features.user.presentation.controllers.UserEditController;
 
 import javax.swing.*;
@@ -9,8 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class UserEditView extends JFrame {
-    private final UserEditController _userEditController;
+public class UserEditView extends JFrame implements IUserEditView {
+    private final IUserEditController _userEditController;
 
     private JTextField loginField;
     private JTextField passwordField;
@@ -18,7 +19,7 @@ public class UserEditView extends JFrame {
 
     private final UserEntity _editingUser;
 
-    public UserEditView(UserEditController userEditController, UserEntity editingUser) {
+    public UserEditView(IUserEditController userEditController, UserEntity editingUser) {
         _userEditController = userEditController;
         _editingUser = editingUser;
 

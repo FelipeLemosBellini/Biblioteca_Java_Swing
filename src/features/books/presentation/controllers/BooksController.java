@@ -2,19 +2,20 @@ package features.books.presentation.controllers;
 
 import features.books.dataSources.IBookRepository;
 import features.books.dataSources.IBookSubscriber;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 import features.books.entities.BookEntity;
 import features.books.dataSources.IBookListener;
 
 import java.util.List;
 
-public class BooksController {
-    private final PresentationManager _presentationManager;
+public class BooksController implements IBooksController {
+    private final IPresentationManager _presentationManager;
     private final IBookRepository _bookRepository;
     private final IBookSubscriber _bookSubscriber;
     
     public BooksController(
-            PresentationManager presentationManager,
+            IPresentationManager presentationManager,
             IBookRepository bookRepository,
             IBookSubscriber bookSubscriber
     ) {

@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MenuView extends JFrame {
-    private final MenuController _menuController;
+public class MenuView extends JFrame implements IMenuView {
+    private final IMenuController _menuController;
 
-    public MenuView(MenuController menuController) {
+    public MenuView(IMenuController menuController) {
         _menuController = menuController;
         
         configureWindow();

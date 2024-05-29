@@ -1,12 +1,13 @@
 package features.menu;
 
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
-public class MenuController {
-    private final PresentationManager _presentationManager;
+public class MenuController implements IMenuController {
+    private final IPresentationManager _presentationManager;
 
     public MenuController(
-            PresentationManager presentationManager
+            IPresentationManager presentationManager
     ) {
         _presentationManager = presentationManager;
     }

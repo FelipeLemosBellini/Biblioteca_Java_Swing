@@ -1,6 +1,8 @@
 package features.books.presentation.views;
 
 import features.books.presentation.controllers.BooksController;
+import features.books.presentation.controllers.IBooksController;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 import features.books.dataSources.IBookListener;
 import features.commonViewComponents.NotSelectedRowException;
@@ -12,15 +14,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class BooksView extends JFrame implements IBookListener {
-    private final BooksController _booksController;
-    private final PresentationManager _presentationManager;
+public class BooksView extends JFrame implements IBookListener, IBooksView {
+    private final IBooksController _booksController;
+    private final IPresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
     private JTextField searchStringField;
 
-    public BooksView(BooksController booksController, PresentationManager presentationManager) {
+    public BooksView(IBooksController booksController, IPresentationManager presentationManager) {
         _booksController = booksController;
         _booksController.addListener(this);
 

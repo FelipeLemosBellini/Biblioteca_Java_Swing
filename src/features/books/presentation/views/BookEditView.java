@@ -3,14 +3,15 @@ package features.books.presentation.views;
 import features.books.entities.BookEntity;
 import features.books.entities.ECategoryEntity;
 import features.books.presentation.controllers.BookEditController;
+import features.books.presentation.controllers.IBookEditController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class BookEditView extends JFrame {
-    private final BookEditController _bookEditController;
+public class BookEditView extends JFrame implements IBookEditView {
+    private final IBookEditController _bookEditController;
 
     private JTextField nameField;
     private JTextField authorField;
@@ -19,7 +20,7 @@ public class BookEditView extends JFrame {
 
     private final BookEntity currentBookEntity;
 
-    public BookEditView(BookEditController bookEditController, BookEntity bookEntity) {
+    public BookEditView(IBookEditController bookEditController, BookEntity bookEntity) {
         _bookEditController = bookEditController;
         this.currentBookEntity = bookEntity;
 

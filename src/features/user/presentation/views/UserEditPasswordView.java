@@ -1,6 +1,7 @@
 package features.user.presentation.views;
 
 import features.user.entities.UserEntity;
+import features.user.presentation.controllers.IUserEditPasswordController;
 import features.user.presentation.controllers.UserEditPasswordController;
 
 import javax.swing.*;
@@ -8,15 +9,15 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class UserEditPasswordView extends JFrame {
-    private final UserEditPasswordController _userEditPasswordController;
+public class UserEditPasswordView extends JFrame implements IUserEditPasswordView  {
+    private final IUserEditPasswordController _userEditPasswordController;
 
     private JTextField newPasswordField;
     private JTextField confirmedPasswordField;
 
     private final UserEntity _userEditing;
 
-    public UserEditPasswordView(UserEditPasswordController userEditPasswordController, UserEntity userEditing) {
+    public UserEditPasswordView(IUserEditPasswordController userEditPasswordController, UserEntity userEditing) {
         _userEditPasswordController = userEditPasswordController;
         _userEditing = userEditing;
 

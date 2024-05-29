@@ -1,11 +1,12 @@
 package features.messageInformer;
 
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
-public class InformationController {
-    private final PresentationManager _presentationManager;
+public class InformationController implements IInformationController {
+    private final IPresentationManager _presentationManager;
     
-    public InformationController(PresentationManager presentationManager) 
+    public InformationController(IPresentationManager presentationManager) 
     {
         _presentationManager = presentationManager;
     }

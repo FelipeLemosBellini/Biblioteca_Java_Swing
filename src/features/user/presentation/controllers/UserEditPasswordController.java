@@ -3,14 +3,15 @@ package features.user.presentation.controllers;
 import features.user.datasources.IUserNotifier;
 import features.user.datasources.IUserRepository;
 import features.user.entities.UserEntity;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
-public class UserEditPasswordController {
+public class UserEditPasswordController implements IUserEditPasswordController {
     private final IUserNotifier _userNotifier;
-    private final PresentationManager _presentationManager;
+    private final IPresentationManager _presentationManager;
     private final IUserRepository _userRepository;
 
-    public UserEditPasswordController(PresentationManager presentationManager, IUserNotifier userNotifier, IUserRepository userRepository) {
+    public UserEditPasswordController(IPresentationManager presentationManager, IUserNotifier userNotifier, IUserRepository userRepository) {
         _userNotifier = userNotifier;
         _presentationManager = presentationManager;
         _userRepository = userRepository;

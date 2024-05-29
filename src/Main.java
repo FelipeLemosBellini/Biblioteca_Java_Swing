@@ -6,6 +6,7 @@ import features.user.datasources.IUserRepository;
 import features.user.datasources.UserRepositoryImpl;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class Main {
 
         seedDatabase(locator);
 
-        var presentationManager = (PresentationManager) locator.getService(PresentationManager.class);
+        var presentationManager = (IPresentationManager) locator.getService(IPresentationManager.class);
         presentationManager.startLogin();
     }
 

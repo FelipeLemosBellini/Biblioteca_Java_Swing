@@ -2,12 +2,13 @@ package features.messageInformer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-public class InformationView extends JFrame {
+public class InformationView extends JFrame implements IInformationView {
     private JLabel messageLabel;
     private JButton closeButton;
 
-    public InformationView(InformationController informationController, String message) {
+    public InformationView(IInformationController informationController, String message) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setSize(400, 200);

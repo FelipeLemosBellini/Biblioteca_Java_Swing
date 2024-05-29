@@ -1,12 +1,13 @@
 package features.commonViewComponents;
 
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class MenuBarComponent {
-    public static JMenuBar createMenuBar(JFrame parentFrame, PresentationManager presentationManager, ActionListener exitAction) {
+    public static JMenuBar createMenuBar(JFrame parentFrame, IPresentationManager presentationManager, ActionListener exitAction) {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu configMenu = new JMenu("Configurações");

@@ -3,17 +3,18 @@ package features.books.presentation.controllers;
 import features.books.dataSources.IBookNotifier;
 import features.books.dataSources.IBookRepository;
 import features.books.entities.BookEntity;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class BookLoanController {
+public class BookLoanController implements IBookLoanController {
     private final IBookNotifier _bookNotifier;
     private final IBookRepository _bookRepository;
-    private final PresentationManager _presentationManager;
+    private final IPresentationManager _presentationManager;
 
-    public BookLoanController(IBookNotifier bookNotifier, IBookRepository bookRepository, PresentationManager presentationManager) {
+    public BookLoanController(IBookNotifier bookNotifier, IBookRepository bookRepository, IPresentationManager presentationManager) {
         _bookNotifier = bookNotifier;
         _bookRepository = bookRepository;
         _presentationManager = presentationManager;

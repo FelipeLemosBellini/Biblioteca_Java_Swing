@@ -1,7 +1,7 @@
 package features.books.presentation.views;
 
 import features.books.entities.BookEntity;
-import features.books.presentation.controllers.BookLoanController;
+import features.books.presentation.controllers.IBookLoanController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,15 +15,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class BookLoanView extends JFrame {
-    private final BookLoanController _bookLoanController;
+public class BookLoanView extends JFrame implements IBookLoanView {
+    private final IBookLoanController _bookLoanController;
 
     private JFormattedTextField dateOfReturn;
     private JFormattedTextField dateOfBorrow;
     private JTextField borrow;
     private BookEntity currentBookEntity = null;
 
-    public BookLoanView(BookLoanController bookLoanController, BookEntity bookEntity) {
+    public BookLoanView(IBookLoanController bookLoanController, BookEntity bookEntity) {
         _bookLoanController = bookLoanController;
         this.currentBookEntity = bookEntity;
 

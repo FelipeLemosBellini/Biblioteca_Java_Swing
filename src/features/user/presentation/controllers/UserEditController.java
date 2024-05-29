@@ -3,14 +3,15 @@ package features.user.presentation.controllers;
 import features.user.datasources.*;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
-public class UserEditController {
+public class UserEditController implements IUserEditController {
     private final IUserRepository _userRepository;
     private final IUserNotifier _userNotifier;
-    private final PresentationManager _presentationManager;
+    private final IPresentationManager _presentationManager;
 
-    public UserEditController(PresentationManager presentationManager, IUserRepository userRepository, IUserNotifier userNotifier) {
+    public UserEditController(IPresentationManager presentationManager, IUserRepository userRepository, IUserNotifier userNotifier) {
         _userRepository = userRepository;
         _userNotifier = userNotifier;
         _presentationManager = presentationManager;

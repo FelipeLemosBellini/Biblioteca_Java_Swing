@@ -2,7 +2,9 @@ package features.user.presentation.views;
 
 import features.user.datasources.IUserListener;
 import features.user.entities.UserEntity;
+import features.user.presentation.controllers.IUsersController;
 import features.user.presentation.controllers.UsersController;
+import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 import features.commonViewComponents.NotSelectedRowException;
 import features.commonViewComponents.MenuBarComponent;
@@ -14,15 +16,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class UsersView extends JFrame implements IUserListener {
-    private final UsersController _usersController;
-    private final PresentationManager _presentationManager;
+public class UsersView extends JFrame implements IUserListener, IUsersView {
+    private final IUsersController _usersController;
+    private final IPresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
     private JTextField searchStringField;
 
-    public UsersView(UsersController usersController, PresentationManager presentationManager) {
+    public UsersView(IUsersController usersController, IPresentationManager presentationManager) {
         _usersController = usersController;
         _usersController.addListener(this);
 
