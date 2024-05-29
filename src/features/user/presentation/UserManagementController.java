@@ -49,6 +49,6 @@ public class UserManagementController {
     }
 
     public List<UserEntity> getUsers(String searchString){
-        return _userRepository.searchUser(searchString);
+        return _userRepository.searchUsers(searchString);
     }
 }

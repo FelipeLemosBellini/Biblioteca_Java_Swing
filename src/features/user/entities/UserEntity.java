@@ -37,40 +37,30 @@ public class UserEntity {
         this.profile = profile;
     }
 
-    public UserEntity(int id, String login, String password, EProfileEntity profile) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.profile = profile;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setProfile(EProfileEntity profile) {
-        this.profile = profile;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public int getId() {
         return id;
     }
-
     public String getLogin() {
         return login;
     }
-
     public EProfileEntity getProfile() {
         return profile;
     }
+    
+    public void edit(String login, EProfileEntity profile){
+        this.login = login;
+        this.profile = profile;
+    }
+
+    public boolean editPassword(String newPassword, String confirmNewPassword){
+        if (!newPassword.equals(confirmNewPassword))
+            return false;
+
+        this.password = newPassword;
+
+        return true;
+    }
+    
 
     public boolean verifyPassword(String passwordToTest) {
         if (passwordToTest == null || passwordToTest.isEmpty())

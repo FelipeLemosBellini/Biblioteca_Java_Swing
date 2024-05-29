@@ -160,8 +160,8 @@ public class UserManagementView extends JFrame implements IUserListener {
     private void removeRow(ActionEvent event) {
         try {
             int id = getUserIdFromTable();
-            UserEntity book = _userManagementController.getUser(id);
-            _userManagementController.deleteUser(book);
+            UserEntity user = _userManagementController.getUser(id);
+            _userManagementController.deleteUser(user);
             updateTable();
         } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");

@@ -6,11 +6,11 @@ import infraestructure.IPersistentDataRepository;
 
 import java.util.List;
 
-public class UserHibernateDAOImpl implements IUserRepository {
-    IPersistentDataRepository persistentDataRepository;
+public class UserHibernateDAOImpl implements IUserDao {
+    IPersistentDataRepository _persistentDataRepository;
 
     public UserHibernateDAOImpl(IPersistentDataRepository persistentDataRepository) {
-        this.persistentDataRepository = persistentDataRepository;
+        this._persistentDataRepository = persistentDataRepository;
         SeedList();
     }
 
@@ -22,7 +22,7 @@ public class UserHibernateDAOImpl implements IUserRepository {
     @Override
     public void createUser(UserEntity userEntity) {
         try {
-            persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+            _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
                 session.persist(userEntity);
             });
             System.out.println("Usuário criado com sucesso: " + userEntity);
@@ -33,27 +33,24 @@ public class UserHibernateDAOImpl implements IUserRepository {
     }
 
     @Override
-    public boolean editUser(UserEntity userEntity, String login, EProfileEntity profile) {
-        return false;
+    public void updateUser(UserEntity userEntity) {
+        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+            session.merge(userEntity);
+        });
     }
 
     @Override
-    public boolean changePassword(UserEntity userEntity, String oldPassword, String newPassword, String confirmNewPassword) {
-        return false;
-    }
-
-    @Override
-    public void removeUser(UserEntity userEntity) {
-        persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+    public void deleteUser(UserEntity userEntity) {
+        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
             session.remove(userEntity);
         });
     }
 
     @Override
-    public UserEntity getUser(int id) {
+    public UserEntity readUser(int id) {
         UserEntity userEntity = null;
         try {
-            userEntity = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            userEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
                 return session.createSelectionQuery("from UserEntity where id = :id", UserEntity.class)
                         .setParameter("id", id)
                         .uniqueResultOptional()
@@ -67,10 +64,10 @@ public class UserHibernateDAOImpl implements IUserRepository {
     }
 
     @Override
-    public List<UserEntity> searchUser(String searchString) {
+    public List<UserEntity> searchUsers(String searchString) {
         List<UserEntity> userEntities = null;
         try {
-            userEntities = persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            userEntities = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
                 if (searchString == null || searchString.trim().isEmpty()) {
                     return session.createSelectionQuery("from UserEntity", UserEntity.class).getResultList();
                 } else {

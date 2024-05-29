@@ -23,7 +23,13 @@ public class UserEditPasswordController {
         _presentationManager.closeWindow("UserEditPassword");
     }
 
-    public boolean changePassword(UserEntity userEntity, String oldPassword, String newPassword, String confirmNewPassword) {
-        return _userRepository.changePassword(userEntity, oldPassword, newPassword, confirmNewPassword);
+    public boolean changePassword(UserEntity userEntity, String newPassword, String confirmNewPassword) {
+        var passWasEdit = userEntity.editPassword(newPassword, confirmNewPassword);
+        if (!passWasEdit)
+            return false;
+        
+        _userRepository.editUser(userEntity);
+        
+        return true;
     }
 }

@@ -29,10 +29,11 @@ public class UserEditController {
 
     public void createUser(String login, String password, EProfileEntity profile) {
         UserEntity newUserEntity = new UserEntity(login, password, profile);
-        _userRepository.createUser(newUserEntity);
+        _userRepository.addUser(newUserEntity);
     }
 
     public void editUser(UserEntity userEntity, String login, EProfileEntity profile) {
-        _userRepository.editUser(userEntity, login, profile);
+        userEntity.edit(login, profile);
+        _userRepository.editUser(userEntity);
     }
 }

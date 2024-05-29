@@ -6,16 +6,10 @@ import features.user.entities.UserEntity;
 import java.util.List;
 
 public interface IUserRepository {
-    void createUser(UserEntity userEntity);
-
-    boolean editUser(UserEntity userEntity, String login, EProfileEntity profile);
-
-    boolean changePassword(UserEntity userEntity, String oldPassword, String newPassword, String confirmNewPassword);
-
+    void addUser(UserEntity userEntity);
+    UserEntity getUser(int id);
+    void editUser(UserEntity userEntity);
     void removeUser(UserEntity userEntity);
 
-    UserEntity getUser(int id);
-    
-    List<UserEntity> searchUser(String searchString);
-    
+    List<UserEntity> searchUsers(String searchString);
 }

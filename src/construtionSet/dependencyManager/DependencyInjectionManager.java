@@ -31,24 +31,21 @@ public class DependencyInjectionManager implements IDependencyInjectionManager {
     {
         var container = new DependencyInjectionContainer();
 
+        container.addSingleton(PresentationManager.class);
         container.addSingleton(ICurrentUser.class, CurrentUserImpl.class);
         container.addSingleton(IBookNotifier.class, BookObserverImpl.class);
         container.addSingleton(IBookSubscriber.class, BookObserverImpl.class);
         container.addSingleton(IUserSubscriber.class, UserObserverImpl.class);
         container.addSingleton(IUserNotifier.class, UserObserverImpl.class);
-        container.addSingleton(PresentationManager.class);
         
         container.addScoped(IPersistentDataRepository.class, PersistentDataRepository.class);
+        container.addScoped(IBookDao.class, BookHibernateDaoImpl.class);
+        container.addScoped(IBookRepository.class, BookRepositoryImpl.class);
+        container.addScoped(ILoginDao.class, LoginDaoHibernateImpl.class);
+        container.addScoped(ILoginRepository.class, LoginRepositoryImpl.class);
+        container.addScoped(IUserDao.class, UserHibernateDAOImpl.class);
+        container.addScoped(IUserRepository.class, UserRepositoryImpl.class);
 
-        container.addTransient(IBookDao.class, BookHibernateDaoImpl.class);
-        container.addTransient(IBookRepository.class, BookRepositoryImpl.class);
-        
-        container.addTransient(ILoginDao.class, LoginDaoHibernateImpl.class);
-        container.addTransient(ILoginRepository.class, LoginRepositoryImpl.class);
-        
-        container.addTransient(IUserRepository.class, UserHibernateDAOImpl.class);
-
-        
         container.addTransient(MenuController.class);
         container.addTransient(MenuView.class);
         container.addTransient(LoginController.class);

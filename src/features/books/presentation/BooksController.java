@@ -35,6 +35,8 @@ public class BooksController {
         _presentationManager.startBookLending(bookEntity);
     }
     
+    public void deleteBook(BookEntity bookEntity){ _bookRepository.removeBook(bookEntity);}
+    
     public BookEntity getBook(int id){
         return _bookRepository.getBook(id);   
     }

@@ -66,7 +66,7 @@ public class PresentationManager {
     public void startUserEdit(UserEntity userEntity) {
         createWindow("UserEdit", () -> {
             var serviceLocator = ServiceLocatorImpl.getInstance();
-            return (UserEditView)serviceLocator.getService(UserEditView.class);
+            return (UserEditView)serviceLocator.getService(UserEditView.class, userEntity);
         });
     }
 

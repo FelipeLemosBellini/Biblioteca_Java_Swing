@@ -144,7 +144,7 @@ public class BooksView extends JFrame implements IBookListener {
         try {
             int id = getBookIdFromTable();
             BookEntity bookEntity = _booksController.getBook(id);
-//            _libraryController.deleteBook(bookEntity);
+            _booksController.deleteBook(bookEntity);
             updateTable();
         } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para excluir");

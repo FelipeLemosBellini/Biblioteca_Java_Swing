@@ -1,38 +1,40 @@
 package features.user.datasources;
 
+import features.books.dataSources.IBookDao;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
 
 import java.util.List;
 
 public class UserRepositoryImpl implements IUserRepository {
+    private IUserDao _userDao;
+
+    public UserRepositoryImpl(IUserDao userDao) {
+        _userDao = userDao;
+    }
+    
     @Override
-    public void createUser(UserEntity userEntity) {
-        
+    public void addUser(UserEntity userEntity) {
+        _userDao.createUser(userEntity);
     }
 
     @Override
-    public boolean editUser(UserEntity userEntity, String login, EProfileEntity profile) {
-        return false;
-    }
-
-    @Override
-    public boolean changePassword(UserEntity userEntity, String oldPassword, String newPassword, String confirmNewPassword) {
-        return false;
+    public void editUser(UserEntity userEntity) {
+        _userDao.updateUser(userEntity);
     }
 
     @Override
     public void removeUser(UserEntity userEntity) {
-
+        _userDao.deleteUser(userEntity);
     }
 
     @Override
     public UserEntity getUser(int id) {
-        return null;
+        return _userDao.readUser(id);
     }
 
     @Override
-    public List<UserEntity> searchUser(String searchString) {
-        return List.of();
+    public List<UserEntity> searchUsers(String searchString) {
+        return _userDao.searchUsers(searchString);
     }
 }

@@ -1,6 +1,7 @@
 package features.user.presentation;
 
 import features.session.ICurrentUser;
+import features.user.entities.UserEntity;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,15 +11,14 @@ import java.awt.event.ActionEvent;
 public class UserEditPasswordView extends JFrame {
     private final UserEditPasswordController _userEditPasswordController;
 
-    private JTextField oldPasswordField;
     private JTextField newPasswordField;
     private JTextField confirmedPasswordField;
 
-    private final ICurrentUser _currentUser;
+    private final UserEntity _userEditing;
 
-    public UserEditPasswordView(UserEditPasswordController userEditPasswordController, ICurrentUser currentUser) {
+    public UserEditPasswordView(UserEditPasswordController userEditPasswordController, UserEntity userEditing) {
         _userEditPasswordController = userEditPasswordController;
-        _currentUser = currentUser;
+        _userEditing = userEditing;
 
         defineWindowConfiguration();
         defineMenuConfiguration();
@@ -43,7 +43,6 @@ public class UserEditPasswordView extends JFrame {
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY),
                 new EmptyBorder(5, 5, 5, 5)));
 
-        oldPasswordField = new JTextField(15);
         newPasswordField = new JTextField(15);
         confirmedPasswordField = new JTextField(15);
 
@@ -52,9 +51,6 @@ public class UserEditPasswordView extends JFrame {
 
         saveButton.addActionListener(this::saveRow);
         cancelButton.addActionListener(this::closeWindow);
-
-        formPanel.add(new JLabel("Senha Antiga:"));
-        formPanel.add(oldPasswordField);
 
         formPanel.add(new JLabel("Nova Senha:"));
         formPanel.add(newPasswordField);
@@ -82,21 +78,20 @@ public class UserEditPasswordView extends JFrame {
     }
 
     private void saveRow(ActionEvent event) {
-        String oldPasswordFieldText = oldPasswordField.getText();
         String newPasswordFieldText = newPasswordField.getText();
         String confirmedPasswordFieldText = confirmedPasswordField.getText();
 
-        if (oldPasswordFieldText.isEmpty() || newPasswordFieldText.isEmpty() || confirmedPasswordFieldText.isEmpty()) {
+        if (newPasswordFieldText.isEmpty() || confirmedPasswordFieldText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos");
             return;
         }
 
         try {
-            if (_currentUser.getCurrentUser() == null) {
+            if (_userEditing == null) {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado");
                 return;
             } else {
-                var passWasEdited = _userEditPasswordController.changePassword(_currentUser.getCurrentUser(),oldPasswordFieldText, newPasswordFieldText, confirmedPasswordFieldText);
+                var passWasEdited = _userEditPasswordController.changePassword(_userEditing, newPasswordFieldText, confirmedPasswordFieldText);
                 
                 if (!passWasEdited) {
                     JOptionPane.showMessageDialog(this, "A senha antiga ou as novas senhas não coencidem");
