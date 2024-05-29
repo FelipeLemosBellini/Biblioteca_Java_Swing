@@ -1,4 +1,4 @@
-package construtionSet.dependencyInjection;
+package construtionSet.dependencyInjection.contracts;
 
 import construtionSet.dependencyInjection.entities.EServiceLifetime;
 

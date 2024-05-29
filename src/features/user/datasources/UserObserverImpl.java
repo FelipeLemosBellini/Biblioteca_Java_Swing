@@ -12,7 +12,7 @@ public class UserObserverImpl implements IUserSubscriber, IUserNotifier {
 
     public void notifyUserChanged() {
         for(IUserListener listener : listeners) {
-            listener.updateUserList();
+            listener.updateUsersChanged();
         }
     }
 }

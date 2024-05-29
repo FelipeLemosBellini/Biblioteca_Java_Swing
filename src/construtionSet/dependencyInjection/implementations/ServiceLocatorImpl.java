@@ -1,5 +1,6 @@
-package construtionSet.dependencyInjection;
+package construtionSet.dependencyInjection.implementations;
 
+import construtionSet.dependencyInjection.contracts.IServiceLocator;
 import construtionSet.dependencyInjection.entities.EServiceLifetime;
 import construtionSet.dependencyInjection.entities.ServiceDescriptor;
 

@@ -43,7 +43,7 @@ public class BookEntity {
 
     public BookEntity() {
     }
-
+    
     public int getId() {
         return id;
     }
@@ -81,6 +81,12 @@ public class BookEntity {
         this.author = author;
         this.category = category;
         this.ISBN = ISBN;
+    }
+
+    public void editLoan(boolean borrowing, Date dateOfBorrowing, Date dateOfReturning) {
+        this.borrowing = borrowing;
+        this.dateOfBorrowing = dateOfBorrowing;
+        this.dateOfReturning = dateOfReturning;
     }
 
     private String returnDate(Date date) {

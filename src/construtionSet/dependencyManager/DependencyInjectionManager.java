@@ -1,5 +1,6 @@
-package construtionSet.dependencyInjection;
+package construtionSet.dependencyManager;
 
+import construtionSet.dependencyInjection.implementations.DependencyInjectionContainer;
 import features.books.dataSources.*;
 import features.books.presentation.BookEditController;
 import features.books.presentation.BookEditView;
@@ -31,12 +32,14 @@ public class DependencyInjectionManager implements IDependencyInjectionManager {
         var container = new DependencyInjectionContainer();
 
         container.addSingleton(ICurrentUser.class, CurrentUserImpl.class);
+        container.addSingleton(IBookNotifier.class, BookObserverImpl.class);
+        container.addSingleton(IBookSubscriber.class, BookObserverImpl.class);
+        container.addSingleton(IUserSubscriber.class, UserObserverImpl.class);
+        container.addSingleton(IUserNotifier.class, UserObserverImpl.class);
         container.addSingleton(PresentationManager.class);
         
         container.addScoped(IPersistentDataRepository.class, PersistentDataRepository.class);
 
-        container.addTransient(IBookNotifier.class, BookObserverImpl.class);
-        container.addTransient(IBookSubscriber.class, BookObserverImpl.class);
         container.addTransient(IBookDao.class, BookHibernateDaoImpl.class);
         container.addTransient(IBookRepository.class, BookRepositoryImpl.class);
         
@@ -44,9 +47,7 @@ public class DependencyInjectionManager implements IDependencyInjectionManager {
         container.addTransient(ILoginRepository.class, LoginRepositoryImpl.class);
         
         container.addTransient(IUserRepository.class, UserHibernateDAOImpl.class);
-        container.addTransient(IUserSubscriber.class, UserObserverImpl.class);
-        container.addTransient(IUserNotifier.class, UserObserverImpl.class);
-        
+
         
         container.addTransient(MenuController.class);
         container.addTransient(MenuView.class);

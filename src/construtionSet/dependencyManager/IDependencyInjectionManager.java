@@ -1,4 +1,4 @@
-package construtionSet.dependencyInjection;
+package construtionSet.dependencyManager;
 
 public interface IDependencyInjectionManager {
     void AddDependences();

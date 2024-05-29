@@ -12,8 +12,5 @@ public interface IBookRepository {
     void removeBook(BookEntity bookEntity);
     
     List<BookEntity> searchBooks(String search);
-
-    boolean updateToBorrow(BookEntity bookEntity, Date dateOfReturning);
-    void updateToUnborrowed(BookEntity bookEntity);
 }
  

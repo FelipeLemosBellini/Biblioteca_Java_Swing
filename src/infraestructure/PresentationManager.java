@@ -1,6 +1,6 @@
 package infraestructure;
 
-import construtionSet.dependencyInjection.ServiceLocatorImpl;
+import construtionSet.dependencyInjection.implementations.ServiceLocatorImpl;
 import features.books.presentation.BookEditView;
 import features.books.presentation.BookLoanView;
 import features.books.presentation.BooksView;

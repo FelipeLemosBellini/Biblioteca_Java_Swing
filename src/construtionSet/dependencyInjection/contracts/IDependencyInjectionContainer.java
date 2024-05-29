@@ -1,6 +1,4 @@
-package construtionSet.dependencyInjection;
-
-import construtionSet.dependencyInjection.entities.EServiceLifetime;
+package construtionSet.dependencyInjection.contracts;
 
 public interface IDependencyInjectionContainer {
     void addTransient(Class<?> serviceClass);

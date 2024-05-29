@@ -1,8 +1,7 @@
-import construtionSet.dependencyInjection.DependencyInjectionManager;
-import construtionSet.dependencyInjection.IDependencyInjectionManager;
-import construtionSet.dependencyInjection.IServiceLocator;
-import construtionSet.dependencyInjection.ServiceLocatorImpl;
-import features.user.datasources.IUserRepository;
+import construtionSet.dependencyManager.DependencyInjectionManager;
+import construtionSet.dependencyManager.IDependencyInjectionManager;
+import construtionSet.dependencyInjection.contracts.IServiceLocator;
+import construtionSet.dependencyInjection.implementations.ServiceLocatorImpl;
 import infraestructure.PresentationManager;
 
 import javax.swing.*;

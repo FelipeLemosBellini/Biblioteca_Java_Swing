@@ -34,4 +34,9 @@ public class BookEditController {
         BookEntity newBookEntity = new BookEntity(0, name, author, category, isbn);
         _bookRepository.addBook(newBookEntity);
     }
+
+    public void editBook(BookEntity bookEntity, String name, String author, ECategoryEntity category, String isbn) {
+        bookEntity.edit(name, author, category, isbn);
+        _bookRepository.editBook(bookEntity);
+    }
 }

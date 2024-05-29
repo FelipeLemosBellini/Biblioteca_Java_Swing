@@ -12,7 +12,7 @@ public class BookObserverImpl implements IBookSubscriber, IBookNotifier {
 
     public void notifyBookChanged() {
         for(IBookListener listener : listeners) {
-            listener.notifyBookChanged();
+            listener.updateBooksChanged();
         }
     }
 }

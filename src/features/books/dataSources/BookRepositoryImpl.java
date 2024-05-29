@@ -28,16 +28,6 @@ public class BookRepositoryImpl implements IBookRepository {
     }
 
     @Override
-    public boolean updateToBorrow(BookEntity bookEntity, Date dateOfReturning) {
-        return _bookDao.updateToBorrow(bookEntity, dateOfReturning);
-    }
-
-    @Override
-    public void updateToUnborrowed(BookEntity bookEntity) {
-        _bookDao.updateToUnborrowed(bookEntity);
-    }
-
-    @Override
     public BookEntity getBook(int id) {
         return _bookDao.readBook(id);
     }

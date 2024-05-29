@@ -111,7 +111,7 @@ public class BookEditView extends JFrame {
                     _bookEditController.createBook(name, author, category, isbn);
                 }
                 else
-                    currentBookEntity.edit(name, author, category, isbn);
+                    _bookEditController.editBook(currentBookEntity, name, author, category, isbn);
 
                 closeWindow();
             } else {

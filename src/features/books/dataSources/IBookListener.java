@@ -1,5 +1,5 @@
 package features.books.dataSources;
 
 public interface IBookListener {
-    void notifyBookChanged();
+    void updateBooksChanged();
 }

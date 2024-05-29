@@ -72,16 +72,6 @@ public class BookHibernateDaoImpl implements IBookDao {
     }
 
     @Override
-    public boolean updateToBorrow(BookEntity bookEntity, Date dateOfReturning) {
-        return false;
-    }
-
-    @Override
-    public void updateToUnborrowed(BookEntity bookEntity) {
-
-    }
-
-    @Override
     public BookEntity readBook(int id) {
         BookEntity bookEntity = null;
 
@@ -100,6 +90,8 @@ public class BookHibernateDaoImpl implements IBookDao {
 
     @Override
     public void updateBook(BookEntity bookEntity) {
-        
+        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+            session.merge(bookEntity);
+        });
     }
 }

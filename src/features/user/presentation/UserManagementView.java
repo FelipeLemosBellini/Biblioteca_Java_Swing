@@ -184,7 +184,7 @@ public class UserManagementView extends JFrame implements IUserListener {
     }
 
     @Override
-    public void updateUserList() {
+    public void updateUsersChanged() {
         updateTable();
     }
 }

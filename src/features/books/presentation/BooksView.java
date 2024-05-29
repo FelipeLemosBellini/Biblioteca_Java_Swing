@@ -162,7 +162,7 @@ public class BooksView extends JFrame implements IBookListener {
     }
 
     @Override
-    public void notifyBookChanged() {
+    public void updateBooksChanged() {
         updateTable();
     }
 
