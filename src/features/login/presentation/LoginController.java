@@ -1,6 +1,8 @@
 package features.login.presentation;
 
 import features.login.datasources.ILoginRepository;
+import features.menu.IMenuView;
+import features.messageInformer.IInformationView;
 import features.user.entities.AdministratorEntity;
 import features.user.entities.EmployeeEntity;
 import features.user.entities.UserEntity;
@@ -34,8 +36,8 @@ public class LoginController implements ILoginController {
                 UserEntity user = _loginRepository.getUser(login);
                 defineUserPermissions(user);
 
-                _presentationManager.startHome();
-                _presentationManager.closeWindow("Login");
+                _presentationManager.openWindow(IMenuView.class);
+                _presentationManager.closeWindow(ILoginView.class);
 
                 return true;
             }
@@ -59,7 +61,7 @@ public class LoginController implements ILoginController {
         try {
             _currentUser.setCurrentUser(currentUserEntity);
         } catch (Exception e) {
-            _presentationManager.startInformationWindow("Usuário já autenticado!");
+            _presentationManager.openWindow(IInformationView.class, "Usuário já autenticado!");
         }
     }
 }

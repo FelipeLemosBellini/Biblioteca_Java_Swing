@@ -1,5 +1,7 @@
 package features.menu;
 
+import features.books.presentation.views.IBooksView;
+import features.user.presentation.views.IUsersView;
 import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
@@ -13,10 +15,10 @@ public class MenuController implements IMenuController {
     }
 
     public void openUserManager() {
-        _presentationManager.startUserManagement();
+        _presentationManager.openWindow(IUsersView.class);
     }
 
     public void openLibraryManager() {
-        _presentationManager.startLibrary();
+        _presentationManager.openWindow(IBooksView.class);
     }
 }

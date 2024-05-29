@@ -2,6 +2,8 @@ package features.books.presentation.controllers;
 
 import features.books.dataSources.IBookRepository;
 import features.books.dataSources.IBookSubscriber;
+import features.books.presentation.views.IBookEditView;
+import features.books.presentation.views.IBookLoanView;
 import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 import features.books.entities.BookEntity;
@@ -29,11 +31,11 @@ public class BooksController implements IBooksController {
     }
 
     public void openBookEdit(BookEntity bookEntity){
-            _presentationManager.startBookEdit(bookEntity);
+            _presentationManager.openWindow(IBookEditView.class, bookEntity);
     }
 
     public void openBookLending(BookEntity bookEntity){
-        _presentationManager.startBookLending(bookEntity);
+        _presentationManager.openWindow(IBookLoanView.class, bookEntity);
     }
     
     public void deleteBook(BookEntity bookEntity){ _bookRepository.removeBook(bookEntity);}

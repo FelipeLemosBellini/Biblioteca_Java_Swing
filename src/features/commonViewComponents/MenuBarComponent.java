@@ -1,5 +1,8 @@
 package features.commonViewComponents;
 
+import features.books.presentation.views.IBooksView;
+import features.menu.IMenuView;
+import features.user.presentation.views.IUsersView;
 import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
@@ -13,10 +16,10 @@ public class MenuBarComponent {
         JMenu configMenu = new JMenu("Configurações");
 
         JMenuItem manageUsersItem = new JMenuItem("Gerenciar Usuários");
-        manageUsersItem.addActionListener(e -> presentationManager.startUserManagement());
+        manageUsersItem.addActionListener(e -> presentationManager.openWindow(IUsersView.class));
 
         JMenuItem manageLibrary = new JMenuItem("Gerenciar Biblioteca");
-        manageLibrary.addActionListener(e -> presentationManager.startLibrary());
+        manageLibrary.addActionListener(e -> presentationManager.openWindow(IBooksView.class));
 
         JMenuItem aboutItem = new JMenuItem("Sobre");
         aboutItem.addActionListener(e -> showAboutDialog(parentFrame));
@@ -25,7 +28,7 @@ public class MenuBarComponent {
         exitItem.addActionListener(exitAction);
 
         JMenuItem homeItem = new JMenuItem("Voltar para a Home");
-        homeItem.addActionListener(e -> presentationManager.startHome());
+        homeItem.addActionListener(e -> presentationManager.openWindow(IMenuView.class));
 
         configMenu.add(homeItem);
         configMenu.add(manageUsersItem);

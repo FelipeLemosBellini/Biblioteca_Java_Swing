@@ -19,7 +19,7 @@ public class UserEditPasswordController implements IUserEditPasswordController {
 
     public void closeWindow() {
         _userNotifier.notifyUserChanged();
-        _presentationManager.closeWindow("UserEditPassword");
+        _presentationManager.closeWindow(IUserEditPasswordController.class);
     }
 
     public boolean changePassword(UserEntity userEntity, String newPassword, String confirmNewPassword) {

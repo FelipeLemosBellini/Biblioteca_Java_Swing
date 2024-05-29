@@ -2,6 +2,7 @@ import construtionSet.dependencyManager.DependencyInjectionManager;
 import construtionSet.dependencyManager.IDependencyInjectionManager;
 import construtionSet.dependencyInjection.contracts.IServiceLocator;
 import construtionSet.dependencyInjection.implementations.ServiceLocatorImpl;
+import features.login.presentation.ILoginView;
 import features.user.datasources.IUserRepository;
 import features.user.datasources.UserRepositoryImpl;
 import features.user.entities.EProfileEntity;
@@ -21,7 +22,7 @@ public class Main {
         seedDatabase(locator);
 
         var presentationManager = (IPresentationManager) locator.getService(IPresentationManager.class);
-        presentationManager.startLogin();
+        presentationManager.openWindow(ILoginView.class);
     }
 
     private static void seedDatabase(IServiceLocator locator) {

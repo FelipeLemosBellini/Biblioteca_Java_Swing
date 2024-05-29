@@ -3,6 +3,7 @@ package features.books.presentation.controllers;
 import features.books.dataSources.*;
 import features.books.entities.BookEntity;
 import features.books.entities.ECategoryEntity;
+import features.books.presentation.views.IBookEditView;
 import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
@@ -22,7 +23,7 @@ public class BookEditController implements IBookEditController {
     }
     
     public void closeWindow(){
-        _presentationManager.closeWindow("BookEdit");
+        _presentationManager.closeWindow(IBookEditView.class);
         _bookNotifier.notifyBookChanged();
         
     }

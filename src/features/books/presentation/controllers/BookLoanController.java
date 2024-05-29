@@ -3,6 +3,7 @@ package features.books.presentation.controllers;
 import features.books.dataSources.IBookNotifier;
 import features.books.dataSources.IBookRepository;
 import features.books.entities.BookEntity;
+import features.books.presentation.views.IBookLoanView;
 import infraestructure.IPresentationManager;
 import infraestructure.PresentationManager;
 
@@ -21,7 +22,7 @@ public class BookLoanController implements IBookLoanController {
     }
     
     public void closeWindow(){
-        _presentationManager.closeWindow("BookLending");
+        _presentationManager.closeWindow(IBookLoanView.class);
         _bookNotifier.notifyBookChanged();
     }
     

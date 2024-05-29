@@ -120,7 +120,7 @@ public class BooksView extends JFrame implements IBookListener, IBooksView {
     }
 
     private void closeWindow() {
-        _presentationManager.closeWindow("Library");
+        _presentationManager.closeWindow(IBooksView.class);
     }
 
     private int getBookIdFromTable() throws NotSelectedRowException {
