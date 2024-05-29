@@ -1,29 +1,29 @@
 package features.user.presentation;
 
-import features.user.datasources.IUserListener;
-import features.user.datasources.UserObserverImpl;
-import features.user.datasources.IUserRepository;
+import features.user.datasources.*;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
 import infraestructure.PresentationManager;
 
 public class UserEditController {
     private final IUserRepository _userRepository;
-    private final UserObserverImpl _userObserverImpl;
+    private final IUserNotifier _userNotifier;
+    private final IUserSubscriber _userSubscriber;
     private final PresentationManager _presentationManager;
 
-    public UserEditController(PresentationManager presentationManager, IUserRepository userRepository, UserObserverImpl userObserverImpl) {
+    public UserEditController(PresentationManager presentationManager, IUserRepository userRepository, IUserNotifier userNotifier, IUserSubscriber userSubscriber) {
         _userRepository = userRepository;
-        _userObserverImpl = userObserverImpl;
+        _userNotifier = userNotifier;
+        _userSubscriber = userSubscriber;
         _presentationManager = presentationManager;
     }
 
     public void addListener(IUserListener listener) {
-        _userObserverImpl.subscribe(listener);
+        _userSubscriber.subscribe(listener);
     }
 
     public void closeWindow() {
-        _userObserverImpl.notifyDataChanged();
+        _userNotifier.notifyUserChanged();
         _presentationManager.closeWindow("UserEdit");
     }
 

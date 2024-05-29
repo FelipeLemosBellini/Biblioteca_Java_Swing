@@ -1,10 +1,9 @@
-import dependencyInjection.DependencyManager;
-import dependencyInjection.ServiceLocator;
-import dependencyInjection.ServiceLocatorImpl;
-import features.books.dataSources.BookHibernateDaoImpl;
-import features.books.dataSources.IBookDao;
-import features.session.ICurrentUser;
+import construtionSet.dependencyInjection.DependencyInjectionManager;
+import construtionSet.dependencyInjection.IDependencyInjectionManager;
+import construtionSet.dependencyInjection.IServiceLocator;
+import construtionSet.dependencyInjection.ServiceLocatorImpl;
 import features.user.datasources.IUserRepository;
+import infraestructure.PresentationManager;
 
 import javax.swing.*;
 
@@ -33,12 +32,17 @@ public class Main {
 //        userHibernateRepository.removeUser(userList.getFirst());
 //        userList = userHibernateRepository.searchUser("ff");
 //        System.out.println(userList.getFirst().getId());
-
-        IUserRepository repository = ServiceLocator.getInstance().getUserRepository();
-
+        
+        IServiceLocator locator = ServiceLocatorImpl.getInstance();
+        
+        IDependencyInjectionManager manager = new DependencyInjectionManager();
+        manager.AddDependences();
+        
+        var presentationManager = (PresentationManager) locator.getService(PresentationManager.class);
+        presentationManager.startLogin();
+        
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                ServiceLocator.getInstance().getPresentationManager().startLogin();
             }
         });
 //        var manager = new DependencyManager();

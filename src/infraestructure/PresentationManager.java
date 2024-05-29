@@ -1,11 +1,20 @@
 package infraestructure;
 
-import dependencyInjection.ServiceLocator;
+import construtionSet.dependencyInjection.ServiceLocatorImpl;
+import features.books.presentation.BookEditView;
+import features.books.presentation.BookLoanView;
+import features.books.presentation.BooksView;
+import features.login.presentation.LoginView;
+import features.menu.MenuView;
+import features.messageInformer.InformationView;
 import features.user.entities.UserEntity;
 import features.session.ICurrentUser;
 import features.permissions.AdminPermissions;
 
 import features.books.entities.BookEntity;
+import features.user.presentation.UserEditPasswordView;
+import features.user.presentation.UserEditView;
+import features.user.presentation.UserManagementView;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -25,30 +34,30 @@ public class PresentationManager {
 
     public void startLogin() {  
         createWindow("Login", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getLoginView();
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (LoginView)serviceLocator.getService(LoginView.class);
         });
     }
 
     public void startHome() {
         createWindow("Home", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getHomeView();
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (MenuView)serviceLocator.getService(MenuView.class);
         });
     }
 
     public void startLibrary() {
         createWindow("Library", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getLibraryView();
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (BooksView)serviceLocator.getService(BooksView.class);
         });
     }
 
     public void startUserManagement() {
         if (AdminPermissions.verifyAdminUser(_currentUser.getCurrentUser())) {
             createWindow("UserManagement", () -> {
-                var serviceLocator = ServiceLocator.getInstance();
-                return serviceLocator.getUserManagementView();
+                var serviceLocator = ServiceLocatorImpl.getInstance();
+                return (UserManagementView)serviceLocator.getService(UserManagementView.class);
             });
         } else
             startInformationWindow("Usuário sem permissão de acesso");
@@ -56,36 +65,36 @@ public class PresentationManager {
 
     public void startUserEdit(UserEntity userEntity) {
         createWindow("UserEdit", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getUserEditView();
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (UserEditView)serviceLocator.getService(UserEditView.class);
         });
     }
 
     public void startUserPasswordEdit(UserEntity userEntity) {
         createWindow("UserEditPassword", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getUserEditPasswordView();
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (UserEditPasswordView)serviceLocator.getService(UserEditPasswordView.class);
         });
     }
 
     public void startBookEdit(BookEntity bookEntity) {
         createWindow("BookEdit", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getBookEditView(bookEntity);
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (BookEditView)serviceLocator.getService(BookEditView.class);
         });
     }
 
     public void startBookLending(BookEntity bookEntity) {
         createWindow("BookLending", () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getBookLoanView(bookEntity);
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (BookLoanView)serviceLocator.getService(BookLoanView.class);
         });
     }
 
     public void startInformationWindow(String message) {
         createWindow("Information_" + message.replace(" ", "_"), () -> {
-            var serviceLocator = ServiceLocator.getInstance();
-            return serviceLocator.getInformationView(message);
+            var serviceLocator = ServiceLocatorImpl.getInstance();
+            return (InformationView)serviceLocator.getService(InformationView.class);
         });
     }
 

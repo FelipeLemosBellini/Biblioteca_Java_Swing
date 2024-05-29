@@ -1,0 +1,9 @@
+package construtionSet.dependencyInjection;
+
+import construtionSet.dependencyInjection.entities.EServiceLifetime;
+
+public interface IServiceLocator {
+    void registerService(Class<?> serviceClass, EServiceLifetime lifetime);
+    void registerService(Class<?> serviceInterface, Class<?> serviceClass, EServiceLifetime lifetime);
+    Object getService(Class<?> serviceClass);
+}
