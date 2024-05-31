@@ -1,3 +1,4 @@
+import construtionSet.dependencyInjection.implementations.DependencyInjectionContainer;
 import construtionSet.dependencyManager.DependencyInjectionManager;
 import construtionSet.dependencyManager.IDependencyInjectionManager;
 import construtionSet.dependencyInjection.contracts.IServiceLocator;
@@ -15,8 +16,8 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
         IServiceLocator locator = ServiceLocatorImpl.getInstance();
-
-        IDependencyInjectionManager manager = new DependencyInjectionManager();
+        
+        IDependencyInjectionManager manager = new DependencyInjectionManager(new DependencyInjectionContainer());
         manager.AddDependences();
 
         seedDatabase(locator);

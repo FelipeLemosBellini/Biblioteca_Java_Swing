@@ -13,7 +13,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
     private final Map<String, ServiceDescriptor> services = new HashMap<>();
     private final Map<String, Object> singletonInstances = new HashMap<>();
 
-    public static ServiceLocatorImpl getInstance() {
+    public static IServiceLocator getInstance() {
         if (instance == null) {
             instance = new ServiceLocatorImpl();
         }
@@ -64,7 +64,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
             for (Constructor<?> constructor : constructors) {
 
                 if (constructor.getParameterCount() == 0) {
-                    return getInstanceWithLifetime(constructor, serviceDescriptor.getServiceLifetime());
+                    return getInstanceFromConstructorWithLifetime(constructor, serviceDescriptor.getServiceLifetime());
                 } else {
 
                     Object[] parameters = new Object[constructor.getParameterCount()];
@@ -79,7 +79,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
                         parameters[i] = dependency;
                     }
 
-                    return getInstanceWithLifetime(constructor, serviceDescriptor.getServiceLifetime(), parameters);
+                    return getInstanceFromConstructorWithLifetime(constructor, serviceDescriptor.getServiceLifetime(), parameters);
                 }
             }
         } catch (Exception e) {
@@ -89,7 +89,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
         return null;
     }
 
-    private Object getInstanceWithLifetime(Constructor<?> constructor, EServiceLifetime lifetime, Object... parameters) {
+    private Object getInstanceFromConstructorWithLifetime(Constructor<?> constructor, EServiceLifetime lifetime, Object... parameters) {
         try {
             Object serviceInstance = null;
 

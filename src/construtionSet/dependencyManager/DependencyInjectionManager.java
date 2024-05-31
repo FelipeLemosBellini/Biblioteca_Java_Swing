@@ -1,5 +1,6 @@
 package construtionSet.dependencyManager;
 
+import construtionSet.dependencyInjection.contracts.IDependencyInjectionContainer;
 import construtionSet.dependencyInjection.implementations.DependencyInjectionContainer;
 import features.books.dataSources.*;
 import features.books.presentation.controllers.*;
@@ -31,44 +32,46 @@ import infraestructure.PersistenceObjectImpl;
 import infraestructure.PresentationManager;
 
 public class DependencyInjectionManager implements IDependencyInjectionManager {
+    IDependencyInjectionContainer _dependencyInjectionContainer;
+    
+    public DependencyInjectionManager(IDependencyInjectionContainer dependencyInjectionContainer){
+        _dependencyInjectionContainer = dependencyInjectionContainer;
+    } 
+    
     public void AddDependences()
     {
-        var container = new DependencyInjectionContainer();
+        _dependencyInjectionContainer.addSingleton(IPresentationManager.class, PresentationManager.class);
+        _dependencyInjectionContainer.addSingleton(ICurrentUser.class, CurrentUserImpl.class);
+        _dependencyInjectionContainer.addSingleton(IBookNotifier.class, BookObserverImpl.class);
+        _dependencyInjectionContainer.addSingleton(IBookSubscriber.class, BookObserverImpl.class);
+        _dependencyInjectionContainer.addSingleton(IUserSubscriber.class, UserObserverImpl.class);
+        _dependencyInjectionContainer.addSingleton(IUserNotifier.class, UserObserverImpl.class);
 
-        container.addSingleton(IPresentationManager.class, PresentationManager.class);
-        container.addSingleton(ICurrentUser.class, CurrentUserImpl.class);
-        container.addSingleton(IBookNotifier.class, BookObserverImpl.class);
-        container.addSingleton(IBookSubscriber.class, BookObserverImpl.class);
-        container.addSingleton(IUserSubscriber.class, UserObserverImpl.class);
-        container.addSingleton(IUserNotifier.class, UserObserverImpl.class);
-        
-        container.addScoped(IPersistenceObject.class, PersistenceObjectImpl.class);
-        container.addScoped(IBookDao.class, BookHibernateDaoImpl.class);
-        container.addScoped(IBookRepository.class, BookRepositoryImpl.class);
-        container.addScoped(ILoginDao.class, LoginDaoHibernateImpl.class);
-        container.addScoped(ILoginRepository.class, LoginRepositoryImpl.class);
-        container.addScoped(IUserDao.class, UserHibernateDAOImpl.class);
-        container.addScoped(IUserRepository.class, UserRepositoryImpl.class);
+        _dependencyInjectionContainer.addScoped(IPersistenceObject.class, PersistenceObjectImpl.class);
+        _dependencyInjectionContainer.addScoped(IBookDao.class, BookHibernateDaoImpl.class);
+        _dependencyInjectionContainer.addScoped(IBookRepository.class, BookRepositoryImpl.class);
+        _dependencyInjectionContainer.addScoped(ILoginDao.class, LoginDaoHibernateImpl.class);
+        _dependencyInjectionContainer.addScoped(ILoginRepository.class, LoginRepositoryImpl.class);
+        _dependencyInjectionContainer.addScoped(IUserDao.class, UserHibernateDAOImpl.class);
+        _dependencyInjectionContainer.addScoped(IUserRepository.class, UserRepositoryImpl.class);
 
-        container.addTransient(IUsersController.class, UsersController.class);
-        container.addTransient(IUsersView.class, UsersView.class);
-        container.addTransient(IUserEditController.class, UserEditController.class);
-        container.addTransient(IUserEditView.class, UserEditView.class);
-        container.addTransient(IUserEditPasswordController.class, UserEditPasswordController.class);
-        container.addTransient(IUserEditPasswordView.class, UserEditPasswordView.class);
-        container.addTransient(ILoginController.class, LoginController.class);
-        container.addTransient(ILoginView.class, LoginView.class);
-        container.addTransient(IBookLoanController.class, BookLoanController.class);
-        container.addTransient(IBookLoanView.class, BookLoanView.class);
-        container.addTransient(IBooksController.class, BooksController.class);
-        container.addTransient(IBooksView.class, BooksView.class);
-        container.addTransient(IBookEditController.class, BookEditController.class);
-        container.addTransient(IBookEditView.class, BookEditView.class);
-        container.addTransient(IMenuController.class, MenuController.class);
-        container.addTransient(IMenuView.class, MenuView.class);
-        container.addTransient(IInformationController.class, InformationController.class);
-        container.addTransient(IInformationView.class, InformationView.class);
-        
-        
+        _dependencyInjectionContainer.addTransient(IUsersController.class, UsersController.class);
+        _dependencyInjectionContainer.addTransient(IUsersView.class, UsersView.class);
+        _dependencyInjectionContainer.addTransient(IUserEditController.class, UserEditController.class);
+        _dependencyInjectionContainer.addTransient(IUserEditView.class, UserEditView.class);
+        _dependencyInjectionContainer.addTransient(IUserEditPasswordController.class, UserEditPasswordController.class);
+        _dependencyInjectionContainer.addTransient(IUserEditPasswordView.class, UserEditPasswordView.class);
+        _dependencyInjectionContainer.addTransient(ILoginController.class, LoginController.class);
+        _dependencyInjectionContainer.addTransient(ILoginView.class, LoginView.class);
+        _dependencyInjectionContainer.addTransient(IBookLoanController.class, BookLoanController.class);
+        _dependencyInjectionContainer.addTransient(IBookLoanView.class, BookLoanView.class);
+        _dependencyInjectionContainer.addTransient(IBooksController.class, BooksController.class);
+        _dependencyInjectionContainer.addTransient(IBooksView.class, BooksView.class);
+        _dependencyInjectionContainer.addTransient(IBookEditController.class, BookEditController.class);
+        _dependencyInjectionContainer.addTransient(IBookEditView.class, BookEditView.class);
+        _dependencyInjectionContainer.addTransient(IMenuController.class, MenuController.class);
+        _dependencyInjectionContainer.addTransient(IMenuView.class, MenuView.class);
+        _dependencyInjectionContainer.addTransient(IInformationController.class, InformationController.class);
+        _dependencyInjectionContainer.addTransient(IInformationView.class, InformationView.class);
     }
 }
