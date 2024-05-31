@@ -4,8 +4,8 @@ import features.books.dataSources.IBookRepository;
 import features.books.dataSources.IBookSubscriber;
 import features.books.presentation.views.IBookEditView;
 import features.books.presentation.views.IBookLoanView;
+import features.books.presentation.views.IBooksView;
 import infraestructure.IPresentationManager;
-import infraestructure.PresentationManager;
 import features.books.entities.BookEntity;
 import features.books.dataSources.IBookListener;
 
@@ -34,7 +34,7 @@ public class BooksController implements IBooksController {
             _presentationManager.openWindow(IBookEditView.class, bookEntity);
     }
 
-    public void openBookLending(BookEntity bookEntity){
+    public void openBookLoan(BookEntity bookEntity){
         _presentationManager.openWindow(IBookLoanView.class, bookEntity);
     }
     
@@ -46,5 +46,14 @@ public class BooksController implements IBooksController {
     
     public List<BookEntity> getBook(String search){
         return _bookRepository.searchBooks(search);
+    }
+
+    public void closeWindow(){
+        _presentationManager.closeWindow(IBooksView.class);
+    }
+
+    @Override
+    public IPresentationManager getPresentationManager() {
+        return _presentationManager;
     }
 }

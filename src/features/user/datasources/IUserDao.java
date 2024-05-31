@@ -5,7 +5,7 @@ import features.user.entities.UserEntity;
 import java.util.List;
 
 public interface IUserDao {
-    void createUser(UserEntity bookEntity);
+    void createUser(UserEntity userEntity);
     UserEntity readUser(int id);
     UserEntity readUser(String login);
     void updateUser(UserEntity bookEntity);

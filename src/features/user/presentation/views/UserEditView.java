@@ -3,7 +3,6 @@ package features.user.presentation.views;
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
 import features.user.presentation.controllers.IUserEditController;
-import features.user.presentation.controllers.UserEditController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,7 +14,7 @@ public class UserEditView extends JFrame implements IUserEditView {
 
     private JTextField loginField;
     private JTextField passwordField;
-    private JComboBox<String> comboBoxCategory;
+    private JComboBox<String> comboBoxProfile;
 
     private final UserEntity _editingUser;
 
@@ -46,14 +45,14 @@ public class UserEditView extends JFrame implements IUserEditView {
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY),
                 new EmptyBorder(5, 5, 5, 5)));
 
-        comboBoxCategory = new JComboBox<>();
+        comboBoxProfile = new JComboBox<>();
         for (EProfileEntity eProfileEntity : EProfileEntity.values()) {
-            comboBoxCategory.addItem(eProfileEntity.toString());
+            comboBoxProfile.addItem(eProfileEntity.toString());
         }
 
         if (_editingUser != null) {
             loginField = new JTextField(_editingUser.getLogin(), 15);
-            comboBoxCategory.setSelectedItem(_editingUser.getProfile().toString());
+            comboBoxProfile.setSelectedItem(_editingUser.getProfile().toString());
         } else {
             loginField = new JTextField(15);
         }
@@ -75,7 +74,7 @@ public class UserEditView extends JFrame implements IUserEditView {
         }
 
         formPanel.add(new JLabel("Perfil:"));
-        formPanel.add(comboBoxCategory);
+        formPanel.add(comboBoxProfile);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(saveButton);
@@ -87,7 +86,6 @@ public class UserEditView extends JFrame implements IUserEditView {
         getContentPane().add(mainPanel);
     }
 
-
     private void closeWindow(ActionEvent event) {
         closeWindow();
     }
@@ -98,7 +96,7 @@ public class UserEditView extends JFrame implements IUserEditView {
 
     private void saveRow(ActionEvent event) {
         String name = loginField.getText();
-        EProfileEntity category = EProfileEntity.employee.getEProfile((String) comboBoxCategory.getSelectedItem());
+        EProfileEntity category = EProfileEntity.employee.getEProfile((String) comboBoxProfile.getSelectedItem());
         String passwordFieldText = passwordField.getText();
 
         if (name.isEmpty() || category == null) {

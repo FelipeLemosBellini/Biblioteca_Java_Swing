@@ -36,7 +36,6 @@ public class BookEditView extends JFrame implements IBookEditView {
         setVisible(true);
         setLocationRelativeTo(null);
     }
-
     private void defineMenuConfiguration() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -91,7 +90,6 @@ public class BookEditView extends JFrame implements IBookEditView {
 
         getContentPane().add(mainPanel);
     }
-
 
     private void closeWindow(ActionEvent event) {
         closeWindow();

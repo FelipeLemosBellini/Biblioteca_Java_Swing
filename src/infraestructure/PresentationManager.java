@@ -19,11 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PresentationManager implements IPresentationManager {
-    private final ICurrentUser _currentUser;
     private final Map<String, JFrame> openWindows;
 
-    public PresentationManager(ICurrentUser currentUser) {
-        _currentUser = currentUser;
+    public PresentationManager() {
         openWindows = new HashMap<>();
     }
 

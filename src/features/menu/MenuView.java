@@ -10,11 +10,11 @@ public class MenuView extends JFrame implements IMenuView {
     public MenuView(IMenuController menuController) {
         _menuController = menuController;
         
-        configureWindow();
+        defineWindowConfig();
         setVisible(true);
     }
 
-    private void configureWindow() {
+    private void defineWindowConfig() {
         setTitle("Administração de Sistema");
         setSize(400, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,10 +28,15 @@ public class MenuView extends JFrame implements IMenuView {
         mainPanel.add(headerPanel, BorderLayout.NORTH);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton userRegistrationButton = createButton("Cadastro de Usuário", e -> _menuController.openUserManager());
-        JButton libraryManagementButton = createButton("Gestão da Biblioteca", e -> _menuController.openLibraryManager());
+        
+        JButton userRegistrationButton = createButton("Cadastro de Usuário", e -> _menuController.openUsersWindow());
+        JButton libraryManagementButton = createButton("Gestão da Biblioteca", e -> _menuController.openBooksWindow());
+        JButton logoutButton = createButton("Logout", e -> _menuController.logout());
+        
         buttonPanel.add(userRegistrationButton);
         buttonPanel.add(libraryManagementButton);
+        buttonPanel.add(logoutButton);
+        
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
 
         add(mainPanel);

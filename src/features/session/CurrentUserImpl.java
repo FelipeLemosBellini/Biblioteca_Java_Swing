@@ -20,4 +20,9 @@ public class CurrentUserImpl implements ICurrentUser {
     public UserEntity getCurrentUser() {
         return this.userEntity;
     }
+
+    @Override
+    public void cleanUser() {
+        userEntity = null;
+    }
 }

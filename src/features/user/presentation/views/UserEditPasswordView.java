@@ -2,14 +2,13 @@ package features.user.presentation.views;
 
 import features.user.entities.UserEntity;
 import features.user.presentation.controllers.IUserEditPasswordController;
-import features.user.presentation.controllers.UserEditPasswordController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class UserEditPasswordView extends JFrame implements IUserEditPasswordView  {
+public class UserEditPasswordView extends JFrame implements IUserEditPasswordView {
     private final IUserEditPasswordController _userEditPasswordController;
 
     private JTextField newPasswordField;
@@ -33,7 +32,6 @@ public class UserEditPasswordView extends JFrame implements IUserEditPasswordVie
         setVisible(true);
         setLocationRelativeTo(null);
     }
-
     private void defineMenuConfiguration() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -50,7 +48,7 @@ public class UserEditPasswordView extends JFrame implements IUserEditPasswordVie
         JButton saveButton = new JButton("Salvar");
         JButton cancelButton = new JButton("Cancelar");
 
-        saveButton.addActionListener(this::saveRow);
+        saveButton.addActionListener(this::save);
         cancelButton.addActionListener(this::closeWindow);
 
         formPanel.add(new JLabel("Nova Senha:"));
@@ -78,7 +76,7 @@ public class UserEditPasswordView extends JFrame implements IUserEditPasswordVie
         _userEditPasswordController.closeWindow();
     }
 
-    private void saveRow(ActionEvent event) {
+    private void save(ActionEvent event) {
         String newPasswordFieldText = newPasswordField.getText();
         String confirmedPasswordFieldText = confirmedPasswordField.getText();
 

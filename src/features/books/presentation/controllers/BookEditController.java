@@ -10,15 +10,11 @@ import infraestructure.PresentationManager;
 public class BookEditController implements IBookEditController {
     private final IBookRepository _bookRepository;
     private final IBookNotifier _bookNotifier;
-    private final IBookSubscriber _bookSubscriber;
-
     private final IPresentationManager _presentationManager;
     
-    
-    public BookEditController(IPresentationManager presentationManager, IBookRepository bookRepository, IBookNotifier bookNotifier, IBookSubscriber bookSubscriber) {
+    public BookEditController(IPresentationManager presentationManager, IBookRepository bookRepository, IBookNotifier bookNotifier) {
         _bookRepository = bookRepository;
         _bookNotifier = bookNotifier;
-        _bookSubscriber = bookSubscriber;
         _presentationManager = presentationManager;
     }
     

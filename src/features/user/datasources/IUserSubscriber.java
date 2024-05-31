@@ -1,5 +1,5 @@
 package features.user.datasources;
 
 public interface IUserSubscriber {
-    void subscribe(IUserListener userListListener);
+    void subscribe(IUserListener listener);
 }

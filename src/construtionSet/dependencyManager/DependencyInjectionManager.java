@@ -25,9 +25,9 @@ import features.session.ICurrentUser;
 import features.user.datasources.*;
 import features.user.presentation.controllers.*;
 import features.user.presentation.views.*;
-import infraestructure.IPersistentDataRepository;
+import infraestructure.IPersistenceObject;
 import infraestructure.IPresentationManager;
-import infraestructure.PersistentDataRepository;
+import infraestructure.PersistenceObjectImpl;
 import infraestructure.PresentationManager;
 
 public class DependencyInjectionManager implements IDependencyInjectionManager {
@@ -42,7 +42,7 @@ public class DependencyInjectionManager implements IDependencyInjectionManager {
         container.addSingleton(IUserSubscriber.class, UserObserverImpl.class);
         container.addSingleton(IUserNotifier.class, UserObserverImpl.class);
         
-        container.addScoped(IPersistentDataRepository.class, PersistentDataRepository.class);
+        container.addScoped(IPersistenceObject.class, PersistenceObjectImpl.class);
         container.addScoped(IBookDao.class, BookHibernateDaoImpl.class);
         container.addScoped(IBookRepository.class, BookRepositoryImpl.class);
         container.addScoped(ILoginDao.class, LoginDaoHibernateImpl.class);

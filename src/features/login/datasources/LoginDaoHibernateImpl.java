@@ -1,14 +1,14 @@
 package features.login.datasources;
 
-import infraestructure.IPersistentDataRepository;
+import infraestructure.IPersistenceObject;
 import features.user.entities.UserEntity;
 
 import java.util.Optional;
 
 public class LoginDaoHibernateImpl implements ILoginDao {
-    IPersistentDataRepository _persistentDataRepository;
+    IPersistenceObject _persistentDataRepository;
 
-    public LoginDaoHibernateImpl(IPersistentDataRepository persistentDataRepository) {
+    public LoginDaoHibernateImpl(IPersistenceObject persistentDataRepository) {
         _persistentDataRepository = persistentDataRepository;
     }
 
@@ -17,7 +17,7 @@ public class LoginDaoHibernateImpl implements ILoginDao {
         boolean isValidUser = false;
 
         try {
-            Optional<UserEntity> userEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            Optional<UserEntity> userEntity = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 return session.createQuery("from UserEntity where login = :login and password = :password", UserEntity.class)
                         .setParameter("login", login)
                         .setParameter("password", password)
@@ -38,7 +38,7 @@ public class LoginDaoHibernateImpl implements ILoginDao {
     public UserEntity readUser(String login) {
         UserEntity userEntity = null;
         try {
-            userEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            userEntity = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 return session.createQuery("from UserEntity where login = :login", UserEntity.class)
                         .setParameter("login", login)
                         .uniqueResultOptional()
@@ -50,5 +50,4 @@ public class LoginDaoHibernateImpl implements ILoginDao {
         }
         return userEntity;
     }
-
 }

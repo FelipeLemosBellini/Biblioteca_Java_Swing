@@ -3,9 +3,7 @@ package features.user.presentation.views;
 import features.user.datasources.IUserListener;
 import features.user.entities.UserEntity;
 import features.user.presentation.controllers.IUsersController;
-import features.user.presentation.controllers.UsersController;
 import infraestructure.IPresentationManager;
-import infraestructure.PresentationManager;
 import features.commonViewComponents.NotSelectedRowException;
 import features.commonViewComponents.MenuBarComponent;
 
@@ -18,7 +16,6 @@ import java.util.List;
 
 public class UsersView extends JFrame implements IUserListener, IUsersView {
     private final IUsersController _usersController;
-    private final IPresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
@@ -27,9 +24,7 @@ public class UsersView extends JFrame implements IUserListener, IUsersView {
     public UsersView(IUsersController usersController, IPresentationManager presentationManager) {
         _usersController = usersController;
         _usersController.addListener(this);
-
-        _presentationManager = presentationManager;
-
+        
         initComponents();
 
         updateTable();
@@ -57,7 +52,7 @@ public class UsersView extends JFrame implements IUserListener, IUsersView {
     private void defineMenuBar() {
         JMenuBar menuBar = MenuBarComponent.createMenuBar(
                 this,
-                _presentationManager,
+                _usersController.getPresentationManager(),
                 e -> closeWindow()
         );
         setJMenuBar(menuBar);
@@ -73,7 +68,7 @@ public class UsersView extends JFrame implements IUserListener, IUsersView {
         JLabel nameLabel = new JLabel("Pesquisar na Tabela:");
         searchStringField = new JTextField(15);
         JButton searchButton = new JButton("Pesquisar");
-        searchButton.addActionListener(this::searchBook);
+        searchButton.addActionListener(this::searchUser);
 
         model = new DefaultTableModel() {
             @Override
@@ -171,7 +166,7 @@ public class UsersView extends JFrame implements IUserListener, IUsersView {
         }
     }
 
-    private void searchBook(ActionEvent event) {
+    private void searchUser(ActionEvent event) {
         updateTable();
     }
 

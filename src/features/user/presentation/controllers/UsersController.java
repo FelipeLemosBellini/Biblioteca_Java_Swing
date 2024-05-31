@@ -8,6 +8,7 @@ import features.user.presentation.views.IUserEditPasswordView;
 import features.user.presentation.views.IUserEditView;
 import features.user.presentation.views.IUsersView;
 import infraestructure.IPresentationManager;
+import infraestructure.PresentationManager;
 
 import java.util.List;
 
@@ -50,7 +51,12 @@ public class UsersController implements IUsersController {
         return _userRepository.getUser(id);
     }
 
-    public List<UserEntity> getUsers(String searchString){
-        return _userRepository.searchUsers(searchString);
+    public List<UserEntity> getUsers(String search){
+        return _userRepository.searchUsers(search);
+    }
+
+    @Override
+    public IPresentationManager getPresentationManager() {
+        return _presentationManager;
     }
 }

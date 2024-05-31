@@ -3,7 +3,7 @@ package features.login.datasources;
 import features.user.entities.UserEntity;
 
 public class LoginRepositoryImpl implements ILoginRepository {
-    private ILoginDao _loginDao;
+    private final ILoginDao _loginDao;
     
     public LoginRepositoryImpl(ILoginDao loginDAO) {
         _loginDao = loginDAO;

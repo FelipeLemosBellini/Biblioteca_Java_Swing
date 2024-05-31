@@ -2,21 +2,21 @@ package features.user.datasources;
 
 import features.user.entities.EProfileEntity;
 import features.user.entities.UserEntity;
-import infraestructure.IPersistentDataRepository;
+import infraestructure.IPersistenceObject;
 
 import java.util.List;
 
 public class UserHibernateDAOImpl implements IUserDao {
-    IPersistentDataRepository _persistentDataRepository;
+    IPersistenceObject _persistentDataRepository;
 
-    public UserHibernateDAOImpl(IPersistentDataRepository persistentDataRepository) {
+    public UserHibernateDAOImpl(IPersistenceObject persistentDataRepository) {
         this._persistentDataRepository = persistentDataRepository;
     }
     
     @Override
     public void createUser(UserEntity userEntity) {
         try {
-            _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+            _persistentDataRepository.getDatabaseSession().inTransaction(session -> {
                 session.persist(userEntity);
             });
             System.out.println("Usuário criado com sucesso: " + userEntity);
@@ -28,14 +28,14 @@ public class UserHibernateDAOImpl implements IUserDao {
 
     @Override
     public void updateUser(UserEntity userEntity) {
-        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+        _persistentDataRepository.getDatabaseSession().inTransaction(session -> {
             session.merge(userEntity);
         });
     }
 
     @Override
     public void deleteUser(UserEntity userEntity) {
-        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+        _persistentDataRepository.getDatabaseSession().inTransaction(session -> {
             session.remove(userEntity);
         });
     }
@@ -44,7 +44,7 @@ public class UserHibernateDAOImpl implements IUserDao {
     public UserEntity readUser(int id) {
         UserEntity userEntity = null;
         try {
-            userEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            userEntity = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 return session.createSelectionQuery("from UserEntity where id = :id", UserEntity.class)
                         .setParameter("id", id)
                         .uniqueResultOptional()
@@ -61,7 +61,7 @@ public class UserHibernateDAOImpl implements IUserDao {
     public UserEntity readUser(String login) {
         UserEntity userEntity = null;
         try {
-            userEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            userEntity = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 return session.createSelectionQuery("from UserEntity where login = :login", UserEntity.class)
                         .setParameter("login", login)
                         .uniqueResultOptional()
@@ -78,7 +78,7 @@ public class UserHibernateDAOImpl implements IUserDao {
     public List<UserEntity> searchUsers(String searchString) {
         List<UserEntity> userEntities = null;
         try {
-            userEntities = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            userEntities = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 if (searchString == null || searchString.trim().isEmpty()) {
                     return session.createSelectionQuery("from UserEntity", UserEntity.class).getResultList();
                 } else {

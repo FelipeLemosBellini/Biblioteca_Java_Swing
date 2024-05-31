@@ -9,16 +9,16 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class PersistentDataRepository implements IPersistentDataRepository {
+public class PersistenceObjectImpl implements IPersistenceObject {
     private static SessionFactory sessionFactory;
 
     @Override
-    public SessionFactory getDatabaseSessionFactory() {
-        sessionFactory = sessionFactory == null ? createSessionFactory() : sessionFactory;
+    public SessionFactory getDatabaseSession() {
+        sessionFactory = sessionFactory == null ? getSessionFromFactory() : sessionFactory;
         return sessionFactory;
     }
 
-    private SessionFactory createSessionFactory() {
+    private SessionFactory getSessionFromFactory() {
         SessionFactory newSessionFactory = null;
         final StandardServiceRegistry registry =
                 new StandardServiceRegistryBuilder()

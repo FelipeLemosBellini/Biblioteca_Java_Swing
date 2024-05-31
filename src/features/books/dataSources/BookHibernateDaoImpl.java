@@ -2,29 +2,27 @@ package features.books.dataSources;
 
 import features.books.entities.BookEntity;
 import features.books.entities.ECategoryEntity;
-import infraestructure.IPersistentDataRepository;
+import infraestructure.IPersistenceObject;
 
-import java.util.Date;
 import java.util.List;
 
 public class BookHibernateDaoImpl implements IBookDao {
+    IPersistenceObject _persistentDataRepository;
 
-    IPersistentDataRepository _persistentDataRepository;
-
-    public BookHibernateDaoImpl(IPersistentDataRepository persistentDataRepository) {
+    public BookHibernateDaoImpl(IPersistenceObject persistentDataRepository) {
         _persistentDataRepository = persistentDataRepository;
     }
 
     @Override
     public void createBook(BookEntity bookEntity) {
-        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+        _persistentDataRepository.getDatabaseSession().inTransaction(session -> {
             session.persist(bookEntity);
         });
     }
 
     @Override
     public void deleteBook(BookEntity bookEntity) {
-        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+        _persistentDataRepository.getDatabaseSession().inTransaction(session -> {
             session.remove(bookEntity);
         });
     }
@@ -34,7 +32,7 @@ public class BookHibernateDaoImpl implements IBookDao {
         List<BookEntity> bookEntityList = null;
 
         try {
-            bookEntityList = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            bookEntityList = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 if (search == null || search.trim().isEmpty()) {
                     return session.createSelectionQuery("from BookEntity", BookEntity.class).getResultList();
                 } else {
@@ -76,7 +74,7 @@ public class BookHibernateDaoImpl implements IBookDao {
         BookEntity bookEntity = null;
 
         try {
-            bookEntity = _persistentDataRepository.getDatabaseSessionFactory().fromTransaction(session -> {
+            bookEntity = _persistentDataRepository.getDatabaseSession().fromTransaction(session -> {
                 return session.createSelectionQuery("from BookEntity where id = :id", BookEntity.class)
                         .setParameter("id", id)
                         .getSingleResultOrNull();
@@ -90,7 +88,7 @@ public class BookHibernateDaoImpl implements IBookDao {
 
     @Override
     public void updateBook(BookEntity bookEntity) {
-        _persistentDataRepository.getDatabaseSessionFactory().inTransaction(session -> {
+        _persistentDataRepository.getDatabaseSession().inTransaction(session -> {
             session.merge(bookEntity);
         });
     }

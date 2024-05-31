@@ -51,7 +51,6 @@ public class UserEntity {
         this.login = login;
         this.profile = profile;
     }
-
     public boolean editPassword(String newPassword, String confirmNewPassword){
         if (!newPassword.equals(confirmNewPassword))
             return false;

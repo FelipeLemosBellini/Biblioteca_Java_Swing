@@ -45,7 +45,6 @@ public class BookLoanView extends JFrame implements IBookLoanView {
 
         setVisible(true);
     }
-
     private void defineMenuConfiguration() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -113,7 +112,6 @@ public class BookLoanView extends JFrame implements IBookLoanView {
     private void closeWindow(ActionEvent event) {
         closeWindow();
     }
-
     private void closeWindow() {
         _bookLoanController.closeWindow();
         dispose();
@@ -127,7 +125,6 @@ public class BookLoanView extends JFrame implements IBookLoanView {
             JOptionPane.showMessageDialog(this, "O Livro não está emprestado!");
         }
     }
-
     private void borrowBook(ActionEvent event) {
         try {
             String dateOfReturnText = dateOfReturn.getText();

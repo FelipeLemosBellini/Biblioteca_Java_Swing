@@ -1,9 +1,7 @@
 package features.books.presentation.views;
 
-import features.books.presentation.controllers.BooksController;
 import features.books.presentation.controllers.IBooksController;
 import infraestructure.IPresentationManager;
-import infraestructure.PresentationManager;
 import features.books.dataSources.IBookListener;
 import features.commonViewComponents.NotSelectedRowException;
 import features.books.entities.BookEntity;
@@ -16,17 +14,14 @@ import java.util.List;
 
 public class BooksView extends JFrame implements IBookListener, IBooksView {
     private final IBooksController _booksController;
-    private final IPresentationManager _presentationManager;
 
     private JTable table;
     private DefaultTableModel model;
     private JTextField searchStringField;
 
-    public BooksView(IBooksController booksController, IPresentationManager presentationManager) {
+    public BooksView(IBooksController booksController) {
         _booksController = booksController;
         _booksController.addListener(this);
-
-        _presentationManager = presentationManager;
 
         initComponents();
         updateTable();
@@ -47,7 +42,7 @@ public class BooksView extends JFrame implements IBookListener, IBooksView {
     private void defineMenuBar() {
         JMenuBar menuBar = MenuBarComponent.createMenuBar(
                 this,
-                _presentationManager,
+                _booksController.getPresentationManager(),
                 e -> closeWindow()
         );
         setJMenuBar(menuBar);
@@ -120,7 +115,7 @@ public class BooksView extends JFrame implements IBookListener, IBooksView {
     }
 
     private void closeWindow() {
-        _presentationManager.closeWindow(IBooksView.class);
+        _booksController.closeWindow();
     }
 
     private int getBookIdFromTable() throws NotSelectedRowException {
@@ -158,7 +153,7 @@ public class BooksView extends JFrame implements IBookListener, IBooksView {
         try {
             int id = getBookIdFromTable();
             BookEntity bookEntity = _booksController.getBook(id);
-            _booksController.openBookLending(bookEntity);
+            _booksController.openBookLoan(bookEntity);
         } catch (NotSelectedRowException e) {
             JOptionPane.showMessageDialog(this, "Selecione um livro para emprestar");
         }

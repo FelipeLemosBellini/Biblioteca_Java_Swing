@@ -1,6 +1,7 @@
 package features.menu;
 
 public interface IMenuController {
-    void openUserManager();
-    void openLibraryManager();
+    void openUsersWindow();
+    void openBooksWindow();
+    void logout();
 }
