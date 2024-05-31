@@ -2,7 +2,6 @@ package features.messageInformer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class InformationView extends JFrame implements IInformationView {
     private JLabel messageLabel;
@@ -19,7 +18,7 @@ public class InformationView extends JFrame implements IInformationView {
 
         closeButton = new JButton("Fechar");
         closeButton.setFont(new Font("Arial", Font.PLAIN, 14));
-        closeButton.addActionListener(e -> informationController.close(message));
+        closeButton.addActionListener(e -> informationController.closeWindow());
 
         JPanel messagePanel = new JPanel(new BorderLayout());
         messagePanel.add(messageLabel, BorderLayout.CENTER);

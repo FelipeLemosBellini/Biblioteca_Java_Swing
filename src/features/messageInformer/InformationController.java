@@ -11,7 +11,7 @@ public class InformationController implements IInformationController {
         _presentationManager = presentationManager;
     }
     
-    public void close(String message){
+    public void closeWindow(){
         _presentationManager.closeWindow(IInformationView.class);
     }
 }
