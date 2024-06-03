@@ -96,7 +96,7 @@ public class ServiceLocatorImpl implements IServiceLocator {
             switch (lifetime) {
                 case Transient:
                     return constructor.newInstance(parameters);
-                case Scoped:
+                case Scoped: //Não implementado
                     return constructor.newInstance(parameters);
                 case Singleton:
                     String singletonKey = constructor.getDeclaringClass().getSimpleName();
