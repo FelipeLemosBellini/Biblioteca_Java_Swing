@@ -28,7 +28,10 @@ A arquitetura do sistema é baseada em pacotes organizados por funcionalidades. 
 
 ## Diagrama UML
 
-O diagrama UML do projeto está disponível e pode ser encontrado ![aqui](./UML.jpg). Ele fornece uma visão detalhada da estrutura e dos relacionamentos entre as classes do sistema.
+ 
+O diagrama UML do projeto fornece uma visão detalhada da estrutura e dos relacionamentos entre as classes do sistema e pode ser encontrado abaixo:
+
+ ![aqui](./UML.jpg) 
 
 ## Contribuição
 Contribuições são bem-vindas! Se você tiver sugestões, melhorias ou encontrar bugs, sinta-se à vontade para abrir uma issue ou enviar um pull request.
